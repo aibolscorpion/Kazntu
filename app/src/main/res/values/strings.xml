@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">Kazntu</string>
+    <string name="login_hello">Добро пожаловать!</string>
+    <string name="et_login_hint">ЛОГИН</string>
+    <string name="et_password_hint">ПАРОЛЬ</string>
+    <string name="btn_login">Войти</string>
+    <string name="btn_login_exit">Выйти</string>
+    <string name="open">opened</string>
+    <string name="close">closed</string>
+    <string name="academicProgress">Успеваемость</string>
+    <string name="umkd">УМКД</string>
+    <string name="settings">Настройки</string>
+    <string name="logout">Выход</string>
+    <string name="journal">Журнал</string>
+    <string name="exam">Экзамены</string>
+    <string name="schedule">Расписание</string>
+    <string name="grade">Оценки</string>
+    <string name="notifications">Уведомления</string>
+    <string name="courseName">Course Name</string>
+    <string name="creditsName">Credits</string>
+    <string name="pointsName">Points</string>
+    <string name="gradeName">Grade</string>
+    <string name="gradeP">P=0.0</string>
+    <string name="format">%1$td/%1$tm/%1$tY</string>
+    <string name="nullString">0</string>
+    <string name="nullDoubleString">0.0</string>
+    <string name="thanks">Спасибо за то, что Вы с нами!</string>
+    <string name="files">Файлы</string>
+    <string name="data">К сожалению, данные по данному запросу отсутствуют</string>
+    <string name="rest">Отдыхаем!</string>
+    <string name="complaintShort">Коротко опишите проблему</string>
+    <string name="ready">Готово</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="att_1">Att.1</string>
+    <string name="att_2">Att.2</string>
+    <string name="finalBar">Final</string>
+    <string name="total">Total</string>
+    <string name="nullString2"> </string>
+    <string name="navigation_drawer_open">opened</string>
+    <string name="navigation_drawer_close">close</string>
+    <string name="complaint">Сообщить об ошибке</string>
+    <string name="profilePhoto">Фотография профиля</string>
+    <string name="chooseLng">Выберите язык</string>
+    <string name="getLng">Язык изменен</string>
+    <string name="internetConnection">нет доступа к сети</string>
+    <string name="sendComplaint">Готово</string>
+    <string name="cancelComplaint">Отменить</string>
+    <string name="writeComplaint">Заполните жалобу!</string>
+    <string name="missed">пропусков</string>
+
+</resources>

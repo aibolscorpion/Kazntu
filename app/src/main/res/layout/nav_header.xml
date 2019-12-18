@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_header">
+
+    <data>
+        <variable
+            name="accountEntity"
+            type="com.example.kazntu.utils.Storage"/>
+        <variable
+            name="imageUrl"
+            type="android.graphics.Bitmap"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/main_background"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <ImageView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/userFullName"
+            android:layout_marginStart="10dp"
+            android:id="@+id/userProfilePhoto"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:imageUrl="@{imageUrl}" />
+
+        <TextView
+            app:layout_constraintStart_toStartOf="@+id/userProfilePhoto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="10dp"
+            android:id="@+id/userFullName"
+            android:textColor="@color/colorWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="@{accountEntity.accountFullName}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

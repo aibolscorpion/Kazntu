@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kazntu</string>
+    <string name="login_hello">Добро пожаловать!</string>
+    <string name="et_login_hint">ЛОГИН</string>
+    <string name="et_password_hint">ПАРОЛЬ</string>
+    <string name="btn_login">Войти</string>
+    <string name="btn_login_exit">Шығу</string>
+    <string name="open">opened</string>
+    <string name="close">closed</string>
+    <string name="exam">Емтихан кестесі</string>
+    <string name="academicProgress">Үлгерім</string>
+    <string name="umkd">УМКД</string>
+    <string name="settings">Параметрлері</string>
+    <string name="logout">Шығу</string>
+    <string name="journal">Журнал</string>
+    <string name="schedule">Кесте</string>
+    <string name="grade">Бағалар</string>
+    <string name="notifications">Хабарламалар</string>
+    <string name="courseName">Course Name</string>
+    <string name="creditsName">Credits</string>
+    <string name="pointsName">Points</string>
+    <string name="gradeName">Grade</string>
+    <string name="gradeP">P=0.0</string>
+    <string name="format">%1$td/%1$tm/%1$tY</string>
+    <string name="nullString">0</string>
+    <string name="nullDoubleString">0.0</string>
+    <string name="thanks">Бізбен бірге болғаныңыз үшін рахмет!</string>
+    <string name="files">Файлдар</string>
+    <string name="data">Әзірге деректер жоқ</string>
+    <string name="rest">Демалыс!</string>
+    <string name="complaintShort">Мәселені қысқаша сипаттаңыз</string>
+    <string name="ready">Ок</string>
+
+    <string name="getLng">Тіл өзгерді</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="att_1">Att.1</string>
+    <string name="att_2">Att.2</string>
+    <string name="finalBar">Final</string>
+    <string name="total">Total</string>
+    <string name="nullString2"> </string>
+    <string name="navigation_drawer_open">opened</string>
+    <string name="navigation_drawer_close">close</string>
+    <string name="complaint">Қате туралы хабарлау</string>
+    <string name="profilePhoto">Фотография профиля</string>
+    <string name="chooseLng">Тілді таңдау</string>
+    <string name="internetConnection">желіге кіру жоқ</string>
+    <string name="sendComplaint">Жіберу</string>
+    <string name="cancelComplaint">Бас тарту</string>
+    <string name="writeComplaint">Шағымды толтырыңыз!</string>
+    <string name="missed">пропусков</string>
+
+</resources>
