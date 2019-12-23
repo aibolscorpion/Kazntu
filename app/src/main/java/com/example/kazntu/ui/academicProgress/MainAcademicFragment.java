@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,16 +39,10 @@ import static com.example.kazntu.ui.notification.NotificationFragment.NOTIFICATI
 
 public class MainAcademicFragment extends Fragment {
 
-    private AcademicFragment academicFragment = new AcademicFragment();
     private BottomNavigationView navigation;
     private static final String TAG = "MainAcademicFragment";
     public Toolbar toolbar;
     public ImageView imageView;
-    private AcademicViewModel academicViewModel = new AcademicViewModel();
-    private GradeViewModel gradeViewModel = new GradeViewModel();
-    private TranscriptViewModel transcriptViewModel = new TranscriptViewModel();
-    private NotificationViewModel notificationViewModel = new NotificationViewModel();
-    private ExamsViewModel examsViewModel = new ExamsViewModel();
 
     public static MainAcademicFragment newInstance() {
         return new MainAcademicFragment();
@@ -67,7 +62,7 @@ public class MainAcademicFragment extends Fragment {
                 return true;
             case R.id.notifications:
                 replaceFragment(NotificationFragment.newInstance(),NOTIFICATION_TAG, R.id.main_academic_fragment_container);
-        return true;
+                return true;
         }
         return false;
     };
@@ -89,6 +84,7 @@ public class MainAcademicFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 //        getToolbar();
         // TODO: Use the ViewModel
+
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.journal);

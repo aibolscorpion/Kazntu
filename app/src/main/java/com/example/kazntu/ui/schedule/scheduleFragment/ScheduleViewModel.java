@@ -101,7 +101,6 @@ public class ScheduleViewModel extends ViewModel {
                 switch (response.code()) {
                     case 200:
                         scheduleList = response.body();
-                        Log.i("aibolscorpion","schedule from server = "+scheduleList.toString());
                         scheduleLiveData.setValue(scheduleList);// сохранил данные с retrofit чтобы обзервить
                         compareLists(scheduleList);
                         loadRv.set(false);

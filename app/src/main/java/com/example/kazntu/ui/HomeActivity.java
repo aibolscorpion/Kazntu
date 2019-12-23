@@ -78,7 +78,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setLocale(language1.getLanguageCode());
         } catch (IllegalStateException | JsonSyntaxException ignored){}
 
-        setupBindings(savedInstanceState);
 
     }
 

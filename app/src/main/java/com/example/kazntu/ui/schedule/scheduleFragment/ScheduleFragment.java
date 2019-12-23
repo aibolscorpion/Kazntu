@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import noman.weekcalendar.WeekCalendar;
+import noman.weekcalendar.listener.OnDateClickListener;
 
 public class ScheduleFragment extends Fragment implements Cloneable{
 
@@ -85,25 +86,27 @@ public class ScheduleFragment extends Fragment implements Cloneable{
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.schedule);
         scheduleFragmentBinding.scheduleRecyclerView.setNestedScrollingEnabled(false);
+        scheduleFragmentBinding.weekCalendar.reset();
 
         //swipe weekCalendar
         scheduleFragmentBinding.scheduleRecyclerView.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
 
             public void onSwipeRight() {
                 scheduleFragmentBinding.weekCalendar.moveToPrevious();
-                currentDay.minusDays(1);
                 currentDay = currentDay.minusDays(1);
                 setDateSchedule(currentDay);
             }
             public void onSwipeLeft() {
                 scheduleFragmentBinding.weekCalendar.moveToNext();
-                currentDay.plusDays(1);
                 currentDay = currentDay.plusDays(1);
                 setDateSchedule(currentDay);
             }
         });
 
-        scheduleFragmentBinding.weekCalendar.setOnDateClickListener(this::setDateSchedule);
+        scheduleFragmentBinding.weekCalendar.setOnDateClickListener(dateTime -> {
+            setDateSchedule(dateTime);
+            currentDay = dateTime;
+        });
 
         mViewModel.getHandleTimeout().observe(this, integer -> {
             if (integer == 1) {
@@ -125,7 +128,6 @@ public class ScheduleFragment extends Fragment implements Cloneable{
         mViewModel.getScheduleLiveData().observe(this, scheduleList -> {
 
             ArrayList<Schedule> result = new ArrayList<>();
-            System.out.println("C_ID = " + dateTime.dayOfWeek().get());
             localScheduleList = new ArrayList<>(Arrays.asList(
                     new Schedule("7:50", "8:40", 1),
                     new Schedule("8:55", "9:45", 3),
@@ -184,10 +186,5 @@ public class ScheduleFragment extends Fragment implements Cloneable{
 
         });
 
-    }
-    @Override
-    public void onStart() {
-        scheduleFragmentBinding.weekCalendar.reset();
-        super.onStart();
     }
 }
