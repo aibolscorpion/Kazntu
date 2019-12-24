@@ -16,11 +16,16 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.kazntu.AuthViewModel;
 import com.example.kazntu.R;
@@ -103,6 +108,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.nav_header,
                 activityHomeBinding.navigationView, false);
         activityHomeBinding.navigationView.addHeaderView(navHeaderBinding.getRoot());
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) navHeaderBinding.headerLayout.getLayoutParams();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+        params.topMargin = height/6;
+
+        navHeaderBinding.headerLayout.setLayoutParams(params);
 
         navHeaderBinding.setAccountEntity(Storage.getInstance());
         authViewModel.getImageUrl();
