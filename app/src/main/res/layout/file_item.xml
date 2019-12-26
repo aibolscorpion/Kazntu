@@ -3,10 +3,10 @@
     <data>
         <variable
             name="file"
-            type="com.example.kazntu.data.entity.umkd.File" />
+            type="kz.almaty.satbayevuniversity.data.entity.umkd.File" />
         <variable
             name="fileItemClickListener"
-            type="com.example.kazntu.ui.umkd.filefragment.FileClickListener" />
+            type="kz.almaty.satbayevuniversity.ui.umkd.filefragment.FileClickListener" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

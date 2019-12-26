@@ -5,10 +5,10 @@
     <data>
         <variable
             name="umkd"
-            type="com.example.kazntu.data.entity.umkd.Umkd" />
+            type="kz.almaty.satbayevuniversity.data.entity.umkd.Umkd" />
         <variable
             name="imkdListener"
-            type="com.example.kazntu.ui.umkd.UmkdClickListener" />
+            type="kz.almaty.satbayevuniversity.ui.umkd.UmkdClickListener" />
 
     </data>
 

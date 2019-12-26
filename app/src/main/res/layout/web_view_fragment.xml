@@ -8,13 +8,13 @@
 
         <variable
             name="webView"
-            type="com.example.kazntu.ui.umkd.filefragment.fileDataFragment.webViewFragment.WebViewViewModel" />
+            type="kz.almaty.satbayevuniversity.ui.umkd.filefragment.fileDataFragment.webViewFragment.WebViewViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.umkd.filefragment.fileDataFragment.webViewFragment.WebViewFragmentView"
+        tools:context="kz.almaty.satbayevuniversity.ui.umkd.filefragment.fileDataFragment.webViewFragment.WebViewFragmentView"
         android:background="@color/colorWhite">
 
         <androidx.appcompat.widget.Toolbar

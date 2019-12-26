@@ -8,11 +8,11 @@
 
         <variable
             name="academicViewModel"
-            type="com.example.kazntu.ui.academicProgress.AcademicViewModel" />
+            type="kz.almaty.satbayevuniversity.ui.academicProgress.AcademicViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        tools:context=".ui.academicProgress.AcademicFragment"
+        tools:context="kz.almaty.satbayevuniversity.ui.academicProgress.AcademicFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite">

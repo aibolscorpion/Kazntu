@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.grade.transcriptFragment.TranscriptDialogFragment"
+    tools:context="kz.almaty.satbayevuniversity.ui.grade.transcriptFragment.TranscriptDialogFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 <data>
         
         <variable
             name="viewModel"
-            type="com.example.kazntu.ui.grade.transcriptFragment.TranscriptDialogViewModel" />
+            type="kz.almaty.satbayevuniversity.ui.grade.transcriptFragment.TranscriptDialogViewModel" />
         
     </data>
 

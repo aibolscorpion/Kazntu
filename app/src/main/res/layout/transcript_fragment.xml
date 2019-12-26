@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.grade.transcriptFragment.TranscriptFragment">
+    tools:context="kz.almaty.satbayevuniversity.ui.grade.transcriptFragment.TranscriptFragment">
 
     <data>
         <import type="android.view.View"/>
         <variable
             name="transcript"
-            type="com.example.kazntu.ui.grade.transcriptFragment.TranscriptViewModel" />
+            type="kz.almaty.satbayevuniversity.ui.grade.transcriptFragment.TranscriptViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

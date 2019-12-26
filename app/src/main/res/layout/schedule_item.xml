@@ -7,7 +7,7 @@
     <data>
         <variable
             name="schedule"
-            type="com.example.kazntu.data.entity.schedule.Schedule" />
+            type="kz.almaty.satbayevuniversity.data.entity.schedule.Schedule" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

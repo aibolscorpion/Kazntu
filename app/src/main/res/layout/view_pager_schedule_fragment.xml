@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.schedule.ViewPagerSchedule">
+    tools:context="kz.almaty.satbayevuniversity.ui.schedule.ViewPagerSchedule">
 
 
         <com.google.android.material.tabs.TabLayout
@@ -20,13 +20,13 @@
             app:tabMode="fixed"
             app:tabGravity="fill"/>
 
-    <com.example.kazntu.ui.schedule.CustomViewPager
+    <kz.almaty.satbayevuniversity.ui.schedule.CustomViewPager
         app:layout_constraintTop_toBottomOf="@+id/tabLayoutSchedule"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/viewPagerSchedule"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout">
-    </com.example.kazntu.ui.schedule.CustomViewPager>
+    </kz.almaty.satbayevuniversity.ui.schedule.CustomViewPager>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

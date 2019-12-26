@@ -6,7 +6,7 @@
     <data>
         <variable
             name="dateItem"
-            type="com.example.kazntu.data.entity.academic.DatesItem" />
+            type="kz.almaty.satbayevuniversity.data.entity.academic.DatesItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

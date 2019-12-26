@@ -5,14 +5,14 @@
 
         <variable
             name="notification"
-            type="com.example.kazntu.ui.notification.NotificationViewModel" />
+            type="kz.almaty.satbayevuniversity.ui.notification.NotificationViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.notification.NotificationFragment"
+        tools:context="kz.almaty.satbayevuniversity.ui.notification.NotificationFragment"
         android:id="@+id/notification_constraintLayout"
         android:background="@color/colorWhite">
 

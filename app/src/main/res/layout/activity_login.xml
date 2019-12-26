@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.kazntu.AuthViewModel"/>
+            type="kz.almaty.satbayevuniversity.AuthViewModel"/>
     </data>
     
         <androidx.constraintlayout.widget.ConstraintLayout

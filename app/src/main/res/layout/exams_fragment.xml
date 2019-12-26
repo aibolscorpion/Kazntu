@@ -2,7 +2,7 @@
 
 <layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.schedule.exams.ExamsFragment"
+    tools:context="kz.almaty.satbayevuniversity.ui.schedule.exams.ExamsFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -11,7 +11,7 @@
 
     <variable
         name="exams"
-        type="com.example.kazntu.ui.schedule.exams.ExamsViewModel" />
+        type="kz.almaty.satbayevuniversity.ui.schedule.exams.ExamsViewModel" />
 
 </data>
 

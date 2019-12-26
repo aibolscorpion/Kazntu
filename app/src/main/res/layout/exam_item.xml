@@ -6,7 +6,7 @@
     <data>
         <variable
             name="exam"
-            type="com.example.kazntu.data.entity.schedule.Exam" />
+            type="kz.almaty.satbayevuniversity.data.entity.schedule.Exam" />
 
     </data>
 

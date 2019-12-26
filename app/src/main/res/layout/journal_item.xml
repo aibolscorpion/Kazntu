@@ -8,11 +8,11 @@
     <data>
         <variable
             name="journal"
-            type="com.example.kazntu.data.entity.academic.ResponseJournal"
+            type="kz.almaty.satbayevuniversity.data.entity.academic.ResponseJournal"
             />
         <variable
             name="itemClickListener"
-            type="com.example.kazntu.ui.academicProgress.ResponseEventListener" />
+            type="kz.almaty.satbayevuniversity.ui.academicProgress.ResponseEventListener" />
 
     </data>
 

@@ -5,10 +5,10 @@
     <data>
         <variable
             name="course"
-            type="com.example.kazntu.data.entity.umkd.Course" />
+            type="kz.almaty.satbayevuniversity.data.entity.umkd.Course" />
         <variable
             name="filedataclickListener"
-            type="com.example.kazntu.ui.umkd.filefragment.fileDataFragment.FileDataClickListener" />
+            type="kz.almaty.satbayevuniversity.ui.umkd.filefragment.fileDataFragment.FileDataClickListener" />
 
     </data>
 

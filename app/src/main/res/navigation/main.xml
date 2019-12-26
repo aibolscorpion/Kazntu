@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/academicProgress11"
-        android:name="com.example.kazntu.ui.academicProgress.AcademicFragment"
+        android:name="kz.almaty.satbayevuniversity.ui.academicProgress.AcademicFragment"
         android:label="@string/academicProgress"
         tools:layout="@layout/academic_fragment">
         <action
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/umkdFragment"
-        android:name="com.example.kazntu.ui.umkd.UmkdFragment"
+        android:name="kz.almaty.satbayevuniversity.ui.umkd.UmkdFragment"
         android:label="@string/umkd"
         tools:layout="@layout/umkd_fragment">
         <action
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.kazntu.ui.settings.SettingsFragment"
+        android:name="kz.almaty.satbayevuniversity.ui.settings.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/settings_fragment"/>
 

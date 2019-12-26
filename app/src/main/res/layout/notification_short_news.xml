@@ -3,11 +3,11 @@
     <data>
         <variable
             name="notification"
-            type="com.example.kazntu.data.entity.notification.Notification" />
+            type="kz.almaty.satbayevuniversity.data.entity.notification.Notification" />
 
         <variable
             name="webClickListener"
-            type="com.example.kazntu.ui.notification.NotificationListener" />
+            type="kz.almaty.satbayevuniversity.ui.notification.NotificationListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

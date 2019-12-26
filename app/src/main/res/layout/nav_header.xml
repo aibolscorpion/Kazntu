@@ -7,7 +7,7 @@
     <data>
         <variable
             name="accountEntity"
-            type="com.example.kazntu.utils.Storage"/>
+            type="kz.almaty.satbayevuniversity.utils.Storage"/>
         <variable
             name="imageUrl"
             type="android.graphics.Bitmap"/>

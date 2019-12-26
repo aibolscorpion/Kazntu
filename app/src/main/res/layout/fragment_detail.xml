@@ -3,12 +3,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.academicProgress.detailFragment.DetailFragment">
+    tools:context="kz.almaty.satbayevuniversity.ui.academicProgress.detailFragment.DetailFragment">
 
     <data>
         <variable
             name="detailViewModel"
-            type="com.example.kazntu.ui.academicProgress.detailFragment.DetailViewModel" />
+            type="kz.almaty.satbayevuniversity.ui.academicProgress.detailFragment.DetailViewModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout

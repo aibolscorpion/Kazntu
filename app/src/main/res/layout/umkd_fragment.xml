@@ -8,14 +8,14 @@
 
         <variable
             name="umkdViewModel"
-            type="com.example.kazntu.ui.umkd.UmkdViewModel" />
+            type="kz.almaty.satbayevuniversity.ui.umkd.UmkdViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.umkd.UmkdFragment"
+        tools:context="kz.almaty.satbayevuniversity.ui.umkd.UmkdFragment"
         android:background="@color/colorWhite">
 
         <include

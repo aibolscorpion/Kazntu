@@ -4,7 +4,7 @@
 
         <variable
             name="schedule"
-            type="com.example.kazntu.ui.schedule.scheduleFragment.ScheduleViewModel" />
+            type="kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.ScheduleViewModel" />
 
     </data>
 
@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:paddingBottom="45dp"
         android:id="@+id/scheduleConstraint"
-        tools:context=".ui.schedule.scheduleFragment.ScheduleFragment"
+        tools:context="kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.ScheduleFragment"
         android:background="@color/colorWhite">
 
     <noman.weekcalendar.WeekCalendar
