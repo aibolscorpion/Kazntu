@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kazntu</string>
+    <string name="app_name">SatbayevUniversity</string>
     <string name="login_hello">Добро пожаловать!</string>
     <string name="et_login_hint">ЛОГИН</string>
     <string name="et_password_hint">ПАРОЛЬ</string>
@@ -30,7 +30,7 @@
     <string name="rest">Отдыхаем!</string>
     <string name="complaintShort">Коротко опишите проблему</string>
     <string name="ready">Готово</string>
-
+    <string name="beta_version">BETA VERSION</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="att_1">Att.1</string>

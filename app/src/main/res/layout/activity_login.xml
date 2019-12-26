@@ -161,7 +161,7 @@
                         app:layout_constraintEnd_toEndOf="@+id/PasswordConstraint"
                         android:textColor="@color/colorBntLogin"
                         android:gravity="end"
-                        android:text="BETA VERSION"
+                        android:text="@string/beta_version"
                         app:layout_constraintTop_toBottomOf="@+id/PasswordConstraint"
                         app:layout_constraintBottom_toBottomOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>

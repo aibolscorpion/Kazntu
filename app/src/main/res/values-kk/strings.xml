@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kazntu</string>
+    <string name="app_name">SatbayevUniversity</string>
     <string name="login_hello">Добро пожаловать!</string>
     <string name="et_login_hint">ЛОГИН</string>
     <string name="et_password_hint">ПАРОЛЬ</string>
@@ -31,6 +31,7 @@
     <string name="rest">Демалыс!</string>
     <string name="complaintShort">Мәселені қысқаша сипаттаңыз</string>
     <string name="ready">Ок</string>
+    <string name="beta_version">BETA VERSION</string>
 
     <string name="getLng">Тіл өзгерді</string>
 
