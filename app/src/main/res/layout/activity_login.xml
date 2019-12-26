@@ -95,12 +95,12 @@
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/etLogin"
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
+                            android:layout_width="286dp"
+                            android:layout_height="26dp"
                             android:background="@null"
-                            android:inputType="number"
                             android:fontFamily="@font/open_sans_light"
                             android:hint="@string/et_login_hint"
+                            android:inputType="number"
                             android:paddingStart="12dp"
                             android:paddingEnd="0dp"
                             android:text="@={viewModel.username}"
@@ -153,7 +153,17 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintWidth_percent="0.9" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvBeta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_semibold"
+                        app:layout_constraintEnd_toEndOf="@+id/PasswordConstraint"
+                        android:textColor="@color/colorBntLogin"
+                        android:gravity="end"
+                        android:text="BETA VERSION"
+                        app:layout_constraintTop_toBottomOf="@+id/PasswordConstraint"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
