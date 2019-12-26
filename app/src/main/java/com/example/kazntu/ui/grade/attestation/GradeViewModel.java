@@ -1,5 +1,9 @@
 package com.example.kazntu.ui.grade.attestation;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -44,51 +48,26 @@ public class GradeViewModel extends ViewModel {
     private BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(3);
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 1,
             TimeUnit.SECONDS, queue);
+    private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
 
     void getAttestation() {
         loadRv.set(true);
         // Поток для проверки БД
         executor.execute(() -> {
-            if (!accountDao.getAttestation().isEmpty()) { //Проверка локальной БД
-
-                attestationListDB = accountDao.getAttestation();
-                attestationLiveDate.postValue(attestationListDB);
-                loadRv.set(false);
-
-                KaznituRetrofit.getApi().updateAttestation().enqueue(new Callback<List<Attestation>>() {
-                    @Override
-                    public void onResponse(Call<List<Attestation>> call, Response<List<Attestation>> response) {
-                        if (response.isSuccessful()) {
-                            attestationList = response.body();
-                            loadRv.set(false);
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<List<Attestation>> call, Throwable t) {
-                        if (t instanceof SocketTimeoutException)
-                        {
-                            handleTimeout.setValue(true);
-                        }
-                        else if (t instanceof IOException)
-                        {
-                            handleTimeout.setValue(true);
-                        }
-                    }
-
-                });
-                if(attestationListDB.containsAll(attestationList)){
-                }   else{
-                    attestationLiveDate.postValue(attestationList);
-                }
-
+            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
+                getGradeListFromServer();
             } else {
-                retryConnection();
+                if (!accountDao.getAttestation().isEmpty()) { //Проверка локальной БД
+                    attestationListDB = accountDao.getAttestation();
+                    attestationLiveDate.postValue(attestationListDB);
+                    loadRv.set(false);
+                }
             }
-
         });
     }
 
-    private void retryConnection(){
+    private void getGradeListFromServer(){
         loadRv.set(true);
 
         KaznituRetrofit.getApi().updateAttestation().enqueue(new Callback<List<Attestation>>() {
@@ -98,7 +77,9 @@ public class GradeViewModel extends ViewModel {
                     attestationList = response.body();
                     attestationLiveDate.postValue(attestationList);
                     getEmptyBoolean.set(attestationList.isEmpty());
-                    compareLists(attestationList);
+                    new Thread(() -> {
+                        insert(attestationList);
+                    }).start();
                     loadRv.set(false);
                 }
             }
@@ -134,23 +115,15 @@ public class GradeViewModel extends ViewModel {
         return handleTimeout;
     }
 
-    private void compareLists(List<Attestation> attestationList){
-        new Thread(() -> {
-            if (accountDao.getAttestation().isEmpty()){
-                insert(attestationList);
-            }   else {
-                update(attestationList);
-            }
-        }).start();
-    }
+
 
     private void insert(List<Attestation> attestationList) {
-        executor.execute(() -> accountDao.insertAttestation(attestationList));
+        executor.execute(() -> {
+            accountDao.deleteAttestation();
+            accountDao.insertAttestation(attestationList);
+        });
     }
 
-    private void update(List<Attestation> attestationList) {
-        executor.execute(() -> accountDao.updateAttestation(attestationList));
-    }
     private void exception(){
         loadRv.set(false);
         handleTimeout.setValue(true);

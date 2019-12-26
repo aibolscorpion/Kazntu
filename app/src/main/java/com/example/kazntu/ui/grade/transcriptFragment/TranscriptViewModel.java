@@ -1,11 +1,13 @@
 package com.example.kazntu.ui.grade.transcriptFragment;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.kazntu.data.entity.academic.ResponseJournal;
-import com.example.kazntu.utils.Storage;
 import com.example.kazntu.data.AccountDao;
 import com.example.kazntu.data.App;
 import com.example.kazntu.data.AppDatabase;
@@ -45,51 +47,25 @@ public class TranscriptViewModel extends ViewModel {
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 1,
             TimeUnit.SECONDS, queue);
 
+    private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
+
     public void getTranscript(){
         loadRv.set(true);
         executor.execute(() ->{
-
-            if (!accountDao.getSemestersItem().isEmpty()) { //Проверка локальной БД
-                semestersItemsDB = accountDao.getSemestersItem();
-                loadRv.set(false);
-                transcriptLiveData.postValue(semestersItemsDB);
-
-                KaznituRetrofit.getApi().updateTranscript().enqueue(new Callback<ResponseTranscript>() {
-                    @Override
-                    public void onResponse(Call<ResponseTranscript> call, Response<ResponseTranscript> response) {
-                        if (response.isSuccessful()) {
-                            semestersItems = response.body().getSemesters();
-                            loadRv.set(false);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseTranscript> call, Throwable t) {
-                        if (t instanceof SocketTimeoutException)
-                        {
-                            handleTimeout.setValue(true);
-                        }
-                        else if (t instanceof IOException)
-                        {
-                            handleTimeout.setValue(true);
-                        }
-                    }
-                });
-
-                if(semestersItemsDB.containsAll(semestersItems)){
-                    System.out.println("transcriptLiveData  postValue  semestersItemsDB");
+            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
+                getSemesterItemListFromServer();
+            } else {
+                if (!accountDao.getSemestersItem().isEmpty()) { //Проверка локальной БД
+                    semestersItemsDB = accountDao.getSemestersItem();
+                    loadRv.set(false);
+                    transcriptLiveData.postValue(semestersItemsDB);
                 }
-                else{
-                    transcriptLiveData.postValue(semestersItems);
-                }
-
-            } else{
-                retryConnection();
             }
         });
     }
 
-    private void retryConnection() {
+    private void getSemesterItemListFromServer() {
         loadRv.set(true);
         KaznituRetrofit.getApi().updateTranscript().enqueue(new Callback<ResponseTranscript>() {
             @Override
@@ -98,7 +74,9 @@ public class TranscriptViewModel extends ViewModel {
                     semestersItems = response.body().getSemesters();
                     transcriptLiveData.setValue(semestersItems);
                     getEmptyBoolean.set(semestersItems.isEmpty());
-                    compareLists(semestersItems);
+                    new Thread(() -> {
+                        insert(semestersItems);
+                    }).start();
                     loadRv.set(false);
                 }
             }
@@ -134,23 +112,15 @@ public class TranscriptViewModel extends ViewModel {
         return handleTimeout;
     }
 
-    private void compareLists(List<SemestersItem> semestersItemList){
-        new Thread(() -> {
-            if (accountDao.getSemestersItem().isEmpty()){
-                insert(semestersItemList);
-            }   else {
-                update(semestersItemList);
-            }
-        }).start();
-    }
+
 
     private void insert(List<SemestersItem> semestersItemList) {
-        executor.execute(() -> accountDao.insertSemestersItem(semestersItemList));
+        executor.execute(() -> {
+            accountDao.deleteSemestersItem();
+            accountDao.insertSemestersItem(semestersItemList);
+        });
     }
 
-    private void update(List<SemestersItem> semestersItemList) {
-        executor.execute(() -> accountDao.updateSemestersItem(semestersItemList));
-    }
     private void exception(){
         loadRv.set(false);
         handleTimeout.setValue(true);

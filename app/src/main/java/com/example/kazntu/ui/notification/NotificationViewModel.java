@@ -1,5 +1,9 @@
 package com.example.kazntu.ui.notification;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -7,8 +11,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.kazntu.data.AccountDao;
 import com.example.kazntu.data.App;
 import com.example.kazntu.data.AppDatabase;
-import com.example.kazntu.data.entity.grade.attestation.Attestation;
-import com.example.kazntu.utils.Storage;
 import com.example.kazntu.data.entity.notification.Notification;
 import com.example.kazntu.data.network.KaznituRetrofit;
 
@@ -43,53 +45,26 @@ public class NotificationViewModel extends ViewModel {
     private BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(3);
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 1,
             TimeUnit.SECONDS, queue);
+    private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
 
     void getNotification(){
         loadRv.set(true);
         // Поток для проверки БД
         executor.execute(() ->{
-            if (!accountDao.getNews().isEmpty()) { //Проверка локальной БД
-
-                emptyListDB = accountDao.getNews();
-                notificationMutableLiveData.postValue(emptyListDB);
-                loadRv.set(false);
-
-                KaznituRetrofit.getApi().updateNotification().enqueue(new Callback<List<Notification>>() {
-                    @Override
-                    public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
-                        if (response.isSuccessful()) {
-                            emptyList = response.body();
-                            loadRv.set(false);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Notification>> call, Throwable t) {
-                        if (t instanceof SocketTimeoutException)
-                        {
-                            handleTimeout.setValue(true);
-                        }
-                        else if (t instanceof IOException)
-                        {
-                            handleTimeout.setValue(true);
-                        }
-                    }
-                });
-
-                if (emptyListDB.containsAll(emptyList)){
-                    System.out.println("#########: 1");
-                } else{
-                    notificationMutableLiveData.postValue(emptyList);
+            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
+                getNotificationListFromServer();
+            } else {
+                if (!accountDao.getNews().isEmpty()) { //Проверка локальной БД
+                    emptyListDB = accountDao.getNews();
+                    notificationMutableLiveData.postValue(emptyListDB);
+                    loadRv.set(false);
                 }
             }
-            else {
-                retryConnection();
-            }
         });
+        }
 
-    }
-
-    private void retryConnection(){
+    private void getNotificationListFromServer(){
         KaznituRetrofit.getApi().updateNotification().enqueue(new Callback<List<Notification>>() {
             @Override
             public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
@@ -98,7 +73,11 @@ public class NotificationViewModel extends ViewModel {
                     emptyList = response.body();
                     getEmptyBoolean.set(emptyList.isEmpty());
                     notificationMutableLiveData.setValue(emptyList);// сохранил данные с retrofit чтобы обзервить
-                    compareLists(emptyList);
+
+                    new Thread(() -> {
+                        insert(emptyList);
+                    }).start();
+
                     loadRv.set(false);
                 }
             }
@@ -140,23 +119,11 @@ public class NotificationViewModel extends ViewModel {
         getEmptyBoolean.set(true);
     }
 
-    private void compareLists(List<Notification> news){
-        new Thread(() -> {
-            if (accountDao.getNews().isEmpty()){
-                insert(news);
-                System.out.println("####### insert News");
-            }   else {
-                update(news);
-                System.out.println("####### update News");
-            }
-        }).start();
-    }
-
     private void insert(List<Notification> news) {
-        executor.execute(() -> accountDao.insertNews(news));
-    }
-
-    private void update(List<Notification> news) {
-        executor.execute(() -> accountDao.updateNews(news));
+        executor.execute(() ->{
+            accountDao.deleteNotification();
+            accountDao.insertNews(news);
+            System.out.println("####### insert News");
+        });
     }
 }

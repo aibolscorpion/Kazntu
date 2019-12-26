@@ -48,7 +48,7 @@ public class ExamsFragment extends Fragment {
         examAdapter = new ExamAdapter();
         examsFragmentBinding.examRecyclerView.setAdapter(examAdapter);
 
-        mViewModel.updateExam();
+        mViewModel.getExam();
 
         mViewModel.getExamLiveData().observe(this, examList -> {
             System.out.println(examList.size() + " :size");

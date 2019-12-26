@@ -1,5 +1,8 @@
 package com.example.kazntu.ui.schedule.scheduleFragment;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import androidx.databinding.ObservableBoolean;
@@ -9,8 +12,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.kazntu.data.AccountDao;
 import com.example.kazntu.data.App;
 import com.example.kazntu.data.AppDatabase;
-import com.example.kazntu.data.entity.academic.ResponseJournal;
-import com.example.kazntu.utils.Storage;
 import com.example.kazntu.data.entity.schedule.Schedule;
 import com.example.kazntu.data.network.KaznituRetrofit;
 
@@ -45,55 +46,27 @@ public class ScheduleViewModel extends ViewModel {
     private BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(3);
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 1,
             TimeUnit.SECONDS, queue);
-    //
+    private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
 
     public void getSchedule() {
-
         loadRv.set(true);
-
         executor.execute(() ->{
-
-            if (accountDao.getSchedule().size() != 0) { //Проверка локальной БД
-                scheduleListFromDb = accountDao.getSchedule();
-                System.out.println("list " + scheduleListFromDb.size());
-                loadRv.set(false);
-                scheduleLiveData.postValue(scheduleListFromDb);
-
-                KaznituRetrofit.getApi().updateSchedule().enqueue(new Callback<List<Schedule>>() {
-                    @Override
-                    public void onResponse(Call<List<Schedule>> call, Response<List<Schedule>> response) {
-                        if (response.isSuccessful()) {
-                            Log.i("aibolscorpion","onResponse = "+response.body().toString());
-                            scheduleList = response.body();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Schedule>> call, Throwable t) {
-                        if (t instanceof SocketTimeoutException)
-                        {
-                            handleTimeout.setValue(1);
-                        }
-                        else if (t instanceof IOException)
-                        {
-                            handleTimeout.setValue(1);
-                        }
-                    }
-                });
-
-                if (scheduleListFromDb.containsAll(scheduleList)){
-                } else{
-                    scheduleLiveData.postValue(scheduleList);
+            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
+                getScheduleListFromServer();
+            }else {
+                if (!accountDao.getSchedule().isEmpty()) { //Проверка локальной БД
+                    scheduleListFromDb = accountDao.getSchedule();
+                    System.out.println("list " + scheduleListFromDb.size());
+                    loadRv.set(false);
+                    scheduleLiveData.postValue(scheduleListFromDb);
                 }
-            } else{
-                retryConnection();
             }
-
         });
     }
 
 
-    private void retryConnection(){
+    private void getScheduleListFromServer(){
         loadRv.set(true);
         KaznituRetrofit.getApi().updateSchedule().enqueue(new Callback<List<Schedule>>() {
             @Override
@@ -102,7 +75,9 @@ public class ScheduleViewModel extends ViewModel {
                     case 200:
                         scheduleList = response.body();
                         scheduleLiveData.setValue(scheduleList);// сохранил данные с retrofit чтобы обзервить
-                        compareLists(scheduleList);
+                        new Thread(() -> {
+                            insert(scheduleList);
+                        }).start();
                         loadRv.set(false);
                         break;
                     case 404:
@@ -147,21 +122,11 @@ public class ScheduleViewModel extends ViewModel {
         return handleTimeout;
     }
 
-    private void compareLists(List<Schedule> scheduleList){
-        new Thread(() -> {
-            if (accountDao.getSchedule().isEmpty()){
-                insert(scheduleList);
-            }   else {
-                update(scheduleList);
-            }
-        }).start();
-    }
-
     private void insert(List<Schedule> scheduleList) {
-        executor.execute(() -> accountDao.insertSchedule(scheduleList));
+        executor.execute(() -> {
+            accountDao.deleteSchedule();
+            accountDao.insertSchedule(scheduleList);
+        });
     }
 
-    private void update(List<Schedule> scheduleList) {
-        executor.execute(() -> accountDao.updateSchedule(scheduleList));
-    }
 }
