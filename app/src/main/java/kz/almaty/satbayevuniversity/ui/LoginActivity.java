@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import kz.almaty.satbayevuniversity.databinding.ActivityLoginBinding;
 
 import kz.almaty.satbayevuniversity.AuthViewModel;
@@ -26,7 +27,6 @@ import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
 import kz.almaty.satbayevuniversity.data.entity.AccountEntity;
 
-import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
 public class LoginActivity extends AppCompatActivity {
     public AuthViewModel authViewModel;
