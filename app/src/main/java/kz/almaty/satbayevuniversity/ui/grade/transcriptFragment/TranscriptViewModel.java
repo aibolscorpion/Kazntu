@@ -53,49 +53,41 @@ public class TranscriptViewModel extends ViewModel {
     public void getTranscript(){
         loadRv.set(true);
         executor.execute(() ->{
-            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
-                getSemesterItemListFromServer();
-            } else {
-                if (!accountDao.getSemestersItem().isEmpty()) { //Проверка локальной БД
-                    semestersItemsDB = accountDao.getSemestersItem();
-                    loadRv.set(false);
-                    transcriptLiveData.postValue(semestersItemsDB);
-                }
-            }
+            semestersItemsDB = accountDao.getSemestersItem();
+            loadRv.set(false);
+            transcriptLiveData.postValue(semestersItemsDB);
+            getEmptyBoolean.set(semestersItemsDB.isEmpty());
+            getSemesterItemListFromServer();
         });
     }
 
     private void getSemesterItemListFromServer() {
-        loadRv.set(true);
-        KaznituRetrofit.getApi().updateTranscript().enqueue(new Callback<ResponseTranscript>() {
-            @Override
-            public void onResponse(Call<ResponseTranscript> call, Response<ResponseTranscript> response) {
-                if (response.isSuccessful()) {
-                    semestersItems = response.body().getSemesters();
-                    transcriptLiveData.setValue(semestersItems);
-                    getEmptyBoolean.set(semestersItems.isEmpty());
-                    new Thread(() -> {
-                        insert(semestersItems);
-                    }).start();
-                    loadRv.set(false);
+        if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+            KaznituRetrofit.getApi().updateTranscript().enqueue(new Callback<ResponseTranscript>() {
+                @Override
+                public void onResponse(Call<ResponseTranscript> call, Response<ResponseTranscript> response) {
+                    if (response.isSuccessful()) {
+                        semestersItems = response.body().getSemesters();
+                        getEmptyBoolean.set(semestersItems.isEmpty());
+                        new Thread(() -> {
+                            update(semestersItems);
+                        }).start();
+                        transcriptLiveData.setValue(semestersItems);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseTranscript> call, Throwable t) {
-                if (t instanceof SocketTimeoutException)
-                {
-                    exception();
+                @Override
+                public void onFailure(Call<ResponseTranscript> call, Throwable t) {
+                    if (t instanceof SocketTimeoutException) {
+                        exception();
+                    } else if (t instanceof IOException) {
+                        exception();
+                    } else if (t instanceof SocketException) {
+                        exception();
+                    }
                 }
-                else if (t instanceof IOException)
-                {
-                    exception();
-                }
-                else if( t instanceof SocketException){
-                    exception();
-                }
-            }
-        });
+            });
+        }
     }
 
     MutableLiveData<List<SemestersItem>> getTranscriptLiveData(){
@@ -114,7 +106,7 @@ public class TranscriptViewModel extends ViewModel {
 
 
 
-    private void insert(List<SemestersItem> semestersItemList) {
+    private void update(List<SemestersItem> semestersItemList) {
         executor.execute(() -> {
             accountDao.deleteSemestersItem();
             accountDao.insertSemestersItem(semestersItemList);

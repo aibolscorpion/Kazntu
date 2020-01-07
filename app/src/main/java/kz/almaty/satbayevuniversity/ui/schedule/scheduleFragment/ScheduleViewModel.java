@@ -3,6 +3,7 @@ package kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
@@ -49,53 +50,49 @@ public class ScheduleViewModel extends ViewModel {
     public void getSchedule() {
         loadRv.set(true);
         executor.execute(() ->{
-            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
-                getScheduleListFromServer();
-            }else {
-                if (!accountDao.getSchedule().isEmpty()) { //Проверка локальной БД
-                    scheduleListFromDb = accountDao.getSchedule();
-                    System.out.println("list " + scheduleListFromDb.size());
-                    loadRv.set(false);
-                    scheduleLiveData.postValue(scheduleListFromDb);
-                }
-            }
+            scheduleListFromDb = accountDao.getSchedule();
+            loadRv.set(false);
+            scheduleLiveData.postValue(scheduleListFromDb);
+            getScheduleListFromServer();
         });
     }
 
 
     private void getScheduleListFromServer(){
-        loadRv.set(true);
-        KaznituRetrofit.getApi().updateSchedule().enqueue(new Callback<List<Schedule>>() {
-            @Override
-            public void onResponse(Call<List<Schedule>> call, Response<List<Schedule>> response) {
-                switch (response.code()) {
-                    case 200:
-                        scheduleList = response.body();
-                        scheduleLiveData.setValue(scheduleList);// сохранил данные с retrofit чтобы обзервить
-                        new Thread(() -> {
-                            insert(scheduleList);
-                        }).start();
-                        loadRv.set(false);
-                        break;
-                    case 404:
-                        handleError.setValue(404);
-                        break;
-                    case 400:
-                        handleError.setValue(400);
-                        break;
-                    case 401:
-                        handleError.setValue(401);
-                        break;
-                    case 500:
-                        handleError.setValue(500);
-                        break;
+        if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
+            KaznituRetrofit.getApi().updateSchedule().enqueue(new Callback<List<Schedule>>() {
+                @Override
+                public void onResponse(Call<List<Schedule>> call, Response<List<Schedule>> response) {
+                    switch (response.code()) {
+                        case 200:
+                            scheduleList = response.body();
+                            new Thread(() -> {
+                                update(scheduleList);
+                            }).start();
+                            scheduleLiveData.setValue(scheduleList);
+                            break;
+                        case 404:
+                            handleError.setValue(404);
+                            break;
+                        case 400:
+                            handleError.setValue(400);
+                            break;
+                        case 401:
+                            handleError.setValue(401);
+                            break;
+                        case 500:
+                            handleError.setValue(500);
+                            break;
+                    }
                 }
-            }
-            @Override
-            public void onFailure(Call<List<Schedule>> call, Throwable t) {
-            }
-        });
+                @Override
+                public void onFailure(Call<List<Schedule>> call, Throwable t) {
+                }
+            });
+        }
+
     }
+
 
 
     MutableLiveData<List<Schedule>> getScheduleLiveData(){
@@ -119,7 +116,7 @@ public class ScheduleViewModel extends ViewModel {
         return handleTimeout;
     }
 
-    private void insert(List<Schedule> scheduleList) {
+    private void update(List<Schedule> scheduleList) {
         executor.execute(() -> {
             accountDao.deleteSchedule();
             accountDao.insertSchedule(scheduleList);

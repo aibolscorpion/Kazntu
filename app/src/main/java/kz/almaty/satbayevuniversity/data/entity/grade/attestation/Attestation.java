@@ -1,11 +1,15 @@
 package kz.almaty.satbayevuniversity.data.entity.grade.attestation;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
+
+import kz.almaty.satbayevuniversity.data.entity.notification.Notification;
+
 @Entity
 public class Attestation implements Serializable {
 
@@ -88,5 +92,14 @@ public class Attestation implements Serializable {
 			return String.valueOf(attestationDetail.getTotalGrade());
 		}
 		else return "0.0";
+	}
+
+	@Override
+	public boolean equals( Object obj) {
+		if(obj instanceof Attestation) {
+			Attestation attestation = (Attestation) obj;
+
+		}
+		return false;
 	}
 }

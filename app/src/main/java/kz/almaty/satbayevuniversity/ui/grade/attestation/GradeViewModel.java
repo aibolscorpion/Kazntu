@@ -3,6 +3,7 @@ package kz.almaty.satbayevuniversity.ui.grade.attestation;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
@@ -52,71 +53,59 @@ public class GradeViewModel extends ViewModel {
 
     void getAttestation() {
         loadRv.set(true);
-        // Поток для проверки БД
         executor.execute(() -> {
-            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
-                getGradeListFromServer();
-            } else {
-                if (!accountDao.getAttestation().isEmpty()) { //Проверка локальной БД
-                    attestationListDB = accountDao.getAttestation();
-                    attestationLiveDate.postValue(attestationListDB);
-                    loadRv.set(false);
-                }
-            }
+            attestationListDB = accountDao.getAttestation();
+            attestationLiveDate.postValue(attestationListDB);
+            loadRv.set(false);
+            getEmptyBoolean.set(attestationListDB.isEmpty());
+            getGradeListFromServer();
         });
     }
 
-    private void getGradeListFromServer(){
-        loadRv.set(true);
-
-        KaznituRetrofit.getApi().updateAttestation().enqueue(new Callback<List<Attestation>>() {
-            @Override
-            public void onResponse(Call<List<Attestation>> call, Response<List<Attestation>> response) {
-                if (response.isSuccessful()) {
-                    attestationList = response.body();
-                    attestationLiveDate.postValue(attestationList);
-                    getEmptyBoolean.set(attestationList.isEmpty());
-                    new Thread(() -> {
-                        insert(attestationList);
-                    }).start();
-                    loadRv.set(false);
+    private void getGradeListFromServer() {
+        if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+            KaznituRetrofit.getApi().updateAttestation().enqueue(new Callback<List<Attestation>>() {
+                @Override
+                public void onResponse(Call<List<Attestation>> call, Response<List<Attestation>> response) {
+                    if (response.isSuccessful()) {
+                        attestationList = response.body();
+                        getEmptyBoolean.set(attestationList.isEmpty());
+                        new Thread(() -> {
+                            update(attestationList);
+                        }).start();
+                        attestationLiveDate.postValue(attestationList);
+                    }
                 }
-            }
-            @Override
-            public void onFailure(Call<List<Attestation>> call, Throwable t) {
-                if (t instanceof SocketTimeoutException)
-                {
-                    exception();
+                @Override
+                public void onFailure(Call<List<Attestation>> call, Throwable t) {
+                    if (t instanceof SocketTimeoutException) {
+                        exception();
+                    } else if (t instanceof IOException) {
+                        exception();
+                    } else if (t instanceof SocketException) {
+                        exception();
+                    }
                 }
-                else if (t instanceof IOException)
-                {
-                    exception();
-                }
-                else if( t instanceof SocketException){
-                    exception();
-                }
-            }
-        });
+            });
+        }
     }
 
-
-        MutableLiveData<List<Attestation>> getAttestationLiveDate() {
+        MutableLiveData<List<Attestation>> getAttestationLiveDate () {
             if (attestationLiveDate == null) {
                 attestationLiveDate = new MutableLiveData<>();
             }
             return attestationLiveDate;
         }
 
-    MutableLiveData<Boolean> getHandleTimeout(){
-        if (handleTimeout == null){
-            handleTimeout = new MutableLiveData<>();
+        MutableLiveData<Boolean> getHandleTimeout () {
+            if (handleTimeout == null) {
+                handleTimeout = new MutableLiveData<>();
+            }
+            return handleTimeout;
         }
-        return handleTimeout;
-    }
 
 
-
-    private void insert(List<Attestation> attestationList) {
+    private void update(List<Attestation> attestationList) {
         executor.execute(() -> {
             accountDao.deleteAttestation();
             accountDao.insertAttestation(attestationList);

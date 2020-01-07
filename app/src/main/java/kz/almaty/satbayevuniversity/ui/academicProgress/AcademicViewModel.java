@@ -52,68 +52,57 @@ public class AcademicViewModel extends ViewModel {
     void getJournal() {
         loadRv.set(true);
         executor.execute(() ->{
-        // Поток для проверки БД
-        if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
-            getJournalListFromServer();
-        }else{
-            if (!accountDao.getResponseJournal().isEmpty()) {
                 responseJournalListForDB = accountDao.getResponseJournal();
                 loadRv.set(false);
                 academicData.postValue(responseJournalListForDB);
-            }
-        }
+                getEmptyBoolean.set(responseJournalListForDB.isEmpty());
+                getJournalListFromServer();
         });
     }
 
-     private void getJournalListFromServer(){
-        loadRv.set(true);
-        KaznituRetrofit.getApi().updateJournal().enqueue(new Callback<List<ResponseJournal>>() {
-            @Override
-            public void onResponse(Call<List<ResponseJournal>> call, Response<List<ResponseJournal>> response) {
-                switch (response.code()) {
-                    case 200:
-                        responseJournalList = response.body();
-                        getEmptyBoolean.set(responseJournalList.isEmpty());
-                        academicData.setValue(responseJournalList);// сохранил данные с retrofit чтобы обзервить
+     private void getJournalListFromServer() {
+         if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+             KaznituRetrofit.getApi().updateJournal().enqueue(new Callback<List<ResponseJournal>>() {
+                 @Override
+                 public void onResponse(Call<List<ResponseJournal>> call, Response<List<ResponseJournal>> response) {
+                     switch (response.code()) {
+                         case 200:
+                             responseJournalList = response.body();
+                             getEmptyBoolean.set(responseJournalList.isEmpty());
+                                new Thread(() -> {
+                                    update(responseJournalList);
+                                    System.out.println("#######update");
+                                }).start();
+                                academicData.setValue(responseJournalList);
+                             break;
+                         case 404:
+                             handleError.setValue(404);
+                             break;
+                         case 400:
+                             handleError.setValue(400);
+                             break;
+                         case 401:
+                             handleError.setValue(401);
+                             break;
+                         case 500:
+                             handleError.setValue(500);
+                             break;
+                     }
+                 }
 
-                        new Thread(() -> {
-                            insert(responseJournalList);
-                            System.out.println("#######insert");
-                        }).start();
-
-                        loadRv.set(false);
-                        break;
-                    case 404:
-                        handleError.setValue(404);
-                        break;
-                    case 400:
-                        handleError.setValue(400);
-                        break;
-                    case 401:
-                        handleError.setValue(401);
-                        break;
-                    case 500:
-                        handleError.setValue(500);
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ResponseJournal>> call, Throwable t) {
-                if (t instanceof SocketTimeoutException)
-                {
-                    exception();
-                }
-                else if (t instanceof IOException)
-                {
-                    exception();
-                }
-                else if(t instanceof SocketException){
-                    exception();
-                }
-            }
-        });
-    }
+                 @Override
+                 public void onFailure(Call<List<ResponseJournal>> call, Throwable t) {
+                     if (t instanceof SocketTimeoutException) {
+                         exception();
+                     } else if (t instanceof IOException) {
+                         exception();
+                     } else if (t instanceof SocketException) {
+                         exception();
+                     }
+                 }
+             });
+         }
+     }
 
 
     MutableLiveData<Integer> getHandleTimeout(){
@@ -139,7 +128,7 @@ public class AcademicViewModel extends ViewModel {
 
 
 
-    private void insert(List<ResponseJournal> responseJournals) {
+    private void update(List<ResponseJournal> responseJournals) {
         executor.execute(() -> {
                 accountDao.deleteResponseJournal();
                 accountDao.insertResponseJournal(responseJournals);

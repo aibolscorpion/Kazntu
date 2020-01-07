@@ -3,6 +3,7 @@ package kz.almaty.satbayevuniversity.ui.schedule.exams;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
@@ -44,42 +45,38 @@ public class ExamsViewModel extends ViewModel {
     private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
     public void getExam(){
-        // Поток для проверки БД
         executor.execute(() ->{
-        if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
+            examListDB = accountDao.getExam();
+            examLiveData.postValue(examListDB);
+            getEmptyBoolean.set(examListDB.isEmpty());
             getExamListFromServer();
-        }else {
-            if (!accountDao.getExam().isEmpty()) { //Проверка локальной БД
-                examListDB = accountDao.getExam();
-                examLiveData.postValue(examListDB);
-
-            }
-        }
     });
     }
 
     private void getExamListFromServer() {
-        KaznituRetrofit.getApi().updateExam().enqueue(new Callback<List<Exam>>() {
-            @Override
-            public void onResponse(Call<List<Exam>> call, Response<List<Exam>> response) {
-                if (response.body() != null) {
-                    examList = response.body();
-                    examLiveData.setValue(examList);
-                    getEmptyBoolean.set(examList.isEmpty());
-                    new Thread(() -> {
-                        insert(examList);
-                    }).start();
-
-                    System.out.println("#####response.body() EXAM == http 200 OK");
+        if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+            KaznituRetrofit.getApi().updateExam().enqueue(new Callback<List<Exam>>() {
+                @Override
+                public void onResponse(Call<List<Exam>> call, Response<List<Exam>> response) {
+                    if (response.body() != null) {
+                        examList = response.body();
+                        if(!examList.equals(examListDB)) {
+                            getEmptyBoolean.set(examList.isEmpty());
+                            new Thread(() -> {
+                                update(examList);
+                            }).start();
+                            examLiveData.setValue(examList);
+                        }
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<Exam>> call, Throwable t) {
-                System.out.println("####Exam failure" + t.getMessage() + "&&&" + t.getCause());
+                @Override
+                public void onFailure(Call<List<Exam>> call, Throwable t) {
+                    System.out.println("####Exam failure" + t.getMessage() + "&&&" + t.getCause());
 
-            }
-        });
+                }
+            });
+        }
     }
 
     MutableLiveData<List<Exam>> getExamLiveData(){
@@ -90,7 +87,7 @@ public class ExamsViewModel extends ViewModel {
     }
 
 
-         private void insert(List<Exam> examList) {
+         private void update(List<Exam> examList) {
         executor.execute(() -> {
             accountDao.deleteExam();
             accountDao.insertExam(examList);

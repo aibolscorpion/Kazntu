@@ -3,6 +3,7 @@ package kz.almaty.satbayevuniversity.ui.notification;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
@@ -29,13 +30,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NotificationViewModel extends ViewModel {
-    public ObservableBoolean getEmptyBoolean = new ObservableBoolean();
+    public ObservableBoolean isEmpty = new ObservableBoolean();
 
     private MutableLiveData<List<Notification>> notificationMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> handleTimeout = new MutableLiveData<>();
 
-    private List<Notification> emptyList = new ArrayList<>();
-    private List<Notification> emptyListDB = new ArrayList<>();
+    private List<Notification> listOfNewsFromServer = new ArrayList<>();
+    private List<Notification> listOfNewsFromDB = new ArrayList<>();
 
     private AppDatabase db = App.getInstance().getDatabase();
     private AccountDao accountDao = db.accountDao();
@@ -50,53 +51,44 @@ public class NotificationViewModel extends ViewModel {
 
     void getNotification(){
         loadRv.set(true);
-        // Поток для проверки БД
         executor.execute(() ->{
-            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
-                getNotificationListFromServer();
-            } else {
-                if (!accountDao.getNews().isEmpty()) { //Проверка локальной БД
-                    emptyListDB = accountDao.getNews();
-                    notificationMutableLiveData.postValue(emptyListDB);
-                    loadRv.set(false);
-                }
-            }
+            listOfNewsFromDB = accountDao.getNews();
+            notificationMutableLiveData.postValue(listOfNewsFromDB);
+            loadRv.set(false);
+            isEmpty.set(listOfNewsFromDB.isEmpty());
+            getNotificationListFromServer();
         });
         }
 
     private void getNotificationListFromServer(){
-        KaznituRetrofit.getApi().updateNotification().enqueue(new Callback<List<Notification>>() {
-            @Override
-            public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
-                if (response.isSuccessful()) {
-                    System.out.println("####### retry Connection");
-                    emptyList = response.body();
-                    getEmptyBoolean.set(emptyList.isEmpty());
-                    notificationMutableLiveData.setValue(emptyList);// сохранил данные с retrofit чтобы обзервить
+        if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+            KaznituRetrofit.getApi().updateNotification().enqueue(new Callback<List<Notification>>() {
+                @Override
+                public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
+                    if (response.isSuccessful()) {
+                        listOfNewsFromServer = response.body();
+                        if (!listOfNewsFromServer.equals(listOfNewsFromDB)) {
+                            isEmpty.set(listOfNewsFromServer.isEmpty());
+                            new Thread(() -> {
+                                update(listOfNewsFromServer);
+                            }).start();
+                            notificationMutableLiveData.setValue(listOfNewsFromServer);
+                        }
+                    }
+                }
 
-                    new Thread(() -> {
-                        insert(emptyList);
-                    }).start();
-
-                    loadRv.set(false);
+                @Override
+                public void onFailure(Call<List<Notification>> call, Throwable t) {
+                    if (t instanceof SocketTimeoutException) {
+                        exception();
+                    } else if (t instanceof IOException) {
+                        exception();
+                    } else if (t instanceof SocketException) {
+                        exception();
+                    }
                 }
-            }
-
-            @Override
-            public void onFailure(Call<List<Notification>> call, Throwable t) {
-                if (t instanceof SocketTimeoutException)
-                {
-                    exception();
-                }
-                else if (t instanceof IOException)
-                {
-                    exception();
-                }
-                else if( t instanceof SocketException){
-                    exception();
-                }
-            }
-        });
+            });
+        }
     }
 
     MutableLiveData<List<Notification>> getNotificationMutableLiveData() {
@@ -116,14 +108,14 @@ public class NotificationViewModel extends ViewModel {
     private void exception(){
         loadRv.set(false);
         handleTimeout.setValue(true);
-        getEmptyBoolean.set(true);
+        isEmpty.set(true);
     }
 
-    private void insert(List<Notification> news) {
+    private void update(List<Notification> news) {
         executor.execute(() ->{
             accountDao.deleteNotification();
             accountDao.insertNews(news);
-            System.out.println("####### insert News");
+            System.out.println("####### update News");
         });
     }
 }

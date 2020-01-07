@@ -49,7 +49,7 @@
             android:src="@drawable/empty"
             app:layout_constraintWidth_percent="0.6"
             app:layout_constraintHeight_percent="0.4"
-            android:visibility="@{notification.getEmptyBoolean ? View.VISIBLE : View.GONE}"
+            android:visibility="@{notification.isEmpty ? View.VISIBLE : View.GONE}"
             />
 
         <TextView
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:text="@string/data"
             tools:text="К сожалению, данные по данному запросу отсутствуют..."
-            android:visibility="@{notification.getEmptyBoolean ? View.VISIBLE : View.GONE}"
+            android:visibility="@{notification.isEmpty ? View.VISIBLE : View.GONE}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
