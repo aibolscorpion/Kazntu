@@ -50,9 +50,11 @@ public class ScheduleViewModel extends ViewModel {
     public void getSchedule() {
         loadRv.set(true);
         executor.execute(() ->{
-            scheduleListFromDb = accountDao.getSchedule();
-            loadRv.set(false);
-            scheduleLiveData.postValue(scheduleListFromDb);
+            if(!accountDao.getSchedule().isEmpty()){
+                loadRv.set(false);
+                scheduleListFromDb = accountDao.getSchedule();
+                scheduleLiveData.postValue(scheduleListFromDb);
+            }
             getScheduleListFromServer();
         });
     }
@@ -65,6 +67,7 @@ public class ScheduleViewModel extends ViewModel {
                 public void onResponse(Call<List<Schedule>> call, Response<List<Schedule>> response) {
                     switch (response.code()) {
                         case 200:
+                            loadRv.set(false);
                             scheduleList = response.body();
                             if(!scheduleList.equals(scheduleListFromDb)){
                                 new Thread(() -> {

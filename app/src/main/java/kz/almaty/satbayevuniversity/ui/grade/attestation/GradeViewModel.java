@@ -54,10 +54,11 @@ public class GradeViewModel extends ViewModel {
     void getAttestation() {
         loadRv.set(true);
         executor.execute(() -> {
-            attestationListDB = accountDao.getAttestation();
-            attestationLiveDate.postValue(attestationListDB);
-            loadRv.set(false);
-            getEmptyBoolean.set(attestationListDB.isEmpty());
+            if(!accountDao.getAttestation().isEmpty()){
+                loadRv.set(false);
+                attestationListDB = accountDao.getAttestation();
+                attestationLiveDate.postValue(attestationListDB);
+            }
             getGradeListFromServer();
         });
     }
@@ -68,9 +69,10 @@ public class GradeViewModel extends ViewModel {
                 @Override
                 public void onResponse(Call<List<Attestation>> call, Response<List<Attestation>> response) {
                     if (response.isSuccessful()) {
+                        loadRv.set(false);
                         attestationList = response.body();
+                        getEmptyBoolean.set(attestationList.isEmpty());
                         if(!attestationList.equals(attestationListDB)){
-                            getEmptyBoolean.set(attestationList.isEmpty());
                             new Thread(() -> {
                                 update(attestationList);
                             }).start();

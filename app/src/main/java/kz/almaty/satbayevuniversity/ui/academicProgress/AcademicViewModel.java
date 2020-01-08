@@ -52,11 +52,12 @@ public class AcademicViewModel extends ViewModel {
     void getJournal() {
         loadRv.set(true);
         executor.execute(() ->{
-                responseJournalListForDB = accountDao.getResponseJournal();
+            if(!accountDao.getResponseJournal().isEmpty()){
                 loadRv.set(false);
+                responseJournalListForDB = accountDao.getResponseJournal();
                 academicData.postValue(responseJournalListForDB);
-                getEmptyBoolean.set(responseJournalListForDB.isEmpty());
-                getJournalListFromServer();
+            }
+            getJournalListFromServer();
         });
     }
 
@@ -67,9 +68,10 @@ public class AcademicViewModel extends ViewModel {
                  public void onResponse(Call<List<ResponseJournal>> call, Response<List<ResponseJournal>> response) {
                      switch (response.code()) {
                          case 200:
+                             loadRv.set(false);
                              responseJournalList = response.body();
+                             getEmptyBoolean.set(responseJournalList.isEmpty());
                              if(!responseJournalList.equals(responseJournalListForDB)){
-                                 getEmptyBoolean.set(responseJournalList.isEmpty());
                                  new Thread(() -> {
                                      update(responseJournalList);
                                      System.out.println("#######update");

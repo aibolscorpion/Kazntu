@@ -260,8 +260,8 @@ public class Exam implements Serializable {
 					if (!this.getProctorNames().equals(exam.getProctorNames()))
 						return false;
 				}
-				if(this.getDateFormatted()!=null) {
-					if (!this.getDateFormatted().equals(exam.getDateFormatted()))
+				if(this.getRoomTitle()!=null) {
+					if (!this.getRoomTitle().equals(exam.getRoomTitle()))
 						return false;
 				}
 				if(this.getExamId()  !=exam.getExamId())

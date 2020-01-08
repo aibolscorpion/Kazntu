@@ -46,9 +46,11 @@ public class ExamsViewModel extends ViewModel {
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
     public void getExam(){
         executor.execute(() ->{
-            examListDB = accountDao.getExam();
-            examLiveData.postValue(examListDB);
-            getEmptyBoolean.set(examListDB.isEmpty());
+            if(!accountDao.getExam().isEmpty()){
+                examListDB = accountDao.getExam();
+                examLiveData.postValue(examListDB);
+                getEmptyBoolean.set(examListDB.isEmpty());
+            }
             getExamListFromServer();
     });
     }
@@ -60,8 +62,8 @@ public class ExamsViewModel extends ViewModel {
                 public void onResponse(Call<List<Exam>> call, Response<List<Exam>> response) {
                     if (response.body() != null) {
                         examList = response.body();
+                        getEmptyBoolean.set(examList.isEmpty());
                         if(!examList.equals(examListDB)) {
-                            getEmptyBoolean.set(examList.isEmpty());
                             new Thread(() -> {
                                 update(examList);
                             }).start();

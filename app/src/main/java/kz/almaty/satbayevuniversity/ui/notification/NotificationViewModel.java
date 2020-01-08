@@ -52,10 +52,11 @@ public class NotificationViewModel extends ViewModel {
     void getNotification(){
         loadRv.set(true);
         executor.execute(() ->{
-            listOfNewsFromDB = accountDao.getNews();
-            notificationMutableLiveData.postValue(listOfNewsFromDB);
-            loadRv.set(false);
-            isEmpty.set(listOfNewsFromDB.isEmpty());
+            if(!accountDao.getNews().isEmpty()){
+                loadRv.set(false);
+                listOfNewsFromDB = accountDao.getNews();
+                notificationMutableLiveData.postValue(listOfNewsFromDB);
+            }
             getNotificationListFromServer();
         });
         }
@@ -66,7 +67,9 @@ public class NotificationViewModel extends ViewModel {
                 @Override
                 public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
                     if (response.isSuccessful()) {
+                        loadRv.set(false);
                         listOfNewsFromServer = response.body();
+                        isEmpty.set(listOfNewsFromServer.isEmpty());
                         if (!listOfNewsFromServer.equals(listOfNewsFromDB)) {
                             isEmpty.set(listOfNewsFromServer.isEmpty());
                             new Thread(() -> {

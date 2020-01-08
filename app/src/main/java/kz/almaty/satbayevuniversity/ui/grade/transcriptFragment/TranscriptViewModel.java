@@ -53,10 +53,11 @@ public class TranscriptViewModel extends ViewModel {
     public void getTranscript(){
         loadRv.set(true);
         executor.execute(() ->{
-            semestersItemsDB = accountDao.getSemestersItem();
-            loadRv.set(false);
-            transcriptLiveData.postValue(semestersItemsDB);
-            getEmptyBoolean.set(semestersItemsDB.isEmpty());
+            if(!accountDao.getSemestersItem().isEmpty()){
+                loadRv.set(false);
+                semestersItemsDB = accountDao.getSemestersItem();
+                transcriptLiveData.postValue(semestersItemsDB);
+            }
             getSemesterItemListFromServer();
         });
     }
@@ -67,9 +68,10 @@ public class TranscriptViewModel extends ViewModel {
                 @Override
                 public void onResponse(Call<ResponseTranscript> call, Response<ResponseTranscript> response) {
                     if (response.isSuccessful()) {
+                        loadRv.set(false);
                         semestersItems = response.body().getSemesters();
+                        getEmptyBoolean.set(semestersItems.isEmpty());
                         if(!semestersItems.equals(semestersItemsDB)){
-                            getEmptyBoolean.set(semestersItems.isEmpty());
                             new Thread(() -> {
                                 update(semestersItems);
                             }).start();
