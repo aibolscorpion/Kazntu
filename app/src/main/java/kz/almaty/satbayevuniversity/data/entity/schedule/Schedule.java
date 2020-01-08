@@ -1,6 +1,5 @@
 package kz.almaty.satbayevuniversity.data.entity.schedule;
 
-
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -239,7 +238,7 @@ public class Schedule implements Serializable{
 
 	@Override
  	public String toString(){
-		return " [ " + dayOfWeekId + " ] " + startTime +" - " + endTime + " - "+courseTitle+" - "+ startTimeId;
+		return " [ " + dayOfWeekId + " ] " + startTime +" - " + endTime + " - "+courseTitle+" - "+ startTimeId+" - "+getRoomId();
 		}
 
 	public static Comparator<Schedule> CompareId = (s1, s2) -> {
@@ -251,4 +250,72 @@ public class Schedule implements Serializable{
 		return Id1-Id2;
 
 	};
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Schedule) {
+			Schedule schedule = (Schedule) obj;
+				if(this.getCourseCode()!=null) {
+					if (!this.getCourseCode().equals(schedule.getCourseCode())) {
+						return false;
+					}
+				}
+				if(this.getCourseTitle()!=null) {
+					if (!this.getCourseTitle().equals(schedule.getCourseTitle())){
+						return false;
+					}
+				}
+				if(this.getStartTime()!=null) {
+					if (!this.getStartTime().equals(schedule.getStartTime())){
+						return false;
+					}
+				}
+				if(this.getEndTime()!=null) {
+					if (!this.getEndTime().equals(schedule.getEndTime())){
+						return false;
+					}
+				}
+				if(this.getRoomTitle()!=null) {
+					if (!this.getRoomTitle().equals(schedule.getRoomTitle())){
+						return false;
+					}
+				}
+				if(this.getRoomId()!=null) {
+					if (!this.getRoomId().equals(schedule.getRoomId())){
+						return false;
+					}
+				}
+				if(this.getInstructorName()!=null) {
+					if (!this.getInstructorName().equals(schedule.getInstructorName())){
+						return false;
+					}
+				}
+				if(this.getStartTimeId()  !=schedule.getStartTimeId()){
+					return false;
+				}
+				if(this.getEndTimeId() != schedule.getEndTimeId()){
+					return false;
+				}
+				if(this.getDurationHours()  !=schedule.getDurationHours()){
+					return false;
+				}
+				if(this.getClassId() != schedule.getClassId()){
+					return false;
+				}
+				if(this.getGroupNumber()  !=schedule.getGroupNumber()){
+					return false;
+				}
+				if(this.getClassType() != schedule.getClassType()){
+					return false;
+				}
+				if(this.getDayOfWeekId()  !=schedule.getDayOfWeekId()){
+					return false;
+				}
+				if(this.getInstructorId() != schedule.getInstructorId()){
+					return false;
+				}
+			return true;
+		}
+		return false;
+	}
 }

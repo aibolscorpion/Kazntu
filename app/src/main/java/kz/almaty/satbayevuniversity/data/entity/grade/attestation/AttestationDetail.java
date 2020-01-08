@@ -1,5 +1,6 @@
 package kz.almaty.satbayevuniversity.data.entity.grade.attestation;
 
+
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
@@ -141,5 +142,54 @@ public class AttestationDetail implements Serializable {
 				", examFailed=" + examFailed +
 				", notPassed=" + notPassed +
 				'}';
+	}
+	@Override
+	public boolean equals( Object obj) {
+		if(obj instanceof AttestationDetail) {
+			AttestationDetail attestationDetail = (AttestationDetail) obj;
+			if(this.isGrade1Failed() !=attestationDetail.isGrade1Failed()){
+				return false;
+			}
+			if(this.isGrade2Failed() != attestationDetail.isGrade2Failed()){
+				return false;
+			}
+			if(this.isTotalGradeFailed()!=attestationDetail.isTotalGradeFailed()){
+				return false;
+			}
+			if(this.isExamFailed() !=attestationDetail.isExamFailed()){
+				return false;
+			}
+			if(this.isNotPassed() != attestationDetail.isNotPassed()){
+				return false;
+			}
+			if(this.isMissedPercentFailed()!=attestationDetail.isMissedPercentFailed()){
+				return false;
+			}
+			if(this.getGrade1() != null){
+				if(!this.getGrade1().equals(attestationDetail.getGrade1())){
+					return false;
+				}
+			}
+			if(this.getGrade2() != null) {
+				if (!this.getGrade2().equals(attestationDetail.getGrade2())) {
+					return false;
+				}
+			}
+			if(this.getExamGrade() != null) {
+				if (!this.getExamGrade().equals(attestationDetail.getExamGrade())) {
+					return false;
+				}
+			}
+			if(this.getTotalGrade() != null) {
+				if(!this.getTotalGrade().equals(attestationDetail.getTotalGrade())){
+					return false;
+				}
+			}
+			if(this.getMissedPercent()!=attestationDetail.getMissedPercent()){
+				return false;
+			}
+			return true;
+		}
+		return false;
 	}
 }

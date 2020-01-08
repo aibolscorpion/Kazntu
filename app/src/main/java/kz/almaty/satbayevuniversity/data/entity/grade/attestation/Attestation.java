@@ -1,14 +1,12 @@
 package kz.almaty.satbayevuniversity.data.entity.grade.attestation;
 
-import androidx.annotation.Nullable;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
-
-import kz.almaty.satbayevuniversity.data.entity.notification.Notification;
 
 @Entity
 public class Attestation implements Serializable {
@@ -98,7 +96,20 @@ public class Attestation implements Serializable {
 	public boolean equals( Object obj) {
 		if(obj instanceof Attestation) {
 			Attestation attestation = (Attestation) obj;
-
+			if(this.getSemesterCourseTitle()!=null){
+				if(!this.getSemesterCourseTitle().equals(attestation.getSemesterCourseTitle())){
+					return false;
+				}
+			}
+			if(this.getSemesterCourseID() != attestation.getSemesterCourseID()){
+				return false;
+			}
+			if(this.getAttestationDetail()!=null){
+				if(!this.getAttestationDetail().equals(attestation.getAttestationDetail())){
+					return false;
+				}
+			}
+			return true;
 		}
 		return false;
 	}

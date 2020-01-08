@@ -68,12 +68,14 @@ public class AcademicViewModel extends ViewModel {
                      switch (response.code()) {
                          case 200:
                              responseJournalList = response.body();
-                             getEmptyBoolean.set(responseJournalList.isEmpty());
-                                new Thread(() -> {
-                                    update(responseJournalList);
-                                    System.out.println("#######update");
-                                }).start();
-                                academicData.setValue(responseJournalList);
+                             if(!responseJournalList.equals(responseJournalListForDB)){
+                                 getEmptyBoolean.set(responseJournalList.isEmpty());
+                                 new Thread(() -> {
+                                     update(responseJournalList);
+                                     System.out.println("#######update");
+                                 }).start();
+                                 academicData.setValue(responseJournalList);
+                             }
                              break;
                          case 404:
                              handleError.setValue(404);

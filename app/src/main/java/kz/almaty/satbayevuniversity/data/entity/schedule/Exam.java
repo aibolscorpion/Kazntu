@@ -227,59 +227,59 @@ public class Exam implements Serializable {
 		timeFormat.format(myDate);
 		return timeFormat.format(myDate);
 	}
-//
-//	@Override
-//	public boolean equals(Object obj) {
-//		if(obj instanceof Exam) {
-//			Exam exam = (Exam) obj;
-//				if(this.getCourseCode()!=null) {
-//					if (!this.getCourseCode().equals(exam.getCourseCode()))
-//						return false;
-//				}
-//				if(this.getCourseTitle()!=null) {
-//					if (!this.getCourseTitle().equals(exam.getCourseTitle()))
-//						return false;
-//				}
-//				if(this.getStart()!=null) {
-//					if (!this.getStart().equals(exam.getStart()))
-//						return false;
-//				}
-//				if(this.getEnd()!=null) {
-//					if (!this.getEnd().equals(exam.getEnd()))
-//						return false;
-//				}
-//				if(this.getExaminatorName()!=null) {
-//					if (!this.getExaminatorName().equals(exam.getExaminatorName()))
-//						return false;
-//				}
-//				if(this.getExamDate()!=null) {
-//					if (!this.getExamDate().equals(exam.getExamDate()))
-//						return false;
-//				}
-//				if(this.getProctorNames()!=null) {
-//					if (!this.getProctorNames().equals(exam.getProctorNames()))
-//						return false;
-//				}
-//				if(this.getDateFormatted()!=null) {
-//					if (!this.getDateFormatted().equals(exam.getDateFormatted()))
-//						return false;
-//				}
-//				if(this.getExamId()  !=exam.getExamId())
-//					return false;
-//				if(this.getEndTimeId() != exam.getEndTimeId())
-//					return false;
-//				if(this.getCellCount() != exam.getCellCount())
-//					return false;
-//				if(this.getExamNumber() != exam.getExamNumber())
-//					return false;
-//				if(this.getRoomId() != exam.getRoomId())
-//					return false;
-//				if(this.getStartTimeId() != exam.getStartTimeId())
-//					return false;
-//				if(this.getStudentsCount() != exam.getStudentsCount())
-//					return false;
-//				return true;
-//		}
-//		return false;
-//	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Exam) {
+			Exam exam = (Exam) obj;
+				if(this.getCourseCode()!=null) {
+					if (!this.getCourseCode().equals(exam.getCourseCode()))
+						return false;
+				}
+				if(this.getCourseTitle()!=null) {
+					if (!this.getCourseTitle().equals(exam.getCourseTitle()))
+						return false;
+				}
+				if(this.getStart()!=null) {
+					if (!this.getStart().equals(exam.getStart()))
+						return false;
+				}
+				if(this.getEnd()!=null) {
+					if (!this.getEnd().equals(exam.getEnd()))
+						return false;
+				}
+				if(this.getExaminatorName()!=null) {
+					if (!this.getExaminatorName().equals(exam.getExaminatorName()))
+						return false;
+				}
+				if(this.getExamDate()!=null) {
+					if (!this.getExamDate().equals(exam.getExamDate()))
+						return false;
+				}
+				if(this.getProctorNames()!=null) {
+					if (!this.getProctorNames().equals(exam.getProctorNames()))
+						return false;
+				}
+				if(this.getDateFormatted()!=null) {
+					if (!this.getDateFormatted().equals(exam.getDateFormatted()))
+						return false;
+				}
+				if(this.getExamId()  !=exam.getExamId())
+					return false;
+				if(this.getEndTimeId() != exam.getEndTimeId())
+					return false;
+				if(this.getCellCount() != exam.getCellCount())
+					return false;
+				if(this.getExamNumber() != exam.getExamNumber())
+					return false;
+				if(this.getRoomId() != exam.getRoomId())
+					return false;
+				if(this.getStartTimeId() != exam.getStartTimeId())
+					return false;
+				if(this.getStudentsCount() != exam.getStudentsCount())
+					return false;
+				return true;
+		}
+		return false;
+	}
 }

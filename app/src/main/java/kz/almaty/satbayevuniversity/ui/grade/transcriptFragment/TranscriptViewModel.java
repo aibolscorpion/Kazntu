@@ -68,11 +68,13 @@ public class TranscriptViewModel extends ViewModel {
                 public void onResponse(Call<ResponseTranscript> call, Response<ResponseTranscript> response) {
                     if (response.isSuccessful()) {
                         semestersItems = response.body().getSemesters();
-                        getEmptyBoolean.set(semestersItems.isEmpty());
-                        new Thread(() -> {
-                            update(semestersItems);
-                        }).start();
-                        transcriptLiveData.setValue(semestersItems);
+                        if(!semestersItems.equals(semestersItemsDB)){
+                            getEmptyBoolean.set(semestersItems.isEmpty());
+                            new Thread(() -> {
+                                update(semestersItems);
+                            }).start();
+                            transcriptLiveData.setValue(semestersItems);
+                        }
                     }
                 }
 

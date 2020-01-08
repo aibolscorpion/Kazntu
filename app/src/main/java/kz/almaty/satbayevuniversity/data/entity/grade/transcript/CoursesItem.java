@@ -125,4 +125,49 @@ public class CoursesItem implements Serializable {
 	public void setReplaced(boolean replaced) {
 		isReplaced = replaced;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof CoursesItem) {
+			CoursesItem coursesItem = (CoursesItem) obj;
+			if(this.getTitle()!=null) {
+				if (!this.getTitle().equals(coursesItem.getTitle()))
+					return false;
+			}
+			if(this.getCode()!=null) {
+				if (!this.getCode().equals(coursesItem.getCode()))
+					return false;
+			}
+			if(this.getLetter()!=null) {
+				if (!this.getLetter().equals(coursesItem.getLetter()))
+					return false;
+			}
+			if(this.getLinkCode()!=null) {
+				if (!this.getLinkCode().equals(coursesItem.getLinkCode()))
+					return false;
+			}
+			if(this.getScore()!=null) {
+				if (!this.getScore().equals(coursesItem.getScore()))
+					return false;
+			}
+			if(this.getExam()!=null) {
+				if (!this.getExam().equals(coursesItem.getExam()))
+					return false;
+			}
+			if(this.getGpaGrade()!=null) {
+				if (!this.getGpaGrade().equals(coursesItem.getGpaGrade()))
+					return false;
+			}
+			if(this.getSemester() != coursesItem.getSemester())
+				return false;
+			if(this.getCredits() != coursesItem.getCredits())
+				return false;
+			if(this.getEcts() != coursesItem.getEcts())
+				return false;
+			if(this.isReplaced() != coursesItem.isReplaced())
+				return false;
+			return true;
+		}
+		return false;
+	}
 }

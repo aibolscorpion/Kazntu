@@ -69,11 +69,13 @@ public class GradeViewModel extends ViewModel {
                 public void onResponse(Call<List<Attestation>> call, Response<List<Attestation>> response) {
                     if (response.isSuccessful()) {
                         attestationList = response.body();
-                        getEmptyBoolean.set(attestationList.isEmpty());
-                        new Thread(() -> {
-                            update(attestationList);
-                        }).start();
-                        attestationLiveDate.postValue(attestationList);
+                        if(!attestationList.equals(attestationListDB)){
+                            getEmptyBoolean.set(attestationList.isEmpty());
+                            new Thread(() -> {
+                                update(attestationList);
+                            }).start();
+                            attestationLiveDate.postValue(attestationList);
+                        }
                     }
                 }
                 @Override

@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 public class DatesItem implements Serializable {
 	@SerializedName("sectionID")
 	private int sectionID;
@@ -253,5 +254,59 @@ public class DatesItem implements Serializable {
 
 	public Double getGrade() {
 		return grade;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof DatesItem) {
+			DatesItem datesItem = (DatesItem) obj;
+			if(this.getAttendanceDate()!=null) {
+				if (!this.getAttendanceDate().equals(datesItem.getAttendanceDate()))
+					return false;
+			}
+			if(this.getComment()!=null) {
+				if (!this.getComment().equals(datesItem.getComment()))
+					return false;
+			}
+			if(this.getTimeTitle()!=null) {
+				if (!this.getTimeTitle().equals(datesItem.getTimeTitle()))
+					return false;
+			}
+			if(this.getWeekDay()!=null) {
+				if (!this.getWeekDay().equals(datesItem.getWeekDay()))
+					return false;
+			}
+			if(this.getGrade()!=null) {
+				if (!this.getGrade().equals(datesItem.getGrade()))
+					return false;
+			}
+			if(this.getClassTypeID()  !=datesItem.getClassTypeID())
+				return false;
+			if(this.getSectionID() != datesItem.getSectionID())
+				return false;
+			if(this.isAttended()  !=datesItem.isAttended())
+				return false;
+			if(this.isIsAttendanceEditable() != datesItem.isIsAttendanceEditable())
+				return false;
+			if(this.isIsEditable()  !=datesItem.isIsEditable())
+				return false;
+			if(this.isIsEnabled() != datesItem.isIsEnabled())
+				return false;
+			if(this.isIsOldDay()  !=datesItem.isIsOldDay())
+				return false;
+			if(this.isIsOpened() != datesItem.isIsOpened())
+				return false;
+			if(this.isShowComment()  !=datesItem.isShowComment())
+				return false;
+			if(this.isIsScoresEditable() != datesItem.isIsScoresEditable())
+				return false;
+			if(this.isIsStatmentClosed()  !=datesItem.isIsStatmentClosed())
+				return false;
+			if(this.isIsOpenedByDate() != datesItem.isIsOpenedByDate())
+				return false;
+
+			return true;
+		}
+		return false;
 	}
 }

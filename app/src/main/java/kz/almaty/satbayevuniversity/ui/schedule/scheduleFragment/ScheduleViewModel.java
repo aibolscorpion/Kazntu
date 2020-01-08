@@ -66,10 +66,12 @@ public class ScheduleViewModel extends ViewModel {
                     switch (response.code()) {
                         case 200:
                             scheduleList = response.body();
-                            new Thread(() -> {
-                                update(scheduleList);
-                            }).start();
-                            scheduleLiveData.setValue(scheduleList);
+                            if(!scheduleList.equals(scheduleListFromDb)){
+                                new Thread(() -> {
+                                    update(scheduleList);
+                                }).start();
+                                scheduleLiveData.setValue(scheduleList);
+                            }
                             break;
                         case 404:
                             handleError.setValue(404);

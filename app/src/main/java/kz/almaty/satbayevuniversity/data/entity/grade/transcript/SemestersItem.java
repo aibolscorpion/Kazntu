@@ -1,5 +1,6 @@
 package kz.almaty.satbayevuniversity.data.entity.grade.transcript;
 
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -8,6 +9,8 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
+
+
 @Entity
 public class SemestersItem implements Serializable {
 	@PrimaryKey
@@ -155,4 +158,60 @@ public class SemestersItem implements Serializable {
 		return courses;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof SemestersItem) {
+			SemestersItem semestersItem = (SemestersItem) obj;
+				if(this.getTitle()!=null) {
+					if (!this.getTitle().equals(semestersItem.getTitle())){
+						return false;
+					}
+				}
+				if(this.getEndsOn()!=null) {
+					if (!this.getEndsOn().equals(semestersItem.getEndsOn())){
+						return false;
+					}
+				}
+				if(this.getSemesterGpa()!=null) {
+					if (!this.getSemesterGpa().equals(semestersItem.getSemesterGpa())){
+						return false;
+					}
+				}
+				if(this.getYearGpa()!=null) {
+					if (!this.getYearGpa().equals(semestersItem.getYearGpa())){
+						return false;
+					}
+				}
+				if(this.getCumulativeGpa()!=null) {
+					if (!this.getCumulativeGpa().equals(semestersItem.getCumulativeGpa())){
+						return false;
+					}
+				}
+				if(this.getCalcCredits() != semestersItem.getCalcCredits()){
+					return false;
+				}
+				if(this.getSemesterCredits() != semestersItem.getSemesterCredits()){
+					return false;
+				}
+				if(this.getTotalCredits() != semestersItem.getTotalCredits()){
+					return false;
+				}
+				if(this.getCalcEctsCredits() != semestersItem.getCalcEctsCredits()){
+					return false;
+				}
+				if(this.getSemesterEctsCredits() != semestersItem.getSemesterEctsCredits()){
+					return false;
+				}
+				if(this.getTotalEctsCredits() != semestersItem.getTotalEctsCredits()){
+					return false;
+				}
+				if(this.getCourses() !=null){
+					if(!this.getCourses().equals(semestersItem.getCourses())){
+						return false;
+					}
+				}
+				return true;
+		}
+		return false;
+	}
 }

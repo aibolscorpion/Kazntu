@@ -1,5 +1,6 @@
 package kz.almaty.satbayevuniversity.data.entity.academic;
 
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -7,6 +8,7 @@ import androidx.room.TypeConverters;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
+
 
 @Entity
 public class ResponseJournal implements Serializable {
@@ -118,6 +120,43 @@ public class ResponseJournal implements Serializable {
 			}
 		}
 		return totalScore;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof ResponseJournal) {
+			ResponseJournal responseJournal = (ResponseJournal) obj;
+				if(this.getCourseTitle()!=null) {
+					if (!this.getCourseTitle().equals(responseJournal.getCourseTitle())){
+						return false;
+					}
+				}
+				if(this.getInstructorFullName()!=null) {
+					if (!this.getInstructorFullName().equals(responseJournal.getInstructorFullName())){
+						return false;
+					}
+				}
+				if(this.getCourseId()  !=responseJournal.getCourseId()){
+					return false;
+				}
+				if(this.getMissedPercent() != responseJournal.getMissedPercent()){
+					return false;
+				}
+				if(this.getInstructorId()  !=responseJournal.getInstructorId()){
+					return false;
+				}
+				if(this.isMissedPercentFailed() != responseJournal.isMissedPercentFailed()){
+					return false;
+				}
+				if(this.getDates() != null){
+					if(!this.getDates().equals(responseJournal.getDates())){
+						{
+							return false;
+						}
+					}
+				}
+				return true;
+		}
+		return false;
 	}
 
 }
