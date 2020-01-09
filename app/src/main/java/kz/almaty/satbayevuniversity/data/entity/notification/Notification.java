@@ -115,29 +115,44 @@ public class Notification implements Serializable {
 	public boolean equals(Object obj) {
 		if(obj instanceof  Notification) {
 			Notification notification = (Notification) obj;
-			if (this.getId() == notification.getId()) {
-				if(this.getFileID()!=null) {
+				if (this.getId() != notification.getId()) {
+					return false;
+				}
+
+				if(this.getFileID()!=null && notification.getFileID()!=null) {
 					if (!this.getFileID().equals(notification.getFileID()))
 						return false;
+				} else if(this.getFileID()!=null || notification.getFileID()!=null) {
+					return false;
 				}
-				if(this.getPublishedOn()!=null) {
+
+				if(this.getPublishedOn()!=null && notification.getPublishedOn()!=null) {
 					if (!this.getPublishedOn().equals(notification.getPublishedOn()))
 						return false;
+				}else if(this.getPublishedOn()!=null || notification.getPublishedOn()!=null) {
+					return false;
 				}
-				if(this.getContent()!=null) {
+
+				if(this.getContent()!=null && notification.getContent()!=null) {
 					if (!this.getContent().equals(notification.getContent()))
 						return false;
+				}else if(this.getContent()!=null || notification.getContent()!=null) {
+					return false;
 				}
-				if(this.getTitle()!=null) {
+
+				if(this.getTitle()!=null && notification.getTitle()!=null) {
 					if (!this.getTitle().equals(notification.getTitle()))
 						return false;
+				}else if(this.getTitle()!=null || notification.getTitle()!=null) {
+					return false;
 				}
+
 				if(this.isIsImportant()  !=notification.isIsImportant())
 					return false;
 				if(this.isIsPersonal() != notification.isIsPersonal())
 					return false;
+
 				return true;
-			}else{ return false;}
 		}
 		return false;
 	}

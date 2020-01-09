@@ -162,31 +162,47 @@ public class SemestersItem implements Serializable {
 	public boolean equals(Object obj) {
 		if(obj instanceof SemestersItem) {
 			SemestersItem semestersItem = (SemestersItem) obj;
-				if(this.getTitle()!=null) {
+
+				if(this.getTitle()!=null && semestersItem.getTitle()!=null) {
 					if (!this.getTitle().equals(semestersItem.getTitle())){
 						return false;
 					}
+				}else if(this.getTitle() !=null || semestersItem.getTitle()!=null){
+					return false;
 				}
-				if(this.getEndsOn()!=null) {
+
+				if(this.getEndsOn()!=null && semestersItem.getEndsOn()!=null) {
 					if (!this.getEndsOn().equals(semestersItem.getEndsOn())){
 						return false;
 					}
+				}else if(this.getEndsOn()!=null || semestersItem.getEndsOn()!=null) {
+						return false;
 				}
-				if(this.getSemesterGpa()!=null) {
+
+				if(this.getSemesterGpa()!=null && semestersItem.getSemesterGpa()!=null) {
 					if (!this.getSemesterGpa().equals(semestersItem.getSemesterGpa())){
 						return false;
 					}
+				} else if(this.getSemesterGpa()!=null || semestersItem.getSemesterGpa()!=null) {
+						return false;
 				}
-				if(this.getYearGpa()!=null) {
+
+				if(this.getYearGpa()!=null && semestersItem.getYearGpa()!=null) {
 					if (!this.getYearGpa().equals(semestersItem.getYearGpa())){
 						return false;
 					}
+				}else if(this.getYearGpa()!=null || semestersItem.getYearGpa()!=null) {
+					return false;
 				}
-				if(this.getCumulativeGpa()!=null) {
+
+				if(this.getCumulativeGpa()!=null && semestersItem.getCumulativeGpa()!=null) {
 					if (!this.getCumulativeGpa().equals(semestersItem.getCumulativeGpa())){
 						return false;
 					}
+				}else if(this.getCumulativeGpa()!=null || semestersItem.getCumulativeGpa()!=null) {
+					return false;
 				}
+
 				if(this.getCalcCredits() != semestersItem.getCalcCredits()){
 					return false;
 				}
@@ -205,10 +221,12 @@ public class SemestersItem implements Serializable {
 				if(this.getTotalEctsCredits() != semestersItem.getTotalEctsCredits()){
 					return false;
 				}
-				if(this.getCourses() !=null){
+				if(this.getCourses() !=null && semestersItem.getCourses()!=null){
 					if(!this.getCourses().equals(semestersItem.getCourses())){
 						return false;
 					}
+				}else if(this.getCourses() !=null || semestersItem.getCourses()!=null){
+					return false;
 				}
 				return true;
 		}

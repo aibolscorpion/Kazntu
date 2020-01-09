@@ -232,38 +232,62 @@ public class Exam implements Serializable {
 	public boolean equals(Object obj) {
 		if(obj instanceof Exam) {
 			Exam exam = (Exam) obj;
-				if(this.getCourseCode()!=null) {
+				if(this.getCourseCode()!=null && exam.getCourseCode()!=null) {
 					if (!this.getCourseCode().equals(exam.getCourseCode()))
 						return false;
+				}else if(this.getCourseCode()!=null || exam.getCourseCode()!=null) {
+					return false;
 				}
-				if(this.getCourseTitle()!=null) {
+
+				if(this.getCourseTitle()!=null && exam.getCourseTitle()!=null) {
 					if (!this.getCourseTitle().equals(exam.getCourseTitle()))
 						return false;
+				}else if(this.getCourseTitle()!=null || exam.getCourseTitle()!=null) {
+					return false;
 				}
-				if(this.getStart()!=null) {
+
+				if(this.getStart()!=null && exam.getStart()!=null) {
 					if (!this.getStart().equals(exam.getStart()))
 						return false;
+				}else if(this.getStart()!=null || exam.getStart()!=null) {
+					return false;
 				}
-				if(this.getEnd()!=null) {
+
+				if(this.getEnd()!=null && exam.getEnd()!=null) {
 					if (!this.getEnd().equals(exam.getEnd()))
 						return false;
+				}else if(this.getEnd()!=null || exam.getEnd()!=null) {
+					return false;
 				}
-				if(this.getExaminatorName()!=null) {
+
+				if(this.getExaminatorName()!=null && exam.getExaminatorName()!=null) {
 					if (!this.getExaminatorName().equals(exam.getExaminatorName()))
 						return false;
+				}else if(this.getExaminatorName()!=null || exam.getExaminatorName()!=null) {
+					return false;
 				}
-				if(this.getExamDate()!=null) {
+
+				if(this.getExamDate()!=null && exam.getExamDate()!=null) {
 					if (!this.getExamDate().equals(exam.getExamDate()))
 						return false;
+				}else if(this.getExamDate()!=null || exam.getExamDate()!=null) {
+					return false;
 				}
-				if(this.getProctorNames()!=null) {
+
+				if(this.getProctorNames()!=null && exam.getProctorNames()!=null) {
 					if (!this.getProctorNames().equals(exam.getProctorNames()))
 						return false;
+				}else if(this.getProctorNames()!=null || exam.getProctorNames()!=null) {
+					return false;
 				}
-				if(this.getRoomTitle()!=null) {
+
+				if(this.getRoomTitle()!=null && exam.getRoomTitle()!=null) {
 					if (!this.getRoomTitle().equals(exam.getRoomTitle()))
 						return false;
+				}else if(this.getRoomTitle()!=null || exam.getRoomTitle()!=null) {
+					return false;
 				}
+
 				if(this.getExamId()  !=exam.getExamId())
 					return false;
 				if(this.getEndTimeId() != exam.getEndTimeId())

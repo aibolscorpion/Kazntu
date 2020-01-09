@@ -255,41 +255,62 @@ public class Schedule implements Serializable{
 	public boolean equals(Object obj) {
 		if(obj instanceof Schedule) {
 			Schedule schedule = (Schedule) obj;
-				if(this.getCourseCode()!=null) {
+				if(this.getCourseCode()!=null && schedule.getCourseCode()!=null) {
 					if (!this.getCourseCode().equals(schedule.getCourseCode())) {
 						return false;
 					}
+				}else if(this.getCourseCode()!=null || schedule.getCourseCode()!=null) {
+					    return false;
 				}
-				if(this.getCourseTitle()!=null) {
+
+				if(this.getCourseTitle()!=null && schedule.getCourseTitle()!=null) {
 					if (!this.getCourseTitle().equals(schedule.getCourseTitle())){
 						return false;
 					}
+				}else if(this.getCourseTitle()!=null || schedule.getCourseTitle()!=null) {
+					return false;
 				}
-				if(this.getStartTime()!=null) {
+
+				if(this.getStartTime()!=null && schedule.getStartTime()!=null) {
 					if (!this.getStartTime().equals(schedule.getStartTime())){
 						return false;
 					}
+				}else if(this.getStartTime()!=null || schedule.getStartTime()!=null) {
+					return false;
 				}
-				if(this.getEndTime()!=null) {
+
+				if(this.getEndTime()!=null && schedule.getEndTime()!=null) {
 					if (!this.getEndTime().equals(schedule.getEndTime())){
 						return false;
 					}
+				}else if(this.getEndTime()!=null || schedule.getEndTime()!=null) {
+					return false;
 				}
-				if(this.getRoomTitle()!=null) {
+
+				if(this.getRoomTitle()!=null && schedule.getRoomTitle()!=null) {
 					if (!this.getRoomTitle().equals(schedule.getRoomTitle())){
 						return false;
 					}
+				}else if(this.getRoomTitle()!=null || schedule.getRoomTitle()!=null) {
+					return false;
 				}
-				if(this.getRoomId()!=null) {
+
+				if(this.getRoomId()!=null && schedule.getRoomId()!=null) {
 					if (!this.getRoomId().equals(schedule.getRoomId())){
 						return false;
 					}
+				}else if(this.getRoomId()!=null || schedule.getRoomId()!=null) {
+					return false;
 				}
-				if(this.getInstructorName()!=null) {
+
+				if(this.getInstructorName()!=null && schedule.getInstructorName()!=null) {
 					if (!this.getInstructorName().equals(schedule.getInstructorName())){
 						return false;
 					}
+				}else if(this.getInstructorName()!=null || schedule.getInstructorName()!=null) {
+					return false;
 				}
+
 				if(this.getStartTimeId()  !=schedule.getStartTimeId()){
 					return false;
 				}

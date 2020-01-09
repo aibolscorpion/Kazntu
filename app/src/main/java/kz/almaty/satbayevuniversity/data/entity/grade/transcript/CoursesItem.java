@@ -130,34 +130,56 @@ public class CoursesItem implements Serializable {
 	public boolean equals(Object obj) {
 		if(obj instanceof CoursesItem) {
 			CoursesItem coursesItem = (CoursesItem) obj;
-			if(this.getTitle()!=null) {
+
+			if(this.getTitle()!=null && coursesItem.getTitle()!=null) {
 				if (!this.getTitle().equals(coursesItem.getTitle()))
 					return false;
+			} else if(this.getTitle()!=null || coursesItem.getTitle()!=null) {
+				return false;
 			}
-			if(this.getCode()!=null) {
+
+			if(this.getCode()!=null && coursesItem.getCode()!=null) {
 				if (!this.getCode().equals(coursesItem.getCode()))
 					return false;
+			}else if(this.getCode()!=null || coursesItem.getCode()!=null) {
+				return false;
 			}
-			if(this.getLetter()!=null) {
+
+			if(this.getLetter()!=null && coursesItem.getLetter()!=null) {
 				if (!this.getLetter().equals(coursesItem.getLetter()))
 					return false;
+			}else if(this.getLetter()!=null || coursesItem.getLetter()!=null) {
+				return false;
 			}
-			if(this.getLinkCode()!=null) {
+
+			if(this.getLinkCode()!=null && coursesItem.getLinkCode()!=null) {
 				if (!this.getLinkCode().equals(coursesItem.getLinkCode()))
 					return false;
+			}else if(this.getLinkCode()!=null || coursesItem.getLinkCode()!=null) {
+				return false;
 			}
-			if(this.getScore()!=null) {
+
+			if(this.getScore()!=null && coursesItem.getScore()!=null) {
 				if (!this.getScore().equals(coursesItem.getScore()))
 					return false;
+			}else if(this.getScore()!=null || coursesItem.getScore()!=null) {
+				return false;
 			}
-			if(this.getExam()!=null) {
+
+			if(this.getExam()!=null && coursesItem.getExam()!=null) {
 				if (!this.getExam().equals(coursesItem.getExam()))
 					return false;
+			}else if(this.getExam()!=null || coursesItem.getExam()!=null) {
+				return false;
 			}
-			if(this.getGpaGrade()!=null) {
+
+			if(this.getGpaGrade()!=null && coursesItem.getGpaGrade()!=null) {
 				if (!this.getGpaGrade().equals(coursesItem.getGpaGrade()))
 					return false;
+			}else if(this.getGpaGrade()!=null || coursesItem.getGpaGrade()!=null) {
+				return false;
 			}
+
 			if(this.getSemester() != coursesItem.getSemester())
 				return false;
 			if(this.getCredits() != coursesItem.getCredits())

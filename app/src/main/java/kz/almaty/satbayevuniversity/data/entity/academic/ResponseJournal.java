@@ -125,35 +125,36 @@ public class ResponseJournal implements Serializable {
 	public boolean equals(Object obj) {
 		if(obj instanceof ResponseJournal) {
 			ResponseJournal responseJournal = (ResponseJournal) obj;
-				if(this.getCourseTitle()!=null) {
-					if (!this.getCourseTitle().equals(responseJournal.getCourseTitle())){
+
+				if(this.getCourseTitle()!=null && responseJournal.getCourseTitle()!=null) {
+					if (!this.getCourseTitle().equals(responseJournal.getCourseTitle()))
 						return false;
-					}
-				}
-				if(this.getInstructorFullName()!=null) {
-					if (!this.getInstructorFullName().equals(responseJournal.getInstructorFullName())){
+				}else if(this.getCourseTitle()!=null || responseJournal.getCourseTitle()!=null)
+					return false;
+
+				if(this.getInstructorFullName()!=null && responseJournal.getInstructorFullName()!=null)
+					if (!this.getInstructorFullName().equals(responseJournal.getInstructorFullName()))
 						return false;
-					}
-				}
-				if(this.getCourseId()  !=responseJournal.getCourseId()){
+				else if(this.getInstructorFullName()!=null || responseJournal.getInstructorFullName()!=null)
 					return false;
-				}
-				if(this.getMissedPercent() != responseJournal.getMissedPercent()){
+
+				if(this.getCourseId()  !=responseJournal.getCourseId())
 					return false;
-				}
-				if(this.getInstructorId()  !=responseJournal.getInstructorId()){
+
+				if(this.getMissedPercent() != responseJournal.getMissedPercent())
 					return false;
-				}
-				if(this.isMissedPercentFailed() != responseJournal.isMissedPercentFailed()){
+
+				if(this.getInstructorId()  !=responseJournal.getInstructorId())
 					return false;
-				}
-				if(this.getDates() != null){
-					if(!this.getDates().equals(responseJournal.getDates())){
-						{
+
+				if(this.isMissedPercentFailed() != responseJournal.isMissedPercentFailed())
+					return false;
+
+				if(this.getDates() != null && responseJournal.getDates()!=null)
+					if(!this.getDates().equals(responseJournal.getDates()))
 							return false;
-						}
-					}
-				}
+				else if(this.getDates() != null || responseJournal.getDates() != null)
+					return false;
 				return true;
 		}
 		return false;

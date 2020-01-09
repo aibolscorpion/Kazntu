@@ -165,26 +165,39 @@ public class AttestationDetail implements Serializable {
 			if(this.isMissedPercentFailed()!=attestationDetail.isMissedPercentFailed()){
 				return false;
 			}
-			if(this.getGrade1() != null){
+
+			if(this.getGrade1() != null && attestationDetail.getGrade1() !=null){
 				if(!this.getGrade1().equals(attestationDetail.getGrade1())){
 					return false;
 				}
+			}else if(this.getGrade1() !=null || attestationDetail.getGrade1()!=null){
+				return false;
 			}
-			if(this.getGrade2() != null) {
+
+			if(this.getGrade2() != null && attestationDetail.getGrade2() !=null) {
 				if (!this.getGrade2().equals(attestationDetail.getGrade2())) {
 					return false;
 				}
+			}else if(this.getGrade2() !=null || attestationDetail.getGrade2()!=null){
+				return false;
 			}
-			if(this.getExamGrade() != null) {
+
+			if(this.getExamGrade() != null && attestationDetail.getExamGrade() !=null) {
 				if (!this.getExamGrade().equals(attestationDetail.getExamGrade())) {
 					return false;
 				}
+			}else if(this.getExamGrade() !=null || attestationDetail.getExamGrade()!=null){
+				return false;
 			}
-			if(this.getTotalGrade() != null) {
+
+			if(this.getTotalGrade() != null && attestationDetail.getTotalGrade() !=null) {
 				if(!this.getTotalGrade().equals(attestationDetail.getTotalGrade())){
 					return false;
 				}
+			}else if(this.getTotalGrade() !=null || attestationDetail.getTotalGrade()!=null){
+				return false;
 			}
+
 			if(this.getMissedPercent()!=attestationDetail.getMissedPercent()){
 				return false;
 			}
