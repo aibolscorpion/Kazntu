@@ -56,13 +56,21 @@ public class NotificationViewModel extends ViewModel {
                 loadRv.set(false);
                 listOfNewsFromDB = accountDao.getNews();
                 notificationMutableLiveData.postValue(listOfNewsFromDB);
+                if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getNotificationListFromServer();
+                }
+            }else{
+                if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getNotificationListFromServer();
+                }else{
+                    loadRv.set(false);
+                    isEmpty.set(true);
+                }
             }
-            getNotificationListFromServer();
         });
         }
 
     private void getNotificationListFromServer(){
-        if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
             KaznituRetrofit.getApi().updateNotification().enqueue(new Callback<List<Notification>>() {
                 @Override
                 public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
@@ -91,7 +99,6 @@ public class NotificationViewModel extends ViewModel {
                     }
                 }
             });
-        }
     }
 
     MutableLiveData<List<Notification>> getNotificationMutableLiveData() {
@@ -111,7 +118,6 @@ public class NotificationViewModel extends ViewModel {
     private void exception(){
         loadRv.set(false);
         handleTimeout.setValue(true);
-        isEmpty.set(true);
     }
 
     private void update(List<Notification> news) {

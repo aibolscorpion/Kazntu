@@ -58,13 +58,23 @@ public class GradeViewModel extends ViewModel {
                 loadRv.set(false);
                 attestationListDB = accountDao.getAttestation();
                 attestationLiveDate.postValue(attestationListDB);
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getGradeListFromServer();
+                }
+            }else{
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getGradeListFromServer();
+                }else{
+                    loadRv.set(false);
+                    getEmptyBoolean.set(true);
+                }
             }
-            getGradeListFromServer();
         });
+
+
     }
 
     private void getGradeListFromServer() {
-        if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
             KaznituRetrofit.getApi().updateAttestation().enqueue(new Callback<List<Attestation>>() {
                 @Override
                 public void onResponse(Call<List<Attestation>> call, Response<List<Attestation>> response) {
@@ -91,7 +101,6 @@ public class GradeViewModel extends ViewModel {
                     }
                 }
             });
-        }
     }
 
         MutableLiveData<List<Attestation>> getAttestationLiveDate () {
@@ -119,6 +128,5 @@ public class GradeViewModel extends ViewModel {
     private void exception(){
         loadRv.set(false);
         handleTimeout.setValue(true);
-        getEmptyBoolean.set(true);
     }
     }

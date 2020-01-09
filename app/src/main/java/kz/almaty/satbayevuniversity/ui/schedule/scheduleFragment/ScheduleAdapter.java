@@ -1,6 +1,7 @@
 package kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -64,6 +65,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         this.scheduleList.clear();
         this.scheduleList.addAll(scheduleList);
         notifyItemRangeChanged(0, scheduleList.size());
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

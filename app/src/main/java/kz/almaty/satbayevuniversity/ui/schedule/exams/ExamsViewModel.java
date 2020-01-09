@@ -4,11 +4,13 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.AccountDao;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
@@ -50,13 +52,20 @@ public class ExamsViewModel extends ViewModel {
                 examListDB = accountDao.getExam();
                 examLiveData.postValue(examListDB);
                 getEmptyBoolean.set(examListDB.isEmpty());
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getExamListFromServer();
+                }
+            }else{
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getExamListFromServer();
+                }else{
+                    getEmptyBoolean.set(true);
+                }
             }
-            getExamListFromServer();
-    });
+        });
     }
 
     private void getExamListFromServer() {
-        if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
             KaznituRetrofit.getApi().updateExam().enqueue(new Callback<List<Exam>>() {
                 @Override
                 public void onResponse(Call<List<Exam>> call, Response<List<Exam>> response) {
@@ -78,7 +87,6 @@ public class ExamsViewModel extends ViewModel {
 
                 }
             });
-        }
     }
 
     MutableLiveData<List<Exam>> getExamLiveData(){

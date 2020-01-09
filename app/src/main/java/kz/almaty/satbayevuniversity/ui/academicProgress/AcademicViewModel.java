@@ -4,11 +4,13 @@ package kz.almaty.satbayevuniversity.ui.academicProgress;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.AccountDao;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
@@ -56,13 +58,21 @@ public class AcademicViewModel extends ViewModel {
                 loadRv.set(false);
                 responseJournalListForDB = accountDao.getResponseJournal();
                 academicData.postValue(responseJournalListForDB);
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getJournalListFromServer();
+                }
+            }else {
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getJournalListFromServer();
+                } else {
+                    loadRv.set(false);
+                    getEmptyBoolean.set(true);
+                }
             }
-            getJournalListFromServer();
         });
     }
 
      private void getJournalListFromServer() {
-         if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
              KaznituRetrofit.getApi().updateJournal().enqueue(new Callback<List<ResponseJournal>>() {
                  @Override
                  public void onResponse(Call<List<ResponseJournal>> call, Response<List<ResponseJournal>> response) {
@@ -105,7 +115,6 @@ public class AcademicViewModel extends ViewModel {
                      }
                  }
              });
-         }
      }
 
 
@@ -142,6 +151,5 @@ public class AcademicViewModel extends ViewModel {
     private void exception(){
         loadRv.set(false);
         handleTimeout.setValue(1);
-        getEmptyBoolean.set(true);
     }
 }

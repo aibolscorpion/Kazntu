@@ -57,13 +57,21 @@ public class TranscriptViewModel extends ViewModel {
                 loadRv.set(false);
                 semestersItemsDB = accountDao.getSemestersItem();
                 transcriptLiveData.postValue(semestersItemsDB);
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getSemesterItemListFromServer();
+                }
+            }else{
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getSemesterItemListFromServer();
+                }else{
+                    loadRv.set(false);
+                    getEmptyBoolean.set(true);
+                }
             }
-            getSemesterItemListFromServer();
         });
     }
 
     private void getSemesterItemListFromServer() {
-        if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
             KaznituRetrofit.getApi().updateTranscript().enqueue(new Callback<ResponseTranscript>() {
                 @Override
                 public void onResponse(Call<ResponseTranscript> call, Response<ResponseTranscript> response) {
@@ -91,7 +99,6 @@ public class TranscriptViewModel extends ViewModel {
                     }
                 }
             });
-        }
     }
 
     MutableLiveData<List<SemestersItem>> getTranscriptLiveData(){
@@ -120,6 +127,5 @@ public class TranscriptViewModel extends ViewModel {
     private void exception(){
         loadRv.set(false);
         handleTimeout.setValue(true);
-        getEmptyBoolean.set(true);
     }
 }

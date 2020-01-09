@@ -4,11 +4,13 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.AccountDao;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
@@ -54,14 +56,21 @@ public class ScheduleViewModel extends ViewModel {
                 loadRv.set(false);
                 scheduleListFromDb = accountDao.getSchedule();
                 scheduleLiveData.postValue(scheduleListFromDb);
+                if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
+                    getScheduleListFromServer();
+                }
+            }else{
+                if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
+                    getScheduleListFromServer();
+                }else{
+                    loadRv.set(false);
+                }
             }
-            getScheduleListFromServer();
         });
     }
 
 
     private void getScheduleListFromServer(){
-        if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()){
             KaznituRetrofit.getApi().updateSchedule().enqueue(new Callback<List<Schedule>>() {
                 @Override
                 public void onResponse(Call<List<Schedule>> call, Response<List<Schedule>> response) {
@@ -94,7 +103,6 @@ public class ScheduleViewModel extends ViewModel {
                 public void onFailure(Call<List<Schedule>> call, Throwable t) {
                 }
             });
-        }
 
     }
 
