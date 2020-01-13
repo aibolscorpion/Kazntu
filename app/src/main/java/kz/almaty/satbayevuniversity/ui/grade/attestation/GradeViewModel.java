@@ -1,6 +1,7 @@
 package kz.almaty.satbayevuniversity.ui.grade.attestation;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -9,6 +10,7 @@ import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.AccountDao;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
@@ -32,6 +34,7 @@ import retrofit2.Response;
 
 public class GradeViewModel extends ViewModel {
     // TODO: Implement the ViewModel
+    SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE);
     private MutableLiveData<List<Attestation>> attestationLiveDate = new MutableLiveData<>();
     private List<Attestation> attestationList = new ArrayList<>();
     private List<Attestation> attestationListDB = new ArrayList<>();
@@ -53,23 +56,30 @@ public class GradeViewModel extends ViewModel {
 
     void getAttestation() {
         loadRv.set(true);
-        executor.execute(() -> {
-            if(!accountDao.getAttestation().isEmpty()){
-                loadRv.set(false);
-                attestationListDB = accountDao.getAttestation();
-                attestationLiveDate.postValue(attestationListDB);
-                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                    getGradeListFromServer();
-                }
-            }else{
-                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                    getGradeListFromServer();
-                }else{
-                    loadRv.set(false);
-                    getEmptyBoolean.set(true);
-                }
+        boolean onlyServer = sharedPreferences.getBoolean(App.getContext().getString(R.string.only_server),false);
+        if(onlyServer){
+            if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                getGradeListFromServer();
             }
-        });
+        }else{
+            executor.execute(() -> {
+                if(!accountDao.getAttestation().isEmpty()){
+                    loadRv.set(false);
+                    attestationListDB = accountDao.getAttestation();
+                    attestationLiveDate.postValue(attestationListDB);
+                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                        getGradeListFromServer();
+                    }
+                }else{
+                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                        getGradeListFromServer();
+                    }else{
+                        loadRv.set(false);
+                        getEmptyBoolean.set(true);
+                    }
+                }
+            });
+        }
 
 
     }

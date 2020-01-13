@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 
 import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 import kz.almaty.satbayevuniversity.ui.grade.ViewPagerFragment;
 import kz.almaty.satbayevuniversity.ui.notification.NotificationFragment;
@@ -34,7 +36,7 @@ import static kz.almaty.satbayevuniversity.ui.HomeActivity.FRAGMENT_THIRD;
 import static kz.almaty.satbayevuniversity.ui.notification.NotificationFragment.NOTIFICATION_TAG;
 
 public class MainAcademicFragment extends Fragment {
-
+    SharedPreferences.Editor editor = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE).edit();
     private BottomNavigationView navigation;
     private static final String TAG = "MainAcademicFragment";
     public Toolbar toolbar;
@@ -46,18 +48,20 @@ public class MainAcademicFragment extends Fragment {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
+        editor.putBoolean(getString(R.string.only_server),false);
+        editor.apply();
         switch (item.getItemId()) {
             case R.id.academicProgressFragment:
-                replaceFragment(AcademicFragment.newInstance(),FRAGMENT_FIRST, R.id.main_academic_fragment_container);
+                replaceFragmentBackStack(AcademicFragment.newInstance(),FRAGMENT_FIRST, R.id.main_academic_fragment_container);
                 return true;
             case R.id.schedule:
-                replaceFragment(ViewPagerSchedule.newInstance(),FRAGMENT_SECOND, R.id.main_academic_fragment_container);
+                replaceFragmentBackStack(ViewPagerSchedule.newInstance(),FRAGMENT_SECOND, R.id.main_academic_fragment_container);
                 return true;
             case R.id.grade:
-                replaceFragment(ViewPagerFragment.newInstance(),FRAGMENT_THIRD, R.id.main_academic_fragment_container);
+                replaceFragmentBackStack(ViewPagerFragment.newInstance(),FRAGMENT_THIRD, R.id.main_academic_fragment_container);
                 return true;
             case R.id.notifications:
-                replaceFragment(NotificationFragment.newInstance(),NOTIFICATION_TAG, R.id.main_academic_fragment_container);
+                replaceFragmentBackStack(NotificationFragment.newInstance(),NOTIFICATION_TAG, R.id.main_academic_fragment_container);
                 return true;
         }
         return false;
@@ -98,15 +102,16 @@ public class MainAcademicFragment extends Fragment {
         imageView.setOnClickListener(v -> {
 
             if( connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-
+                editor.putBoolean(getString(R.string.only_server),true);
+                editor.apply();
                 if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.journal))) {
-                    replaceFragmentBackStack(AcademicFragment.newInstance());
+                    replaceFragment(AcademicFragment.newInstance());
                 }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.schedule))){
-                    replaceFragmentBackStack(ViewPagerSchedule.newInstance());
+                    replaceFragment(ViewPagerSchedule.newInstance());
                 }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.grade))){
-                    replaceFragmentBackStack(ViewPagerFragment.newInstance());
+                    replaceFragment(ViewPagerFragment.newInstance());
                 }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.notifications))){
-                    replaceFragmentBackStack(NotificationFragment.newInstance());
+                    replaceFragment(NotificationFragment.newInstance());
                 }
 
             } else Toast.makeText(getActivity(), R.string.internetConnection, Toast.LENGTH_SHORT).show();
@@ -115,13 +120,13 @@ public class MainAcademicFragment extends Fragment {
 
     }
 
-    private void replaceFragment(Fragment newFragment, String tag, int container) {
+    private void replaceFragmentBackStack(Fragment newFragment, String tag, int container) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(container, newFragment, tag)
                 .addToBackStack(tag)
                 .commit();
     }
-    private void replaceFragmentBackStack(Fragment newFragment) {
+    private void replaceFragment(Fragment newFragment) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.main_academic_fragment_container, newFragment)
                 .commit();

@@ -1,6 +1,7 @@
 package kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -30,6 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ScheduleViewModel extends ViewModel {
+    SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE);
     private List<Schedule> scheduleList = new ArrayList<>();
     private List<Schedule> scheduleListFromDb = new ArrayList<>();
     private MutableLiveData<List<Schedule>> scheduleLiveData = new MutableLiveData<>();
@@ -51,22 +53,30 @@ public class ScheduleViewModel extends ViewModel {
 
     public void getSchedule() {
         loadRv.set(true);
-        executor.execute(() ->{
-            if(!accountDao.getSchedule().isEmpty()){
-                loadRv.set(false);
-                scheduleListFromDb = accountDao.getSchedule();
-                scheduleLiveData.postValue(scheduleListFromDb);
-                if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
-                    getScheduleListFromServer();
-                }
-            }else{
-                if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
-                    getScheduleListFromServer();
-                }else{
-                    loadRv.set(false);
-                }
+
+        boolean onlyServer = sharedPreferences.getBoolean(App.getContext().getString(R.string.only_server),false);
+        if(onlyServer){
+            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
+                getScheduleListFromServer();
             }
-        });
+        }else{
+            executor.execute(() ->{
+                if(!accountDao.getSchedule().isEmpty()){
+                    loadRv.set(false);
+                    scheduleListFromDb = accountDao.getSchedule();
+                    scheduleLiveData.postValue(scheduleListFromDb);
+                    if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
+                        getScheduleListFromServer();
+                    }
+                }else{
+                    if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
+                        getScheduleListFromServer();
+                    }else{
+                        loadRv.set(false);
+                    }
+                }
+            });
+        }
     }
 
 

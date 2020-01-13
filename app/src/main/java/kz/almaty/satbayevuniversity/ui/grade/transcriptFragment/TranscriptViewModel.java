@@ -1,13 +1,16 @@
 package kz.almaty.satbayevuniversity.ui.grade.transcriptFragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.AccountDao;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
@@ -31,6 +34,7 @@ import retrofit2.Response;
 
 public class TranscriptViewModel extends ViewModel {
     // TODO: Implement the ViewModel
+    SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE);
     private List<SemestersItem> semestersItems = new ArrayList<>();
     private List<SemestersItem> semestersItemsDB = new ArrayList<>();
 
@@ -52,23 +56,30 @@ public class TranscriptViewModel extends ViewModel {
 
     public void getTranscript(){
         loadRv.set(true);
-        executor.execute(() ->{
-            if(!accountDao.getSemestersItem().isEmpty()){
-                loadRv.set(false);
-                semestersItemsDB = accountDao.getSemestersItem();
-                transcriptLiveData.postValue(semestersItemsDB);
-                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                    getSemesterItemListFromServer();
-                }
-            }else{
-                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                    getSemesterItemListFromServer();
-                }else{
-                    loadRv.set(false);
-                    getEmptyBoolean.set(true);
-                }
+        boolean onlyServer = sharedPreferences.getBoolean(App.getContext().getString(R.string.only_server),false);
+        if(onlyServer){
+            if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                getSemesterItemListFromServer();
             }
-        });
+        }else{
+            executor.execute(() ->{
+                if(!accountDao.getSemestersItem().isEmpty()){
+                    loadRv.set(false);
+                    semestersItemsDB = accountDao.getSemestersItem();
+                    transcriptLiveData.postValue(semestersItemsDB);
+                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                        getSemesterItemListFromServer();
+                    }
+                }else{
+                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                        getSemesterItemListFromServer();
+                    }else{
+                        loadRv.set(false);
+                        getEmptyBoolean.set(true);
+                    }
+                }
+            });
+        }
     }
 
     private void getSemesterItemListFromServer() {
