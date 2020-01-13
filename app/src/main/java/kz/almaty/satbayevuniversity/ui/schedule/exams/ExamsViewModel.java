@@ -46,23 +46,29 @@ public class ExamsViewModel extends ViewModel {
 
     private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
-    public void getExam(){
-        executor.execute(() ->{
-            if(!accountDao.getExam().isEmpty()){
-                examListDB = accountDao.getExam();
-                examLiveData.postValue(examListDB);
-                getEmptyBoolean.set(examListDB.isEmpty());
-                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                    getExamListFromServer();
-                }
-            }else{
-                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                    getExamListFromServer();
-                }else{
-                    getEmptyBoolean.set(true);
-                }
+    public void getExam(Boolean onlyServer){
+        if(onlyServer){
+            if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                getExamListFromServer();
             }
-        });
+        }else{
+            executor.execute(() ->{
+                if(!accountDao.getExam().isEmpty()){
+                    examListDB = accountDao.getExam();
+                    examLiveData.postValue(examListDB);
+                    getEmptyBoolean.set(examListDB.isEmpty());
+                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                        getExamListFromServer();
+                    }
+                }else{
+                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                        getExamListFromServer();
+                    }else{
+                        getEmptyBoolean.set(true);
+                    }
+                }
+            });
+        }
     }
 
     private void getExamListFromServer() {

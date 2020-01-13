@@ -48,16 +48,16 @@ public class MainAcademicFragment extends Fragment {
             = item -> {
         switch (item.getItemId()) {
             case R.id.academicProgressFragment:
-                replaceFragment(AcademicFragment.newInstance(),FRAGMENT_FIRST, R.id.main_academic_fragment_container);
+                replaceFragmentBackStack(AcademicFragment.newInstance(),FRAGMENT_FIRST, R.id.main_academic_fragment_container);
                 return true;
             case R.id.schedule:
-                replaceFragment(ViewPagerSchedule.newInstance(),FRAGMENT_SECOND, R.id.main_academic_fragment_container);
+                replaceFragmentBackStack(ViewPagerSchedule.newInstance(),FRAGMENT_SECOND, R.id.main_academic_fragment_container);
                 return true;
             case R.id.grade:
-                replaceFragment(ViewPagerFragment.newInstance(),FRAGMENT_THIRD, R.id.main_academic_fragment_container);
+                replaceFragmentBackStack(ViewPagerFragment.newInstance(),FRAGMENT_THIRD, R.id.main_academic_fragment_container);
                 return true;
             case R.id.notifications:
-                replaceFragment(NotificationFragment.newInstance(),NOTIFICATION_TAG, R.id.main_academic_fragment_container);
+                replaceFragmentBackStack(NotificationFragment.newInstance(),NOTIFICATION_TAG, R.id.main_academic_fragment_container);
                 return true;
         }
         return false;
@@ -98,30 +98,39 @@ public class MainAcademicFragment extends Fragment {
         imageView.setOnClickListener(v -> {
 
             if( connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(getString(R.string.only_server), true);
                 if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.journal))) {
-                    replaceFragmentBackStack(AcademicFragment.newInstance());
+                    AcademicFragment academicFragment = AcademicFragment.newInstance();
+                    academicFragment.setArguments(bundle);
+                    replaceFragment(AcademicFragment.newInstance());
                 }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.schedule))){
-                    replaceFragmentBackStack(ViewPagerSchedule.newInstance());
+                    ViewPagerSchedule viewPagerSchedule = ViewPagerSchedule.newInstance();
+                    viewPagerSchedule.setArguments(bundle);
+                    replaceFragment(viewPagerSchedule);
                 }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.grade))){
-                    replaceFragmentBackStack(ViewPagerFragment.newInstance());
-                }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.notifications))){
-                    replaceFragmentBackStack(NotificationFragment.newInstance());
+                    ViewPagerFragment viewPagerFragment = ViewPagerFragment.newInstance();
+                    viewPagerFragment.setArguments(bundle);
+                    replaceFragment(viewPagerFragment);
+                }else if (toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.notifications))) {
+                    NotificationFragment notificationFragment = NotificationFragment.newInstance();
+                    notificationFragment.setArguments(bundle);
+                    replaceFragment(notificationFragment);
                 }
-
-            } else Toast.makeText(getActivity(), R.string.internetConnection, Toast.LENGTH_SHORT).show();
+            }
+            else Toast.makeText(getActivity(), R.string.internetConnection, Toast.LENGTH_SHORT).show();
 
         });
 
     }
 
-    private void replaceFragment(Fragment newFragment, String tag, int container) {
+    private void replaceFragmentBackStack(Fragment newFragment, String tag, int container) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(container, newFragment, tag)
                 .addToBackStack(tag)
                 .commit();
     }
-    private void replaceFragmentBackStack(Fragment newFragment) {
+    private void replaceFragment(Fragment newFragment) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.main_academic_fragment_container, newFragment)
                 .commit();

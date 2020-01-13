@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,10 +42,18 @@ public class NotificationFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mViewModel = ViewModelProviders.of(this).get(NotificationViewModel.class);
         notificationFragmentBinding.setNotification(mViewModel);
-        mViewModel.getNotification();
 
+        Bundle bundle = this.getArguments();
+        if(bundle !=null ){
+            if(bundle.getBoolean(getString(R.string.only_server))){
+                mViewModel.getNotification(true);
+            }
+        }else{
+            mViewModel.getNotification(false);
+        }
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.notifications);
 
         notificationFragmentBinding.notificationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -51,25 +51,31 @@ public class GradeViewModel extends ViewModel {
     private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
 
-    void getAttestation() {
+    void getAttestation(boolean onlyServer) {
         loadRv.set(true);
-        executor.execute(() -> {
-            if(!accountDao.getAttestation().isEmpty()){
-                loadRv.set(false);
-                attestationListDB = accountDao.getAttestation();
-                attestationLiveDate.postValue(attestationListDB);
-                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                    getGradeListFromServer();
-                }
-            }else{
-                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                    getGradeListFromServer();
-                }else{
-                    loadRv.set(false);
-                    getEmptyBoolean.set(true);
-                }
+        if(onlyServer){
+            if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                getGradeListFromServer();
             }
-        });
+        }else{
+            executor.execute(() -> {
+                if(!accountDao.getAttestation().isEmpty()){
+                    loadRv.set(false);
+                    attestationListDB = accountDao.getAttestation();
+                    attestationLiveDate.postValue(attestationListDB);
+                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                        getGradeListFromServer();
+                    }
+                }else{
+                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                        getGradeListFromServer();
+                    }else{
+                        loadRv.set(false);
+                        getEmptyBoolean.set(true);
+                    }
+                }
+            });
+        }
 
 
     }

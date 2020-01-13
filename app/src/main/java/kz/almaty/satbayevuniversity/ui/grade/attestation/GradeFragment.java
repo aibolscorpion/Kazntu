@@ -45,13 +45,20 @@ public class GradeFragment extends Fragment {
 
         gradeFragmentBinding.setGrade(mViewModel);
 
+        Bundle bundle = this.getArguments();
+        if(bundle !=null){
+            if(bundle.getBoolean(getString(R.string.only_server))){
+                mViewModel.getAttestation(true);
+            }
+        }else{
+            mViewModel.getAttestation(false);
+        }
         gradeFragmentBinding.gradeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         gradeFragmentBinding.gradeRecyclerView.setHasFixedSize(true);
 
         attestationAdapter = new AttestationAdapter();
         gradeFragmentBinding.gradeRecyclerView.setAdapter(attestationAdapter);
 
-        mViewModel.getAttestation();
         mViewModel.getAttestationLiveDate().observe(this, attestations -> {
             attestationAdapter.setAttestationList(attestations);
             System.out.println("###### "+attestations.size());

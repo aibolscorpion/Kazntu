@@ -45,7 +45,14 @@ public class ViewPagerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.grade);
 
-        setupViewPager(viewPager);
+        Bundle bundle = this.getArguments();
+        if(bundle !=null){
+            if(bundle.getBoolean(getString(R.string.only_server))){
+                setupViewPager(viewPager,true);
+            }
+        }else{
+            setupViewPager(viewPager,false);
+        }
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -65,11 +72,20 @@ public class ViewPagerFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
-    private void setupViewPager(ViewPager viewPager){
+    private void setupViewPager(ViewPager viewPager,boolean onlyServer){
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+        GradeFragment gradeFragment = new GradeFragment();
+        TranscriptFragment transcriptFragment = new TranscriptFragment();
 
-        viewPagerAdapter.addFragment(new GradeFragment(), "Аттестация");
-        viewPagerAdapter.addFragment(new TranscriptFragment(), "Транскрипт");
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(getString(R.string.only_server),true);
+        if(onlyServer){
+            gradeFragment.setArguments(bundle);
+            transcriptFragment.setArguments(bundle);
+        }
+
+        viewPagerAdapter.addFragment(gradeFragment, "Аттестация");
+        viewPagerAdapter.addFragment(transcriptFragment, "Транскрипт");
 
         viewPager.setAdapter(viewPagerAdapter);
     }

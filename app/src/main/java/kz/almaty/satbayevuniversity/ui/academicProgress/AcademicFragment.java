@@ -63,6 +63,14 @@ public class AcademicFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(AcademicViewModel.class);
         academicFragmentBinding.setAcademicViewModel(mViewModel);
 
+        Bundle bundle = this.getArguments();
+        if(bundle !=null ){
+            if(bundle.getBoolean(getString(R.string.only_server))){
+                mViewModel.getJournal(true);
+            }
+        }else{
+            mViewModel.getJournal(false);
+        }
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.journal);
 
         academicFragmentBinding.journalRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -71,8 +79,6 @@ public class AcademicFragment extends Fragment {
         academicAdapterResponse = new AcademicAdapterResponse(getActivity());
 
         academicFragmentBinding.journalRecyclerView.setAdapter(academicAdapterResponse);
-
-        mViewModel.getJournal();
 
         mViewModel.getAcademicData().observe(this, responseJournals -> {
             academicAdapterResponse.setResponseJournalList(responseJournals);

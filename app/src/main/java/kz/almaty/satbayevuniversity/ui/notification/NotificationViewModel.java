@@ -49,25 +49,31 @@ public class NotificationViewModel extends ViewModel {
     private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
 
-    void getNotification(){
+    void getNotification(boolean onlyServer){
         loadRv.set(true);
-        executor.execute(() ->{
-            if(!accountDao.getNews().isEmpty()){
-                loadRv.set(false);
-                listOfNewsFromDB = accountDao.getNews();
-                notificationMutableLiveData.postValue(listOfNewsFromDB);
-                if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                    getNotificationListFromServer();
-                }
-            }else{
-                if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                    getNotificationListFromServer();
-                }else{
-                    loadRv.set(false);
-                    isEmpty.set(true);
-                }
+        if(onlyServer){
+            if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                getNotificationListFromServer();
             }
-        });
+        }else {
+            executor.execute(() -> {
+                if (!accountDao.getNews().isEmpty()) {
+                    loadRv.set(false);
+                    listOfNewsFromDB = accountDao.getNews();
+                    notificationMutableLiveData.postValue(listOfNewsFromDB);
+                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                        getNotificationListFromServer();
+                    }
+                } else {
+                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                        getNotificationListFromServer();
+                    } else {
+                        loadRv.set(false);
+                        isEmpty.set(true);
+                    }
+                }
+            });
+        }
         }
 
     private void getNotificationListFromServer(){
