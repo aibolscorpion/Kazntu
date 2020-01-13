@@ -48,14 +48,7 @@ public class TranscriptFragment extends Fragment {
         TranscriptViewModel mViewModel = ViewModelProviders.of(this).get(TranscriptViewModel.class);
         transcriptFragmentBinding.setTranscript(mViewModel);
 
-        Bundle bundle = this.getArguments();
-        if(bundle !=null){
-            if(bundle.getBoolean(getString(R.string.only_server))){
-                mViewModel.getTranscript(true);
-            }
-        }else{
-            mViewModel.getTranscript(false);
-        }
+        mViewModel.getTranscript();
 
         transcriptFragmentBinding.transcriptRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         transcriptFragmentBinding.transcriptRecyclerView.setHasFixedSize(true);

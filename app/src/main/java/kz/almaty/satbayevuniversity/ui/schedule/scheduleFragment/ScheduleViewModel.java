@@ -1,6 +1,7 @@
 package kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -30,6 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ScheduleViewModel extends ViewModel {
+    SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE);
     private List<Schedule> scheduleList = new ArrayList<>();
     private List<Schedule> scheduleListFromDb = new ArrayList<>();
     private MutableLiveData<List<Schedule>> scheduleLiveData = new MutableLiveData<>();
@@ -49,8 +51,10 @@ public class ScheduleViewModel extends ViewModel {
     private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
 
-    public void getSchedule(Boolean onlyServer) {
+    public void getSchedule() {
         loadRv.set(true);
+
+        boolean onlyServer = sharedPreferences.getBoolean(App.getContext().getString(R.string.only_server),false);
         if(onlyServer){
             if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
                 getScheduleListFromServer();

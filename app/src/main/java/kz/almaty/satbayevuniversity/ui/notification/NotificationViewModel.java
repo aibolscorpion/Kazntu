@@ -1,6 +1,7 @@
 package kz.almaty.satbayevuniversity.ui.notification;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -9,6 +10,7 @@ import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.AccountDao;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
@@ -30,6 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NotificationViewModel extends ViewModel {
+    SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE);
     public ObservableBoolean isEmpty = new ObservableBoolean();
 
     private MutableLiveData<List<Notification>> notificationMutableLiveData = new MutableLiveData<>();
@@ -49,25 +52,26 @@ public class NotificationViewModel extends ViewModel {
     private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
 
-    void getNotification(boolean onlyServer){
+    void getNotification(){
         loadRv.set(true);
+        boolean onlyServer = sharedPreferences.getBoolean(App.getContext().getString(R.string.only_server),false);
         if(onlyServer){
-            if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
                 getNotificationListFromServer();
             }
-        }else {
-            executor.execute(() -> {
-                if (!accountDao.getNews().isEmpty()) {
+        }else{
+            executor.execute(() ->{
+                if(!accountDao.getNews().isEmpty()){
                     loadRv.set(false);
                     listOfNewsFromDB = accountDao.getNews();
                     notificationMutableLiveData.postValue(listOfNewsFromDB);
-                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
                         getNotificationListFromServer();
                     }
-                } else {
-                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                }else{
+                    if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
                         getNotificationListFromServer();
-                    } else {
+                    }else{
                         loadRv.set(false);
                         isEmpty.set(true);
                     }

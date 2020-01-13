@@ -1,6 +1,7 @@
 package kz.almaty.satbayevuniversity.ui.schedule.exams;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -30,6 +31,7 @@ import retrofit2.Response;
 
 public class ExamsViewModel extends ViewModel {
     // TODO: Implement the ViewModel
+    SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE);
     private MutableLiveData<List<Exam>> examLiveData = new MutableLiveData<>();
     private List<Exam> examList = new ArrayList<>();
     private List<Exam> examListDB = new ArrayList<>();
@@ -46,7 +48,9 @@ public class ExamsViewModel extends ViewModel {
 
     private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
-    public void getExam(Boolean onlyServer){
+    public void getExam(){
+
+        boolean onlyServer = sharedPreferences.getBoolean(App.getContext().getString(R.string.only_server),false);
         if(onlyServer){
             if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
                 getExamListFromServer();

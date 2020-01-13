@@ -2,8 +2,10 @@ package kz.almaty.satbayevuniversity.ui.academicProgress;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.databinding.ObservableBoolean;
@@ -33,6 +35,8 @@ import retrofit2.Response;
 
 public class AcademicViewModel extends ViewModel {
     // TODO: Implement the ViewModel
+    SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE);
+
     private MutableLiveData<List<ResponseJournal>> academicData = new MutableLiveData<>();
     private List<ResponseJournal> responseJournalList = new ArrayList<>();
     private List<ResponseJournal> responseJournalListForDB = new ArrayList<>();
@@ -51,13 +55,14 @@ public class AcademicViewModel extends ViewModel {
             TimeUnit.SECONDS, queue);
     private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
-    void getJournal(boolean onlyServer) {
+    void getJournal() {
         loadRv.set(true);
+        boolean onlyServer = sharedPreferences.getBoolean(App.getContext().getString(R.string.only_server),false);
         if(onlyServer){
             if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
                 getJournalListFromServer();
             }
-        }else {
+        }else{
             executor.execute(() ->{
                 if(!accountDao.getResponseJournal().isEmpty()){
                     loadRv.set(false);

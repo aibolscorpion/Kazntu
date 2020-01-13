@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 
 import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 import kz.almaty.satbayevuniversity.ui.grade.ViewPagerFragment;
 import kz.almaty.satbayevuniversity.ui.notification.NotificationFragment;
@@ -34,7 +36,7 @@ import static kz.almaty.satbayevuniversity.ui.HomeActivity.FRAGMENT_THIRD;
 import static kz.almaty.satbayevuniversity.ui.notification.NotificationFragment.NOTIFICATION_TAG;
 
 public class MainAcademicFragment extends Fragment {
-
+    SharedPreferences.Editor editor = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE).edit();
     private BottomNavigationView navigation;
     private static final String TAG = "MainAcademicFragment";
     public Toolbar toolbar;
@@ -46,6 +48,8 @@ public class MainAcademicFragment extends Fragment {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
+        editor.putBoolean(getString(R.string.only_server),false);
+        editor.apply();
         switch (item.getItemId()) {
             case R.id.academicProgressFragment:
                 replaceFragmentBackStack(AcademicFragment.newInstance(),FRAGMENT_FIRST, R.id.main_academic_fragment_container);
@@ -98,27 +102,19 @@ public class MainAcademicFragment extends Fragment {
         imageView.setOnClickListener(v -> {
 
             if( connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(getString(R.string.only_server), true);
+                editor.putBoolean(getString(R.string.only_server),true);
+                editor.apply();
                 if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.journal))) {
-                    AcademicFragment academicFragment = AcademicFragment.newInstance();
-                    academicFragment.setArguments(bundle);
                     replaceFragment(AcademicFragment.newInstance());
                 }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.schedule))){
-                    ViewPagerSchedule viewPagerSchedule = ViewPagerSchedule.newInstance();
-                    viewPagerSchedule.setArguments(bundle);
-                    replaceFragment(viewPagerSchedule);
+                    replaceFragment(ViewPagerSchedule.newInstance());
                 }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.grade))){
-                    ViewPagerFragment viewPagerFragment = ViewPagerFragment.newInstance();
-                    viewPagerFragment.setArguments(bundle);
-                    replaceFragment(viewPagerFragment);
-                }else if (toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.notifications))) {
-                    NotificationFragment notificationFragment = NotificationFragment.newInstance();
-                    notificationFragment.setArguments(bundle);
-                    replaceFragment(notificationFragment);
+                    replaceFragment(ViewPagerFragment.newInstance());
+                }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.notifications))){
+                    replaceFragment(NotificationFragment.newInstance());
                 }
-            }
-            else Toast.makeText(getActivity(), R.string.internetConnection, Toast.LENGTH_SHORT).show();
+
+            } else Toast.makeText(getActivity(), R.string.internetConnection, Toast.LENGTH_SHORT).show();
 
         });
 
