@@ -49,30 +49,24 @@ public class ScheduleViewModel extends ViewModel {
     private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
 
-    public void getSchedule(Boolean onlyServer) {
+    public void getSchedule() {
         loadRv.set(true);
-        if(onlyServer){
-            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
-                getScheduleListFromServer();
-            }
-        }else{
-            executor.execute(() ->{
-                if(!accountDao.getSchedule().isEmpty()){
-                    loadRv.set(false);
-                    scheduleListFromDb = accountDao.getSchedule();
-                    scheduleLiveData.postValue(scheduleListFromDb);
-                    if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
-                        getScheduleListFromServer();
-                    }
-                }else{
-                    if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
-                        getScheduleListFromServer();
-                    }else{
-                        loadRv.set(false);
-                    }
+        executor.execute(() ->{
+            if(!accountDao.getSchedule().isEmpty()){
+                loadRv.set(false);
+                scheduleListFromDb = accountDao.getSchedule();
+                scheduleLiveData.postValue(scheduleListFromDb);
+                if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
+                    getScheduleListFromServer();
                 }
-            });
-        }
+            }else{
+                if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ){
+                    getScheduleListFromServer();
+                }else{
+                    loadRv.set(false);
+                }
+            }
+        });
     }
 
 

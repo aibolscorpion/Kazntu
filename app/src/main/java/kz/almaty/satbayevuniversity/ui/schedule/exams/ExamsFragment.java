@@ -42,20 +42,13 @@ public class ExamsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ExamsViewModel.class);
         examsFragmentBinding.setExams(mViewModel);
-
-        Bundle bundle = this.getArguments();
-        if(bundle !=null){
-            if(bundle.getBoolean(getString(R.string.only_server))){
-                mViewModel.getExam(true);
-            }
-        }else{
-            mViewModel.getExam(false);
-        }
         examsFragmentBinding.examRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         examsFragmentBinding.examRecyclerView.setHasFixedSize(true);
 
         examAdapter = new ExamAdapter();
         examsFragmentBinding.examRecyclerView.setAdapter(examAdapter);
+
+        mViewModel.getExam();
 
         mViewModel.getExamLiveData().observe(this, examList -> {
             System.out.println(examList.size() + " :size");

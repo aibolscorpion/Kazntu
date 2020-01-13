@@ -51,31 +51,25 @@ public class AcademicViewModel extends ViewModel {
             TimeUnit.SECONDS, queue);
     private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
-    void getJournal(boolean onlyServer) {
+    void getJournal() {
         loadRv.set(true);
-        if(onlyServer){
-            if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                getJournalListFromServer();
-            }
-        }else {
-            executor.execute(() ->{
-                if(!accountDao.getResponseJournal().isEmpty()){
-                    loadRv.set(false);
-                    responseJournalListForDB = accountDao.getResponseJournal();
-                    academicData.postValue(responseJournalListForDB);
-                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                        getJournalListFromServer();
-                    }
-                }else {
-                    if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
-                        getJournalListFromServer();
-                    } else {
-                        loadRv.set(false);
-                        getEmptyBoolean.set(true);
-                    }
+        executor.execute(() ->{
+            if(!accountDao.getResponseJournal().isEmpty()){
+                loadRv.set(false);
+                responseJournalListForDB = accountDao.getResponseJournal();
+                academicData.postValue(responseJournalListForDB);
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getJournalListFromServer();
                 }
-            });
-        }
+            }else {
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getJournalListFromServer();
+                } else {
+                    loadRv.set(false);
+                    getEmptyBoolean.set(true);
+                }
+            }
+        });
     }
 
      private void getJournalListFromServer() {

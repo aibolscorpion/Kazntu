@@ -49,6 +49,5 @@
     <string name="cancelComplaint">Отменить</string>
     <string name="writeComplaint">Заполните жалобу!</string>
     <string name="missed">пропусков</string>
-    <string name="only_server" translatable="false">onlyServer</string>
 
 </resources>

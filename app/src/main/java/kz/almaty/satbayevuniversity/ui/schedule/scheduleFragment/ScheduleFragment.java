@@ -70,17 +70,6 @@ public class ScheduleFragment extends Fragment implements Cloneable{
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
         scheduleFragmentBinding.setSchedule(mViewModel);
-
-        Bundle bundle = this.getArguments();
-        if(bundle !=null){
-            if(bundle.getBoolean(getString(R.string.only_server))){
-                mViewModel.getSchedule(true);
-            }
-        }
-        else{
-                mViewModel.getSchedule(false);
-            }
-
         scheduleFragmentBinding.scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         scheduleFragmentBinding.scheduleRecyclerView.setHasFixedSize(true);
 
@@ -88,7 +77,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
         scheduleFragmentBinding.scheduleRecyclerView.setAdapter(scheduleAdapter);
         scheduleFragmentBinding.scheduleRecyclerView.setItemAnimator(null);
 
-
+        mViewModel.getSchedule();
         setDateSchedule(currentDay);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.schedule);

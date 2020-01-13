@@ -46,14 +46,7 @@ public class ViewPagerSchedule extends Fragment {
         super.onActivityCreated(savedInstanceState);
         viewPager.setPagingEnabled(false);
 
-        Bundle bundle = this.getArguments();
-        if(bundle !=null){
-            if(bundle.getBoolean(getString(R.string.only_server))){
-                setupViewPager(viewPager,true);
-            }
-        }else{
-            setupViewPager(viewPager,false);
-        }
+        setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -77,22 +70,14 @@ public class ViewPagerSchedule extends Fragment {
     }
 
 
-    private void setupViewPager(ViewPager viewPager,boolean onlyServer){
+    private void setupViewPager(ViewPager viewPager){
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        ScheduleFragment scheduleFragment = ScheduleFragment.newInstance();
-        ExamsFragment examsFragment = ExamsFragment.newInstance();
 
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(getString(R.string.only_server),true);
-
-        if(onlyServer){
-            scheduleFragment.setArguments(bundle);
-            examsFragment.setArguments(bundle);
-        }
-        viewPagerAdapter.addFragment(scheduleFragment, getString(R.string.schedule));
-        viewPagerAdapter.addFragment(examsFragment, getString(R.string.exam));
+        viewPagerAdapter.addFragment(new ScheduleFragment(), getString(R.string.schedule));
+        viewPagerAdapter.addFragment(new ExamsFragment(), getString(R.string.exam));
 
         viewPager.setAdapter(viewPagerAdapter);
     }
+
 
 }
