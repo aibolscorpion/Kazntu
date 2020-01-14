@@ -184,7 +184,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void replaceFragment(Fragment newFragment, String tag, int container) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(container, newFragment, tag)
-                .commit();
+                .addToBackStack(tag).commit();
     }
 
     @Override
