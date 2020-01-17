@@ -94,7 +94,9 @@ dependencies {
     implementation 'br.com.simplepass:loading-button-android:2.2.0'
 
     //CalendarView
-    implementation 'noman.weekcalendar:weekcalendar:1.0.6'
+    implementation 'com.github.kizitonwose:CalendarView:0.3.1'
+
+    implementation 'joda-time:joda-time:2.9.4'
     api group: 'commons-io', name: 'commons-io', version: '2.6'
 
     //object storage

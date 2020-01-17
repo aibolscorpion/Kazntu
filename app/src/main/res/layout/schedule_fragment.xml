@@ -19,21 +19,27 @@
         tools:context="kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.ScheduleFragment"
         android:background="@color/colorWhite">
 
-    <noman.weekcalendar.WeekCalendar
-            android:id="@+id/weekCalendar"
+        <include
+            android:id="@+id/calendar_day_legend"
+            layout="@layout/calendar_day_legend"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            app:weekBackgroundColor="@color/colorWhite"
-            app:daysBackgroundColor="@color/colorWhite"
-            app:numOfPages="3"
-            app:daysTextColor="@color/black"
-            app:weekTextColor="@color/black"
-            app:dayNameLength="threeLetters"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <com.kizitonwose.calendarview.CalendarView
+            android:id="@+id/weekCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cv_dayViewResource="@layout/calendar_day_layout"
+            app:layout_constraintTop_toBottomOf="@+id/calendar_day_legend"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:todaysDateBgColor="#daedf4"
-            app:selectedBgColor="@color/colorAccent" />
+            app:cv_maxRowCount="1"
+            app:cv_orientation="horizontal"
+            app:cv_scrollMode="paged"
+            app:cv_hasBoundaries="false"
+        />
 
         <ProgressBar
             android:layout_width="40dp"

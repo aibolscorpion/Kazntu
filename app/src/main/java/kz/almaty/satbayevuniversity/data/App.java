@@ -5,6 +5,8 @@ import android.content.Context;
 
 import androidx.room.Room;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
 import kz.almaty.satbayevuniversity.utils.LocaleHelper;
 
 public class App extends Application {
@@ -17,6 +19,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        AndroidThreeTen.init(this);
         instance = this;
         database = Room.databaseBuilder(this, AppDatabase.class, "database")
                 .fallbackToDestructiveMigration()

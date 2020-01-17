@@ -1,9 +1,13 @@
 package kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment;
 
 import android.annotation.SuppressLint;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,14 +15,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+import com.kizitonwose.calendarview.CalendarView;
+import com.kizitonwose.calendarview.model.CalendarDay;
+import com.kizitonwose.calendarview.ui.DayBinder;
+import com.kizitonwose.calendarview.ui.ViewContainer;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.YearMonth;
+import org.threeten.bp.format.DateTimeFormatter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.AccountDao;
@@ -29,14 +44,9 @@ import kz.almaty.satbayevuniversity.databinding.ScheduleFragmentBinding;
 import kz.almaty.satbayevuniversity.ui.LoginActivity;
 import kz.almaty.satbayevuniversity.utils.OnSwipeTouchListener;
 
-import org.joda.time.DateTime;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-
 public class ScheduleFragment extends Fragment implements Cloneable{
-
+    LocalDate selectedDate,oldDate;
+    CalendarView calendarView;
     ArrayList<Schedule> localScheduleList;
     private ScheduleViewModel mViewModel;
     private ScheduleAdapter scheduleAdapter;
@@ -48,6 +58,8 @@ public class ScheduleFragment extends Fragment implements Cloneable{
     ScheduleFragmentBinding scheduleFragmentBinding;
     private int i=0;
 
+    private DateTimeFormatter dayOfMonthFormatter = DateTimeFormatter.ofPattern("d");
+    private DateTimeFormatter dayOfWeekFormatter = DateTimeFormatter.ofPattern("EE");
     public ScheduleFragment() {
     }
 
@@ -61,6 +73,8 @@ public class ScheduleFragment extends Fragment implements Cloneable{
         scheduleFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.schedule_fragment, container, false);
         View view = scheduleFragmentBinding.getRoot();
         emptyConstraint = view.findViewById(R.id.emptyConstraint);
+        calendarView =  view.findViewById(R.id.weekCalendar);
+
         return view;
     }
 
@@ -68,6 +82,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
         scheduleFragmentBinding.setSchedule(mViewModel);
         scheduleFragmentBinding.scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -82,27 +97,30 @@ public class ScheduleFragment extends Fragment implements Cloneable{
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.schedule);
         scheduleFragmentBinding.scheduleRecyclerView.setNestedScrollingEnabled(false);
-        scheduleFragmentBinding.weekCalendar.reset();
 
         //swipe weekCalendar
         scheduleFragmentBinding.scheduleRecyclerView.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
 
             public void onSwipeRight() {
-                scheduleFragmentBinding.weekCalendar.moveToPrevious();
                 currentDay = currentDay.minusDays(1);
                 setDateSchedule(currentDay);
+                oldDate = toLocalDate(currentDay.plusDays(1));
+                calendarView.notifyDateChanged(oldDate);
+                selectedDate = toLocalDate(currentDay);
+                calendarView.notifyDateChanged(selectedDate);
+                calendarView.scrollToDate(toLocalDate(currentDay));
             }
             public void onSwipeLeft() {
-                scheduleFragmentBinding.weekCalendar.moveToNext();
                 currentDay = currentDay.plusDays(1);
                 setDateSchedule(currentDay);
+                oldDate = toLocalDate(currentDay.minusDays(1));
+                calendarView.notifyDateChanged(oldDate);
+                selectedDate = toLocalDate(currentDay);
+                calendarView.notifyDateChanged(selectedDate);
+                calendarView.scrollToDate(toLocalDate(currentDay));
             }
         });
 
-        scheduleFragmentBinding.weekCalendar.setOnDateClickListener(dateTime -> {
-            setDateSchedule(dateTime);
-            currentDay = dateTime;
-        });
 
         mViewModel.getHandleTimeout().observe(this, integer -> {
             if (integer == 1) {
@@ -118,6 +136,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
             }
         });
 
+        setCalendar();
     }
 
     private void setDateSchedule(DateTime dateTime) {
@@ -182,5 +201,64 @@ public class ScheduleFragment extends Fragment implements Cloneable{
 
         });
 
+    }
+    private void setCalendar(){
+        class DayViewContainer extends ViewContainer {
+            CalendarDay day;
+            public DayViewContainer(View view) {
+                super(view);
+                final TextView dayOfMonthText = view.findViewById(R.id.dayOfMonthText);
+                dayOfMonthText.setOnClickListener(v -> {
+                    oldDate = selectedDate;
+                    selectedDate = day.getDate();
+                    currentDay = toDateTime(day.getDate());
+                    setDateSchedule(currentDay);
+                    calendarView.notifyDateChanged(selectedDate);
+                    if(oldDate!=null)
+                        calendarView.notifyDateChanged(oldDate);
+                });
+            }
+        }
+        calendarView.setDayBinder(new DayBinder<DayViewContainer>(){
+
+            @Override
+            public DayViewContainer create(View view) {
+                return new DayViewContainer(view);
+            }
+            @Override
+            public void bind(DayViewContainer dayViewContainer, CalendarDay calendarDay) {
+
+                dayViewContainer.day = calendarDay;
+                TextView dayOfMonth = dayViewContainer.getView().findViewById(R.id.dayOfMonthText);
+                dayOfMonth.setText(dayOfMonthFormatter.format(calendarDay.getDate()));
+
+                     if(calendarDay.getDate().equals(selectedDate)){
+                        dayOfMonth.setBackgroundResource(R.drawable.day_seleceted_bg);
+                        dayOfMonth.setTextColor(getResources().getColor(R.color.colorWhite));
+                    }else if(calendarDay.getDate().equals(LocalDate.now())){
+                        dayOfMonth.setBackgroundResource(R.drawable.today_bg);
+                        dayOfMonth.setTextColor(getResources().getColor(R.color.black));
+                    }else{
+                        dayOfMonth.setBackground(null);
+                        dayOfMonth.setTextColor(getResources().getColor(R.color.black));
+
+                    }
+            }
+        });
+        YearMonth currentMonth = YearMonth.now();
+        YearMonth firstMonth = currentMonth.minusMonths(1);
+        YearMonth lastMonth = currentMonth.plusMonths(1);
+        DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY;
+        calendarView.setup(firstMonth, lastMonth, firstDayOfWeek);
+        calendarView.scrollToDate(LocalDate.now());
+    }
+    public DateTime toDateTime(LocalDate localDate) {
+        return new DateTime(DateTimeZone.UTC).withDate(
+                localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth()
+        ).withTime(0, 0, 0, 0);
+    }
+    public LocalDate toLocalDate(DateTime dateTime) {
+        DateTime dateTimeUtc = dateTime.withZone(DateTimeZone.UTC);
+        return LocalDate.of(dateTimeUtc.getYear(), dateTimeUtc.getMonthOfYear(), dateTimeUtc.getDayOfMonth());
     }
 }
