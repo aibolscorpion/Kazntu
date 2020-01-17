@@ -1,10 +1,13 @@
 package kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,8 +24,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     private List<Schedule> scheduleList = new ArrayList<>();
     private ScheduleItemBinding scheduleItemBinding;
     private Context context;
-//    private int red, green, blue;
-//    private ColorArray colorArray = new ColorArray();
     private int[] colors = App.getContext().getResources().getIntArray(R.array.colors);
 
     public ScheduleAdapter(Context context) {
@@ -40,15 +41,15 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ScheduleAdapter.ViewHolder holder, int position) {
 
-//        red = colorArray.colorArrayList.get(position).getDisplayP3Red();
-//        green = colorArray.colorArrayList.get(position).getGreen();
-//        blue = colorArray.colorArrayList.get(position).getBlue();
 
         Schedule currentSchedule = scheduleList.get(position);
         holder.scheduleItemBinding.setSchedule(currentSchedule);
 
         if(currentSchedule.getDayOfWeekId() != 0){
-                holder.scheduleItemBinding.constraintOfScheduleItem.setBackgroundColor(colors[position]);
+            LayerDrawable layerDrawable1 = (LayerDrawable)ContextCompat.getDrawable(App.getContext(),R.drawable.underline);
+            GradientDrawable gradientDrawable = (GradientDrawable) layerDrawable1.findDrawableByLayerId(R.id.underline_item);
+            gradientDrawable.setColor(colors[position]);
+            holder.scheduleItemBinding.constraintOfScheduleItem.setBackground(layerDrawable1);
         }
         else{
            holder.scheduleItemBinding.constraintOfScheduleItem.setBackgroundResource(R.drawable.underline);

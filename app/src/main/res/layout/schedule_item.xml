@@ -26,7 +26,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/guideline10"
             app:layout_constraintTop_toTopOf="@+id/scheduleCourseTitle"
-            tools:text="8:50-9:50" />
+            tools:text="8:50-9:50"
+            android:layout_marginTop="5dp"/>
 
         <TextView
             app:layout_constraintBottom_toTopOf="@+id/scheduleInstructorName"
@@ -35,17 +36,20 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_semibold"
             android:text="@{schedule.courseTitle}"
+            android:textColor="@color/schedule_item_textview"
             app:layout_constraintStart_toEndOf="@+id/guideline10"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Системное программирование" />
+            tools:text="Системное программирование"
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:id="@+id/scheduleInstructorName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/open_sans_semibold"
+            android:fontFamily="@font/open_sans_regular"
             android:text="@{schedule.instructorName}"
+            android:textColor="@color/schedule_item_textview"
             app:layout_constraintStart_toStartOf="@+id/guideline10"
             app:layout_constraintTop_toBottomOf="@+id/scheduleCourseTitle"
             app:layout_constraintBottom_toTopOf="@+id/roomTitle"
@@ -56,12 +60,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/open_sans_semibold"
+            android:fontFamily="@font/open_sans_regular"
             android:text="@{schedule.roomTitle}"
+            android:textColor="@color/schedule_item_textview"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/guideline10"
             app:layout_constraintTop_toBottomOf="@+id/scheduleInstructorName"
-            tools:text="ГУК 1134" />
+            tools:text="ГУК 1134"
+            android:layout_marginBottom="5dp"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline10"

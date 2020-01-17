@@ -17,6 +17,7 @@
     <color name="main_background">#2E4056</color>
     <color name="dark_red">#E40000</color>
     <color name="dark_grey">#7E7E7E</color>
+    <color name="schedule_item_textview">#2C2C2C</color>
     <color name="today_bg_color">#daedf4</color>
     <array name="colors">
         <item>#fff8dc</item>
