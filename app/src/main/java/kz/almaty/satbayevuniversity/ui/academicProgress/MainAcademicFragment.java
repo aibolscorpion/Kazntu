@@ -41,6 +41,7 @@ public class MainAcademicFragment extends Fragment {
     private static final String TAG = "MainAcademicFragment";
     public Toolbar toolbar;
     public ImageView imageView;
+    boolean firstTime = false;
 
     public static MainAcademicFragment newInstance() {
         return new MainAcademicFragment();
@@ -52,15 +53,22 @@ public class MainAcademicFragment extends Fragment {
         editor.apply();
         switch (item.getItemId()) {
             case R.id.academicProgressFragment:
-                replaceFragmentBackStack(AcademicFragment.newInstance(),FRAGMENT_FIRST, R.id.main_academic_fragment_container);
+                if(firstTime){
+                    replaceFragment(AcademicFragment.newInstance());
+                }else{
+                    replaceFragmentBackStack(AcademicFragment.newInstance(),FRAGMENT_FIRST,R.id.main_academic_fragment_container);
+                }
                 return true;
             case R.id.schedule:
+                firstTime = false;
                 replaceFragmentBackStack(ViewPagerSchedule.newInstance(),FRAGMENT_SECOND, R.id.main_academic_fragment_container);
                 return true;
             case R.id.grade:
+                firstTime = false;
                 replaceFragmentBackStack(ViewPagerFragment.newInstance(),FRAGMENT_THIRD, R.id.main_academic_fragment_container);
                 return true;
             case R.id.notifications:
+                firstTime = false;
                 replaceFragmentBackStack(NotificationFragment.newInstance(),NOTIFICATION_TAG, R.id.main_academic_fragment_container);
                 return true;
         }
@@ -69,7 +77,7 @@ public class MainAcademicFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
+        firstTime = true;
         View view = inflater.inflate(R.layout.main_academic_fragment, container, false);
         toolbar = view.findViewById(R.id.mainToolbar);
         navigation = view.findViewById(R.id.bottomNavigation);

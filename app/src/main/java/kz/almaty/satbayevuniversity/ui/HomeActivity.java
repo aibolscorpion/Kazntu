@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public ActivityHomeBinding activityHomeBinding;
     private NavHeaderBinding navHeaderBinding;
-
+    private boolean firstTime=false;
     public HomeActivity() {
     }
 
@@ -70,6 +70,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        firstTime = true;
         setupBindings(savedInstanceState);
 
         SharedPrefCache sharedPrefCache = new SharedPrefCache();
@@ -158,18 +160,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id) {
             case R.id.academicProgress:
-                replaceFragment(MainAcademicFragment.newInstance(),FRAGMENT_FIRST, R.id.fragment_container);
+                if(firstTime){
+                    replaceFragment(MainAcademicFragment.newInstance(),R.id.fragment_container);
+                }else{
+                    replaceFragmentBackStack(MainAcademicFragment.newInstance(),FRAGMENT_FIRST, R.id.fragment_container);
+                }
                 break;
             case R.id.umkd:
-                replaceFragment(UmkdFragment.newInstance(), FRAGMENT_SECOND, R.id.fragment_container);
+                replaceFragmentBackStack(UmkdFragment.newInstance(), FRAGMENT_SECOND, R.id.fragment_container);
                 break;
             case R.id.settings:
-                replaceFragment(new SettingsFragment(getApplicationContext()), "3", R.id.fragment_container);
+                replaceFragmentBackStack(new SettingsFragment(getApplicationContext()), "3", R.id.fragment_container);
                 break;
             case R.id.logout:
                 exit();
                 break;
         }
+        firstTime = false;
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -181,10 +188,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
-    private void replaceFragment(Fragment newFragment, String tag, int container) {
+    private void replaceFragmentBackStack(Fragment newFragment, String tag, int container) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(container, newFragment, tag)
                 .addToBackStack(tag).commit();
+    }
+    private void replaceFragment(Fragment newFragment,  int container) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(container, newFragment).commit();
     }
 
     @Override
