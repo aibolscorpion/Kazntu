@@ -51,5 +51,13 @@
     <string name="cancelComplaint">Бас тарту</string>
     <string name="writeComplaint">Шағымды толтырыңыз!</string>
     <string name="missed">пропусков</string>
+    <string name="monday">дү</string>
+    <string name="saturday">се</string>
+    <string name="sunday">же</string>
+    <string name="thursday">бе</string>
+    <string name="tuesday">се</string>
+    <string name="wednesday">сә</string>
+    <string name="friday">жұ</string>
+
 
 </resources>

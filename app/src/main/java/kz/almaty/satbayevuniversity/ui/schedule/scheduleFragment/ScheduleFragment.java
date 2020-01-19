@@ -50,7 +50,8 @@ public class ScheduleFragment extends Fragment implements Cloneable{
     ArrayList<Schedule> localScheduleList;
     private ScheduleViewModel mViewModel;
     private ScheduleAdapter scheduleAdapter;
-    private DateTime currentDay= new DateTime();
+    LocalDate currentDay = LocalDate.now();
+
     private AppDatabase db = App.getInstance().getDatabase();
     private AccountDao accountDao = db.accountDao();
     private RecyclerView recyclerView;
@@ -102,22 +103,22 @@ public class ScheduleFragment extends Fragment implements Cloneable{
         scheduleFragmentBinding.scheduleRecyclerView.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
 
             public void onSwipeRight() {
+                oldDate = currentDay;
                 currentDay = currentDay.minusDays(1);
                 setDateSchedule(currentDay);
-                oldDate = toLocalDate(currentDay.plusDays(1));
                 calendarView.notifyDateChanged(oldDate);
-                selectedDate = toLocalDate(currentDay);
+                selectedDate = currentDay;
                 calendarView.notifyDateChanged(selectedDate);
-                calendarView.scrollToDate(toLocalDate(currentDay));
+                calendarView.scrollToDate(currentDay);
             }
             public void onSwipeLeft() {
+                oldDate = currentDay;
                 currentDay = currentDay.plusDays(1);
                 setDateSchedule(currentDay);
-                oldDate = toLocalDate(currentDay.minusDays(1));
                 calendarView.notifyDateChanged(oldDate);
-                selectedDate = toLocalDate(currentDay);
+                selectedDate = currentDay;
                 calendarView.notifyDateChanged(selectedDate);
-                calendarView.scrollToDate(toLocalDate(currentDay));
+                calendarView.scrollToDate(currentDay);
             }
         });
 
@@ -139,7 +140,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
         setCalendar();
     }
 
-    private void setDateSchedule(DateTime dateTime) {
+    private void setDateSchedule(LocalDate date) {
         mViewModel.getScheduleLiveData().observe(this, scheduleList -> {
 
             ArrayList<Schedule> result = new ArrayList<>();
@@ -160,7 +161,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
                     new Schedule("21:30", "22:20", 27)));
 
             for (Schedule schedule : scheduleList) {
-                if (schedule.getDayOfWeekId() == dateTime.dayOfWeek().get()) {
+                if (schedule.getDayOfWeekId() == date.getDayOfWeek().getValue()) {
                     result.add(Schedule.copy(schedule));
                 }
             }
@@ -211,7 +212,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
                 dayOfMonthText.setOnClickListener(v -> {
                     oldDate = selectedDate;
                     selectedDate = day.getDate();
-                    currentDay = toDateTime(day.getDate());
+                    currentDay = day.getDate();
                     setDateSchedule(currentDay);
                     calendarView.notifyDateChanged(selectedDate);
                     if(oldDate!=null)
@@ -251,14 +252,5 @@ public class ScheduleFragment extends Fragment implements Cloneable{
         DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY;
         calendarView.setup(firstMonth, lastMonth, firstDayOfWeek);
         calendarView.scrollToDate(LocalDate.now());
-    }
-    public DateTime toDateTime(LocalDate localDate) {
-        return new DateTime(DateTimeZone.UTC).withDate(
-                localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth()
-        ).withTime(0, 0, 0, 0);
-    }
-    public LocalDate toLocalDate(DateTime dateTime) {
-        DateTime dateTimeUtc = dateTime.withZone(DateTimeZone.UTC);
-        return LocalDate.of(dateTimeUtc.getYear(), dateTimeUtc.getMonthOfYear(), dateTimeUtc.getDayOfMonth());
     }
 }

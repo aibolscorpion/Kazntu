@@ -50,5 +50,12 @@
     <string name="writeComplaint">Заполните жалобу!</string>
     <string name="missed">пропусков</string>
     <string name="only_server" translatable="false">onlyServer</string>
+    <string name="monday">пн</string>
+    <string name="tuesday">вт</string>
+    <string name="wednesday">ср</string>
+    <string name="thursday">чт</string>
+    <string name="friday">пт</string>
+    <string name="saturday">сб</string>
+    <string name="sunday">вс</string>
 
 </resources>

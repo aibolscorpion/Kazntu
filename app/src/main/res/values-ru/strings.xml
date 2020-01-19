@@ -50,5 +50,12 @@
     <string name="cancelComplaint">Отменить</string>
     <string name="writeComplaint">Заполните жалобу!</string>
     <string name="missed">пропусков</string>
+    <string name="monday">пн</string>
+    <string name="saturday">сб</string>
+    <string name="sunday">вс</string>
+    <string name="thursday">чт</string>
+    <string name="tuesday">вт</string>
+    <string name="wednesday">ср</string>
+    <string name="friday">пт</string>
 
 </resources>
