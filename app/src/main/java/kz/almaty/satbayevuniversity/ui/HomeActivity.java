@@ -7,6 +7,7 @@ import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -17,6 +18,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +41,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import java.util.List;
 import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -200,15 +203,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            FragmentManager manager = getSupportFragmentManager();
+            if (manager.getBackStackEntryCount() > 0) {
+                super.onBackPressed();
+                if (manager.findFragmentById(R.id.fragment_container) instanceof MainAcademicFragment) {
+                    navigationView.getMenu().getItem(0).setChecked(true);
+                } else if (manager.findFragmentById(R.id.fragment_container) instanceof UmkdFragment) {
+                    navigationView.getMenu().getItem(1).setChecked(true);
+                } else if (manager.findFragmentById(R.id.fragment_container) instanceof SettingsFragment) {
+                    navigationView.getMenu().getItem(2).setChecked(true);
+                }
+            }else{
+                super.onBackPressed();
+            }
         }
     }
 
     public void OpenToggleNavMenu() {
         drawer.openDrawer(GravityCompat.START);
     }
+
 }
 
