@@ -8,6 +8,9 @@
         <variable
             name="schedule"
             type="kz.almaty.satbayevuniversity.data.entity.schedule.Schedule" />
+        <variable
+            name="classType"
+            type="java.lang.String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -75,6 +78,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.2" />
+
+        <TextView
+            android:id="@+id/classType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{classType}"
+            app:layout_constraintBottom_toTopOf="@+id/roomTitle"
+            app:layout_constraintStart_toEndOf="@+id/scheduleInstructorName"
+            app:layout_constraintTop_toBottomOf="@+id/scheduleCourseTitle"
+            tools:text="(Практика)"
+            android:fontFamily="@font/open_sans_regular"
+            android:textColor="@color/schedule_item_textview"
+            android:layout_marginStart="5dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
