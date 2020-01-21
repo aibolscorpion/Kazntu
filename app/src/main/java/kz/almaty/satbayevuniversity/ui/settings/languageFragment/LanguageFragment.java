@@ -1,27 +1,27 @@
 package kz.almaty.satbayevuniversity.ui.settings.languageFragment;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.data.entity.Language;
-import kz.almaty.satbayevuniversity.ui.HomeActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+
+import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.entity.Language;
+import kz.almaty.satbayevuniversity.ui.HomeActivity;
 
 public class LanguageFragment extends Fragment implements LanguageAdapter.LanguageChangeListener{
     private static final String LOG_TAG = "LanguageFragment";
@@ -43,6 +43,7 @@ public class LanguageFragment extends Fragment implements LanguageAdapter.Langua
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.i("aibol","something");
         mViewModel = ViewModelProviders.of(this).get(LanguageViewModel.class);
         languages.add(new Language("Русский","ru", 0));
         languages.add(new Language("Казахский", "kk", 1));
