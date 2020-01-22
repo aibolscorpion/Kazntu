@@ -57,5 +57,6 @@
     <string name="tuesday">вт</string>
     <string name="wednesday">ср</string>
     <string name="friday">пт</string>
+    <string name="click_back_again">Нажмите кнопку назад еще раз чтобы выйти</string>
 
 </resources>

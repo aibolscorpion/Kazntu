@@ -1,7 +1,7 @@
 package kz.almaty.satbayevuniversity.ui.settings.languageFragment;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +41,26 @@ public class LanguageFragment extends Fragment implements LanguageAdapter.Langua
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener((view, i, keyEvent) -> {
+            if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
+                if (getFragmentManager().getBackStackEntryCount() > 0) {
+                    getFragmentManager().popBackStackImmediate();
+                }else{
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        });
+    }
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i("aibol","something");
         mViewModel = ViewModelProviders.of(this).get(LanguageViewModel.class);
         languages.add(new Language("Русский","ru", 0));
         languages.add(new Language("Казахский", "kk", 1));

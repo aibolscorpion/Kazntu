@@ -1,38 +1,38 @@
 package kz.almaty.satbayevuniversity.ui.settings;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import kz.almaty.satbayevuniversity.AuthViewModel;
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.SharedPrefCache;
 import kz.almaty.satbayevuniversity.data.entity.Language;
+import kz.almaty.satbayevuniversity.databinding.SettingsFragmentBinding;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
+import kz.almaty.satbayevuniversity.ui.LoginActivity;
+import kz.almaty.satbayevuniversity.ui.settings.complaintFragment.ComplaintFragment;
 import kz.almaty.satbayevuniversity.ui.settings.languageFragment.LanguageFragment;
 import kz.almaty.satbayevuniversity.utils.LocaleHelper;
 import kz.almaty.satbayevuniversity.utils.Storage;
-import kz.almaty.satbayevuniversity.databinding.SettingsFragmentBinding;
-import kz.almaty.satbayevuniversity.ui.LoginActivity;
-import kz.almaty.satbayevuniversity.ui.settings.complaintFragment.ComplaintFragment;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 public class SettingsFragment extends Fragment {
     private SettingsFragmentBinding settingsFragmentBinding;
@@ -56,6 +56,22 @@ public class SettingsFragment extends Fragment {
         settingsLanguage = view.findViewById(R.id.settingsLanguage);
         toolbar = view.findViewById(R.id.settingsToolbar);
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener((view, i, keyEvent) -> {
+            if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
+                ((HomeActivity)getActivity()).onNavigationItemSelected(((HomeActivity)getActivity()).navigationView.getMenu().getItem(0));
+                ((HomeActivity)getActivity()).navigationView.getMenu().getItem(0).setChecked(true);
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override

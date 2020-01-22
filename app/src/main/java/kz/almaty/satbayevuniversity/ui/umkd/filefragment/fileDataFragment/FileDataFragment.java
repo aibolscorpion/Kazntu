@@ -1,27 +1,26 @@
 package kz.almaty.satbayevuniversity.ui.umkd.filefragment.fileDataFragment;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.data.entity.umkd.Course;
-import kz.almaty.satbayevuniversity.databinding.FileDataFragmentBinding;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.entity.umkd.Course;
+import kz.almaty.satbayevuniversity.databinding.FileDataFragmentBinding;
 
 public class FileDataFragment extends Fragment {
 
@@ -46,6 +45,24 @@ public class FileDataFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener((view, i, keyEvent) -> {
+            if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
+                if (getFragmentManager().getBackStackEntryCount() > 0) {
+                    getFragmentManager().popBackStackImmediate();
+                }else{
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        });
+    }
     private void getToolbar() {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);

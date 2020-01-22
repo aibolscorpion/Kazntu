@@ -1,50 +1,35 @@
 package kz.almaty.satbayevuniversity.ui.academicProgress;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.App;
-import kz.almaty.satbayevuniversity.data.entity.notification.Notification;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 import kz.almaty.satbayevuniversity.ui.grade.ViewPagerFragment;
 import kz.almaty.satbayevuniversity.ui.notification.NotificationFragment;
 import kz.almaty.satbayevuniversity.ui.schedule.ViewPagerSchedule;
-import kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.ScheduleFragment;
-import kz.almaty.satbayevuniversity.ui.settings.SettingsFragment;
-import kz.almaty.satbayevuniversity.ui.umkd.UmkdFragment;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import static kz.almaty.satbayevuniversity.ui.HomeActivity.FRAGMENT_FIRST;
-import static kz.almaty.satbayevuniversity.ui.HomeActivity.FRAGMENT_SECOND;
-import static kz.almaty.satbayevuniversity.ui.HomeActivity.FRAGMENT_THIRD;
-import static kz.almaty.satbayevuniversity.ui.notification.NotificationFragment.NOTIFICATION_TAG;
-
-public class MainAcademicFragment extends Fragment   {
+public class MainAcademicFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener  {
     SharedPreferences.Editor editor = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE).edit();
     private BottomNavigationView navigation;
     private static final String TAG = "MainAcademicFragment";
@@ -56,35 +41,6 @@ public class MainAcademicFragment extends Fragment   {
         return new MainAcademicFragment();
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = item -> {
-        editor.putBoolean(getString(R.string.only_server),false);
-        editor.apply();
-        switch (item.getItemId()) {
-            case R.id.academicProgressFragment:
-                if(firstTime){
-                    replaceFragment(AcademicFragment.newInstance());
-                }else{
-                    replaceFragmentBackStack(AcademicFragment.newInstance(),FRAGMENT_FIRST,R.id.main_academic_fragment_container);
-                }
-                return true;
-            case R.id.schedule:
-                firstTime = false;
-                replaceFragmentBackStack(ViewPagerSchedule.newInstance(),FRAGMENT_SECOND, R.id.main_academic_fragment_container);
-                return true;
-            case R.id.grade:
-                firstTime = false;
-                replaceFragmentBackStack(ViewPagerFragment.newInstance(),FRAGMENT_THIRD, R.id.main_academic_fragment_container);
-                return true;
-            case R.id.notifications:
-                firstTime = false;
-                replaceFragmentBackStack(NotificationFragment.newInstance(),NOTIFICATION_TAG, R.id.main_academic_fragment_container);
-                return true;
-
-        }
-
-        return false;
-    };
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -93,7 +49,7 @@ public class MainAcademicFragment extends Fragment   {
         toolbar = view.findViewById(R.id.mainToolbar);
         navigation = view.findViewById(R.id.bottomNavigation);
         imageView = view.findViewById(R.id.updateData);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnNavigationItemSelectedListener(this);
         navigation.setSelectedItemId(R.id.academicProgressFragment);
 
 
@@ -105,25 +61,20 @@ public class MainAcademicFragment extends Fragment   {
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
-                    if (getFragmentManager().getBackStackEntryCount() > 0) {
-                        FragmentManager.BackStackEntry entry = getFragmentManager().getBackStackEntryAt(0);
-                        getFragmentManager().popBackStack(entry.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        navigation.getMenu().getItem(0).setChecked(true);
-                    }else{
+        getView().setOnKeyListener((view, i, keyEvent) -> {
+            if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
+                    if(getFragmentManager().findFragmentById(R.id.main_academic_fragment_container) instanceof AcademicFragment){
                         return false;
+                    }else{
+                        onNavigationItemSelected(navigation.getMenu().getItem(0));
+                        navigation.getMenu().getItem(0).setChecked(true);
+                        return true;
                     }
-                    return true;
-
-
-                }
-                return false;
             }
+            return false;
         });
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -165,6 +116,31 @@ public class MainAcademicFragment extends Fragment   {
 
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        editor.putBoolean(getString(R.string.only_server),false);
+        editor.apply();
+        switch (item.getItemId()) {
+            case R.id.academicProgressFragment:
+                replaceFragment(AcademicFragment.newInstance());
+                return true;
+            case R.id.schedule:
+                firstTime = false;
+                replaceFragment(ViewPagerSchedule.newInstance());
+                return true;
+            case R.id.grade:
+                firstTime = false;
+                replaceFragment(ViewPagerFragment.newInstance());
+                return true;
+            case R.id.notifications:
+                firstTime = false;
+                replaceFragment(NotificationFragment.newInstance());
+                return true;
+
+        }
+
+        return false;
+    };
     private void replaceFragmentBackStack(Fragment newFragment, String tag, int container) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(container, newFragment, tag)

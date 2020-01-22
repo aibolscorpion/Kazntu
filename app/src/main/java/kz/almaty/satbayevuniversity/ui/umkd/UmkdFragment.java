@@ -1,21 +1,20 @@
 package kz.almaty.satbayevuniversity.ui.umkd;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.databinding.UmkdFragmentBinding;
@@ -47,7 +46,21 @@ public class UmkdFragment extends Fragment {
 
         return view;
     }
+    @Override
+    public void onResume(){
+        super.onResume();
 
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener((view, i, keyEvent) -> {
+            if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
+                ((HomeActivity)getActivity()).onNavigationItemSelected(((HomeActivity)getActivity()).navigationView.getMenu().getItem(0));
+                ((HomeActivity)getActivity()).navigationView.getMenu().getItem(0).setChecked(true);
+                return true;
+            }
+            return false;
+        });
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

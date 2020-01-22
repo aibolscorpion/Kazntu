@@ -1,5 +1,20 @@
 package kz.almaty.satbayevuniversity.ui;
 
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,49 +22,32 @@ import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Point;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
-
-import kz.almaty.satbayevuniversity.AuthViewModel;
-import kz.almaty.satbayevuniversity.R;
-
-import kz.almaty.satbayevuniversity.data.SharedPrefCache;
-import kz.almaty.satbayevuniversity.data.entity.Language;
-import kz.almaty.satbayevuniversity.databinding.ActivityHomeBinding;
-import kz.almaty.satbayevuniversity.utils.Storage;
-import kz.almaty.satbayevuniversity.databinding.NavHeaderBinding;
-import kz.almaty.satbayevuniversity.ui.academicProgress.MainAcademicFragment;
-import kz.almaty.satbayevuniversity.ui.settings.SettingsFragment;
-import kz.almaty.satbayevuniversity.ui.umkd.UmkdFragment;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import java.util.List;
 import java.util.Locale;
+
+import kz.almaty.satbayevuniversity.AuthViewModel;
+import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.SharedPrefCache;
+import kz.almaty.satbayevuniversity.data.entity.Language;
+import kz.almaty.satbayevuniversity.databinding.ActivityHomeBinding;
+import kz.almaty.satbayevuniversity.databinding.NavHeaderBinding;
+import kz.almaty.satbayevuniversity.ui.academicProgress.MainAcademicFragment;
+import kz.almaty.satbayevuniversity.ui.settings.SettingsFragment;
+import kz.almaty.satbayevuniversity.ui.umkd.UmkdFragment;
+import kz.almaty.satbayevuniversity.utils.Storage;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String FRAGMENT_FIRST = "FRAGMENT_FIRST";
     public static final String FRAGMENT_SECOND = "FRAGMENT_SECOND";
     public static final String FRAGMENT_THIRD = "FRAGMENT_THIRD";
     private float scaleFactor = 5f;
-    private NavigationView navigationView;
+    public NavigationView navigationView;
 
     public DrawerLayout drawer;
 
@@ -57,7 +55,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public ActivityHomeBinding activityHomeBinding;
     private NavHeaderBinding navHeaderBinding;
-    private boolean firstTime=false;
     public HomeActivity() {
     }
 
@@ -74,7 +71,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        firstTime = true;
         setupBindings(savedInstanceState);
 
         SharedPrefCache sharedPrefCache = new SharedPrefCache();
@@ -163,23 +159,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id) {
             case R.id.academicProgress:
-                if(firstTime){
                     replaceFragment(MainAcademicFragment.newInstance(),R.id.fragment_container);
-                }else{
-                    replaceFragmentBackStack(MainAcademicFragment.newInstance(),FRAGMENT_FIRST, R.id.fragment_container);
-                }
                 break;
             case R.id.umkd:
-                replaceFragmentBackStack(UmkdFragment.newInstance(), FRAGMENT_SECOND, R.id.fragment_container);
+                replaceFragment(UmkdFragment.newInstance(),R.id.fragment_container);
                 break;
             case R.id.settings:
-                replaceFragmentBackStack(new SettingsFragment(getApplicationContext()), "3", R.id.fragment_container);
+                replaceFragment(new SettingsFragment(getApplicationContext()),R.id.fragment_container);
                 break;
             case R.id.logout:
                 exit();
                 break;
         }
-        firstTime = false;
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -191,35 +182,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
-    private void replaceFragmentBackStack(Fragment newFragment, String tag, int container) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(container, newFragment, tag)
-                .addToBackStack(tag).commit();
-    }
     private void replaceFragment(Fragment newFragment,  int container) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(container, newFragment).commit();
     }
-
+    boolean doubleBackToExitPressedOnce = false;
     @Override
     public void onBackPressed() {
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            FragmentManager manager = getSupportFragmentManager();
-            if (manager.getBackStackEntryCount() > 0) {
+            if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
-                if (manager.findFragmentById(R.id.fragment_container) instanceof MainAcademicFragment) {
-                    navigationView.getMenu().getItem(0).setChecked(true);
-                } else if (manager.findFragmentById(R.id.fragment_container) instanceof UmkdFragment) {
-                    navigationView.getMenu().getItem(1).setChecked(true);
-                } else if (manager.findFragmentById(R.id.fragment_container) instanceof SettingsFragment) {
-                    navigationView.getMenu().getItem(2).setChecked(true);
-                }
-            }else{
-                super.onBackPressed();
+                return;
             }
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, getResources().getString(R.string.click_back_again), Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
         }
     }
 
