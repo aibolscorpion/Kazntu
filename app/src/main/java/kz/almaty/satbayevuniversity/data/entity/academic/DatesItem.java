@@ -2,7 +2,9 @@ package kz.almaty.satbayevuniversity.data.entity.academic;
 
 
 import android.os.Parcel;
+
 import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -260,26 +262,50 @@ public class DatesItem implements Serializable {
 	public boolean equals(Object obj) {
 		if(obj instanceof DatesItem) {
 			DatesItem datesItem = (DatesItem) obj;
-			if(this.getAttendanceDate()!=null) {
-				if (!this.getAttendanceDate().equals(datesItem.getAttendanceDate()))
+
+			if(this.getAttendanceDate()!=null && datesItem.getAttendanceDate() !=null) {
+				if (!this.getAttendanceDate().equals(datesItem.getAttendanceDate())){
 					return false;
+				}
+
+			}else if(this.getAttendanceDate() !=null || datesItem.getAttendanceDate()!=null){
+				return false;
 			}
-			if(this.getComment()!=null) {
-				if (!this.getComment().equals(datesItem.getComment()))
+
+			if(this.getComment()!=null && datesItem.getComment() !=null ) {
+				if (!this.getComment().equals(datesItem.getComment())){
 					return false;
+				}
+
+			}else if(this.getComment() !=null || datesItem.getComment()!=null){
+				return false;
 			}
-			if(this.getTimeTitle()!=null) {
-				if (!this.getTimeTitle().equals(datesItem.getTimeTitle()))
+
+			if(this.getTimeTitle()!=null && datesItem.getTimeTitle() !=null ) {
+				if (!this.getTimeTitle().equals(datesItem.getTimeTitle())){
 					return false;
+				}
+
+			}else if(this.getTimeTitle() !=null || datesItem.getTimeTitle()!=null){
+				return false;
 			}
-			if(this.getWeekDay()!=null) {
-				if (!this.getWeekDay().equals(datesItem.getWeekDay()))
+
+			if(this.getWeekDay()!=null && datesItem.getWeekDay() !=null) {
+				if (!this.getWeekDay().equals(datesItem.getWeekDay())){
 					return false;
+				}
+			}else if(this.getWeekDay() !=null || datesItem.getWeekDay()!=null){
+				return false;
 			}
-			if(this.getGrade()!=null) {
-				if (!this.getGrade().equals(datesItem.getGrade()))
+
+			if(this.getGrade()!=null && datesItem.getGrade() !=null) {
+				if (!this.getGrade().equals(datesItem.getGrade())){
 					return false;
+				}
+			}else if(this.getGrade() !=null || datesItem.getGrade()!=null){
+				return false;
 			}
+
 			if(this.getClassTypeID()  !=datesItem.getClassTypeID())
 				return false;
 			if(this.getSectionID() != datesItem.getSectionID())
