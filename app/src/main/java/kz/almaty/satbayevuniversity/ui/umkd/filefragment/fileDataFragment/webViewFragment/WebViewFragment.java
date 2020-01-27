@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
 import java.util.List;
 
 import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.entity.umkd.Course;
 import kz.almaty.satbayevuniversity.databinding.WebViewFragmentBinding;
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -42,8 +43,7 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
     private WebViewViewModel mViewModel;
     private static final int PERMISSION_REQUEST_CODE = 1;
     private WebViewFragmentBinding webViewFragmentBinding;
-    private ProgressBar progress_bar;
-
+    ProgressBar progressBar;
     public static WebViewFragment newInstance() {
         return new WebViewFragment();
     }
@@ -54,7 +54,7 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
                              @Nullable Bundle savedInstanceState) {
         webViewFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.web_view_fragment, container, false);
         View v = webViewFragmentBinding.getRoot();
-        progress_bar = v.findViewById(R.id.progress_bar);
+        progressBar =  v.findViewById(R.id.web_view_progress_bar);
         toolbar = v.findViewById(R.id.toolbarWebView);
         mWebView = v.findViewById(R.id.webViewFragment);
         imageView = v.findViewById(R.id.shareLink);
@@ -66,9 +66,9 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
         webSettings.setUseWideViewPort(true);
         webSettings.setDomStorageEnabled(true);
 
-        progress_bar.setVisibility(View.VISIBLE);
-        mWebView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
+        mWebView.setVisibility(View.GONE);
         mWebView.setWebViewClient(new WebViewClient()
         {
             @Override
@@ -76,11 +76,10 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
                 super.onPageStarted(view, url, favicon);
 
             }
-
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                progress_bar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.INVISIBLE);
                 mWebView.setVisibility(View.VISIBLE);
                 doPerm();
             }
@@ -89,10 +88,11 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
         return v;
 
     }
+
     @AfterPermissionGranted(1)
     private void doPerm() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
-        if(EasyPermissions.hasPermissions(getContext(), perms)){
+        if(EasyPermissions.hasPermissions(App.getContext(), perms)){
         } else{
             EasyPermissions.requestPermissions(this, "permission", 1, perms);
         }
@@ -115,6 +115,7 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
             }
             return false;
         });
+
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
