@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -125,12 +126,14 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             course= (Course) bundle.getSerializable("WebViewFragment");
+            if(course.getFileName()!=null && !TextUtils.isEmpty(course.getFileName()))
+                toolbar.setTitle(course.getFileName());
         }
 
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.close_file_icon);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Файлы");
+
 
         imageView.setOnClickListener(v -> {
           sendFile();

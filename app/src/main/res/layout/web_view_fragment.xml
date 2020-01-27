@@ -18,31 +18,24 @@
         android:background="@color/colorWhite">
 
         <androidx.appcompat.widget.Toolbar
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="match_parent"
             android:id="@+id/toolbarWebView"
+            android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
             android:background="@color/primary"
             app:theme="@style/Theme.AppCompat.NoActionBar"
             app:titleTextColor="@color/colorWhite"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:titleTextAppearance="@style/textSize">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
             <ImageView
-                android:layout_marginEnd="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/shareLink"
-                android:adjustViewBounds="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/download"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/download" />
 
         </androidx.appcompat.widget.Toolbar>
 
