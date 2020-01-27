@@ -1,11 +1,12 @@
 package kz.almaty.satbayevuniversity.data;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import java.util.List;
 
 import kz.almaty.satbayevuniversity.data.entity.AccountEntity;
 import kz.almaty.satbayevuniversity.data.entity.Language;
@@ -17,14 +18,12 @@ import kz.almaty.satbayevuniversity.data.entity.schedule.Exam;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Schedule;
 import kz.almaty.satbayevuniversity.data.entity.umkd.Umkd;
 
-import java.util.List;
-
 @Dao
 public interface AccountDao {
 
     //AccountEntity
     @Query("SELECT * FROM accountentity")
-    LiveData<AccountEntity> getAll();
+    AccountEntity getAccountEntity();
 
     @Insert
     void insert(AccountEntity employee);

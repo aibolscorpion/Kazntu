@@ -15,17 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
-import kz.almaty.satbayevuniversity.databinding.ActivityLoginBinding;
-
 import kz.almaty.satbayevuniversity.AuthViewModel;
 import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.utils.Storage;
 import kz.almaty.satbayevuniversity.data.AccountDao;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
 import kz.almaty.satbayevuniversity.data.entity.AccountEntity;
+import kz.almaty.satbayevuniversity.databinding.ActivityLoginBinding;
+import kz.almaty.satbayevuniversity.utils.Storage;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,7 +36,10 @@ public class LoginActivity extends AppCompatActivity {
     private CircularProgressButton loginBtn;
     private AppDatabase db = App.getInstance().getDatabase();
     private AccountDao accountDao = db.accountDao();
-
+    ConnectivityManager connManager ;
+    private BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(3);
+    private ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 1,
+            TimeUnit.SECONDS, queue);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,21 +50,21 @@ public class LoginActivity extends AppCompatActivity {
 
         loginBtn = activityLoginBinding.loginBtn;
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             authViewModel.initAuth();
         }
 
-        authViewModel.getUserMutableLiveData().observe(this, this::doIntent);
+        authViewModel.getUserMutableLiveData().observe(this, accountEntity -> doIntent(accountEntity));
 
         authViewModel.toastGetMessage().observe(this, aBoolean -> {
-            if (aBoolean){
+            if (aBoolean) {
                 Toast.makeText(this, "Заполните пустые поля", Toast.LENGTH_SHORT).show();
                 revertBtn();
             }
         });
 
         authViewModel.getHandleError().observe(this, integer -> {
-            switch (integer){
+            switch (integer) {
                 case 1:
                     Toast.makeText(this, "Ошибка соединения. Пожалуйста, попробуйте еще раз", Toast.LENGTH_SHORT).show();
                     revertBtn();
@@ -75,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         authViewModel.getHandleError().observe(this, integer -> {
-            switch (integer){
+            switch (integer) {
                 case 200:
                     loginBtn.doneLoadingAnimation(Color.parseColor("#6D67AE"),
                             BitmapFactory.decodeResource(getResources(), R.drawable.ic_done_white_48dp));
@@ -94,29 +100,28 @@ public class LoginActivity extends AppCompatActivity {
                     break;
             }
         });
+        login();
 
-        ConnectivityManager connManager =
-                (ConnectivityManager)this.
-                        getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        accountDao.getAll().observe(this, accountEntity -> {
-            if(accountEntity != null){
+    }
+    private void login() {
+        connManager =(ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        executor.execute(() -> {
+            AccountEntity accountEntity = accountDao.getAccountEntity();
+            if (accountEntity != null) {
                 doIntent(accountEntity);
-            } else{
+            } else {
                 loginBtn.setOnClickListener(v -> {
-
-                    if(connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                    if (connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                             connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-                            loginBtn.startAnimation();
-                            authViewModel.getInformation();
-                        } else Toast.makeText(this, "Отсутствует подключение к интернету", Toast.LENGTH_SHORT).show();
+                        loginBtn.startAnimation();
+                        authViewModel.getInformation();
+                    } else
+                        Toast.makeText(this, "Отсутствует подключение к интернету", Toast.LENGTH_SHORT).show();
                     hideSoftKeyboard();
                 });
             }
         });
     }
-
-
     @Override
     protected void onPostResume() {
         super.onPostResume();
