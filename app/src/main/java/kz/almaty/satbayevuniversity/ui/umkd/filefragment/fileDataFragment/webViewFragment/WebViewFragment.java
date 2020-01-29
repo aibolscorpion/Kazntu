@@ -28,7 +28,6 @@ import androidx.lifecycle.ViewModelProviders;
 import java.util.List;
 
 import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.entity.umkd.Course;
 import kz.almaty.satbayevuniversity.databinding.WebViewFragmentBinding;
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -82,7 +81,7 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
                 super.onPageFinished(view, url);
                 progressBar.setVisibility(View.INVISIBLE);
                 mWebView.setVisibility(View.VISIBLE);
-                doPerm();
+
             }
         }
         );
@@ -93,9 +92,9 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
     @AfterPermissionGranted(1)
     private void doPerm() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
-        if(EasyPermissions.hasPermissions(App.getContext(), perms)){
+        if(EasyPermissions.hasPermissions(getContext(), perms)){
         } else{
-            EasyPermissions.requestPermissions(this, "permission", 1, perms);
+            EasyPermissions.requestPermissions(this, getResources().getString(R.string.ask_permission_to_rw_external_storage), 1, perms);
         }
     }
 
@@ -136,6 +135,7 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
 
 
         imageView.setOnClickListener(v -> {
+          doPerm();
           sendFile();
         });
 
