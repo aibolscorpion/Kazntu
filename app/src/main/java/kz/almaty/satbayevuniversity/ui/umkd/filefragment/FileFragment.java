@@ -29,6 +29,13 @@ public class FileFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(FileViewModel.class);
+        mViewModel.getFiles();
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         fileFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.file_fragment, container, false);
@@ -59,14 +66,12 @@ public class FileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(FileViewModel.class);
+
         fileFragmentBinding.setFile(mViewModel);
-        mViewModel.getFiles();
         fileFragmentBinding.fileRecyclerView.setHasFixedSize(true);
         fileFragmentBinding.fileRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         fileAdapter = new FileAdapter(getActivity());
         fileFragmentBinding.fileRecyclerView.setAdapter(fileAdapter);
-
         toolbar.setNavigationOnClickListener(v -> getFragmentManager().popBackStackImmediate());
         // TODO: Use the ViewModel
         updateFile();
