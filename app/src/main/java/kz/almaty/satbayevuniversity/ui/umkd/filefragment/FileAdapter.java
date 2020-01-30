@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
+import java.util.List;
+
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.entity.umkd.File;
 import kz.almaty.satbayevuniversity.databinding.FileItemBinding;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 import kz.almaty.satbayevuniversity.ui.umkd.filefragment.fileDataFragment.FileDataFragment;
-
-import java.io.Serializable;
-import java.util.List;
 
 public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> implements FileClickListener{
     private List<File> fileList;
