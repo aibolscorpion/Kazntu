@@ -1,5 +1,6 @@
 package kz.almaty.satbayevuniversity.data.entity.umkd;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -98,4 +99,51 @@ public class Umkd implements Serializable {
 			",instructorId = '" + instructorId + '\'' + 
 			"}";
 		}
+
+	@Override
+	public boolean equals(@Nullable Object obj) {
+		if(obj instanceof Umkd){
+			Umkd umkd = (Umkd)obj;
+			if(this.getCourseTitle()!=null && umkd.getCourseTitle()!=null) {
+				if (!this.getCourseTitle().equals(umkd.getCourseTitle()))
+					return false;
+			}else if(this.getCourseTitle()!=null || umkd.getCourseTitle()!=null) {
+				return false;
+			}
+
+			if(this.getInstructorName()!=null && umkd.getInstructorName()!=null) {
+				if (!this.getInstructorName().equals(umkd.getInstructorName()))
+					return false;
+			}else if(this.getInstructorName()!=null || umkd.getInstructorName()!=null) {
+				return false;
+			}
+
+			if(this.getInstructorEmail()!=null && umkd.getInstructorEmail()!=null) {
+				if (!this.getInstructorEmail().equals(umkd.getInstructorEmail()))
+					return false;
+			}else if(this.getInstructorEmail()!=null || umkd.getInstructorEmail()!=null) {
+				return false;
+			}
+			if(this.getInstructorPersonalEmail()!=null && umkd.getInstructorPersonalEmail()!=null) {
+				if (!this.getInstructorPersonalEmail().equals(umkd.getInstructorPersonalEmail()))
+					return false;
+			}else if(this.getInstructorPersonalEmail()!=null || umkd.getInstructorPersonalEmail()!=null) {
+				return false;
+			}
+
+			if(this.getCourseCode()!=null && umkd.getCourseCode()!=null) {
+				if (!this.getCourseCode().equals(umkd.getCourseCode()))
+					return false;
+			}else if(this.getCourseCode()!=null || umkd.getCourseCode()!=null) {
+				return false;
+			}
+
+			if (this.getInstructorId() != umkd.getInstructorId()){
+				return false;
+			}
+
+			return true;
+		}
+		return false;
+	}
 }

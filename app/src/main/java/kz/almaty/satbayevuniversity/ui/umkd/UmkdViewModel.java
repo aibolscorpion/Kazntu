@@ -1,14 +1,12 @@
 package kz.almaty.satbayevuniversity.ui.umkd;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import kz.almaty.satbayevuniversity.data.AccountDao;
-import kz.almaty.satbayevuniversity.data.App;
-import kz.almaty.satbayevuniversity.data.AppDatabase;
-import kz.almaty.satbayevuniversity.data.entity.umkd.Umkd;
-import kz.almaty.satbayevuniversity.data.network.KaznituRetrofit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +15,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import kz.almaty.satbayevuniversity.data.AccountDao;
+import kz.almaty.satbayevuniversity.data.App;
+import kz.almaty.satbayevuniversity.data.AppDatabase;
+import kz.almaty.satbayevuniversity.data.entity.umkd.Umkd;
+import kz.almaty.satbayevuniversity.data.network.KaznituRetrofit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,7 +27,6 @@ import retrofit2.Response;
 public class UmkdViewModel extends ViewModel {
 
     public ObservableBoolean loadRv = new ObservableBoolean();
-    public ObservableBoolean listVisibile = new ObservableBoolean();
 
     private List<Umkd> umkdList = new ArrayList<>();
     private List<Umkd> umkdListDB = new ArrayList<>();
@@ -40,61 +42,63 @@ public class UmkdViewModel extends ViewModel {
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 1,
             TimeUnit.SECONDS, queue);
 
+    private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
+
     void getUmkd(){
-        listVisibile.set(false);
         loadRv.set(true);
-
         executor.execute(() -> {
-            if (!accountDao.getUmkd().isEmpty()) { //Проверка локальной БД
+            if (!accountDao.getUmkd().isEmpty()) {
                 umkdListDB = accountDao.getUmkd();
+                umkdMutableLiveData.postValue(umkdListDB);
                 loadRv.set(false);
-                listVisibile.set(true);
-
-                KaznituRetrofit.getApi().updateInstructor().enqueue(new Callback<List<Umkd>>() {
-                    @Override
-                    public void onResponse(Call<List<Umkd>> call, Response<List<Umkd>> response) {
-                        umkdList = response.body();
-                        loadRv.set(false);
-                        listVisibile.set(true);
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Umkd>> call, Throwable t) {
-                    }
-                });
-
-                if (umkdListDB.containsAll(umkdList)){
-                    umkdMutableLiveData.postValue(umkdListDB);
-                } else{
-                    umkdMutableLiveData.postValue(umkdList);
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getUmkdListFromServer();
                 }
             }
             else {
-                KaznituRetrofit.getApi().updateInstructor().enqueue(new Callback<List<Umkd>>() {
-                    @Override
-                    public void onResponse(Call<List<Umkd>> call, Response<List<Umkd>> response) {
-                        umkdList = response.body();
-                        umkdMutableLiveData.setValue(umkdList);
-                        getEmptyBoolean.set(umkdList.isEmpty());
-                        new Thread(() -> {
-                            accountDao.insertUmkd(umkdList);
-                        }).start();
-                        loadRv.set(false);
-                        listVisibile.set(true);
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Umkd>> call, Throwable t) {
-                    }
-                });
+                if (connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+                    getUmkdListFromServer();
+                }else{
+                    getEmptyBoolean.set(umkdList.isEmpty());
+                    loadRv.set(false);
+                }
              }
         });
     }
+    public void getUmkdListFromServer(){
+        KaznituRetrofit.getApi().updateInstructor().enqueue(new Callback<List<Umkd>>() {
+            @Override
+            public void onResponse(Call<List<Umkd>> call, Response<List<Umkd>> response) {
+                if (response.isSuccessful()) {
+                    umkdList = response.body();
+                    getEmptyBoolean.set(umkdList.isEmpty());
+                    loadRv.set(false);
+                    if (!umkdList.equals(umkdListDB)) {
+                        new Thread(() -> {
+                            update(umkdList);
+                        }).start();
+                        umkdMutableLiveData.postValue(umkdList);
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<Umkd>> call, Throwable t) {
+            }
+        });
+    }
     MutableLiveData<List<Umkd>> getUmkdMutableLiveData() {
         if(umkdMutableLiveData == null){
             umkdMutableLiveData = new MutableLiveData<>();
         }
         return umkdMutableLiveData;
+    }
+
+    private void update(List<Umkd> umkdList) {
+        executor.execute(() -> {
+            accountDao.deleteUmkd();
+            accountDao.insertUmkd(umkdList);
+        });
     }
 }
