@@ -1,10 +1,8 @@
 package kz.almaty.satbayevuniversity.ui.umkd.filefragment.fileDataFragment.webViewFragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -21,20 +19,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import java.util.List;
-
 import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.entity.umkd.Course;
 import kz.almaty.satbayevuniversity.databinding.WebViewFragmentBinding;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.AppSettingsDialog;
-import pub.devrel.easypermissions.EasyPermissions;
 
-public class WebViewFragment extends Fragment implements EasyPermissions.PermissionCallbacks {
+public class WebViewFragment extends Fragment {
 
     public WebView mWebView;
     private Toolbar toolbar;
@@ -71,32 +66,25 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
         mWebView.setVisibility(View.GONE);
         mWebView.setWebViewClient(new WebViewClient()
         {
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
 
-            }
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                progressBar.setVisibility(View.INVISIBLE);
-                mWebView.setVisibility(View.VISIBLE);
+          }
+          @Override
+          public void onPageFinished(WebView view, String url) {
+              super.onPageFinished(view, url);
+              progressBar.setVisibility(View.INVISIBLE);
+              mWebView.setVisibility(View.VISIBLE);
 
-            }
-        }
+          }
+      }
         );
         return v;
 
     }
 
-    @AfterPermissionGranted(1)
-    private void doPerm() {
-        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
-        if(EasyPermissions.hasPermissions(getContext(), perms)){
-        } else{
-            EasyPermissions.requestPermissions(this, getResources().getString(R.string.ask_permission_to_rw_external_storage), 1, perms);
-        }
-    }
+
 
     @Override
     public void onResume(){
@@ -134,9 +122,9 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+
         imageView.setOnClickListener(v -> {
-          doPerm();
-          sendFile();
+            sendFile();
         });
 
         toolbar.setNavigationOnClickListener(v -> getFragmentManager().popBackStackImmediate());
@@ -146,37 +134,15 @@ public class WebViewFragment extends Fragment implements EasyPermissions.Permiss
     }
 
     private void sendFile() {
-        mViewModel.getFile();
-        mViewModel.getDownloadFileMutableLiveData().observe(this, file -> {
+        mViewModel.getDownloadFileLiveData().observe(this, file -> {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.setType("application/msword");
-            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            sendIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(App.getContext(),"kz.almaty.satbayevuniversity.provider",file));
             startActivity(sendIntent);
         });
+        mViewModel.getFileFromServer();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) { }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        if(EasyPermissions.somePermissionPermanentlyDenied(this, perms)){
-            new AppSettingsDialog.Builder(this).build().show();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE){}
-    }
 }
 

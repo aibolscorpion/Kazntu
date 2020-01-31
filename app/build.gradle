@@ -16,8 +16,8 @@ android {
         applicationId "kz.almaty.satbayevuniversity"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 5
-        versionName "1.5"
+        versionCode 7
+        versionName "1.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -107,6 +107,4 @@ dependencies {
     //object storage
     implementation 'io.paperdb:paperdb:2.6'
 
-    //permissions
-    implementation 'pub.devrel:easypermissions:3.0.0'
 }
