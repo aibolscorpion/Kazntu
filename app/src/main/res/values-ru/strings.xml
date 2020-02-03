@@ -58,6 +58,6 @@
     <string name="wednesday">ср</string>
     <string name="friday">пт</string>
     <string name="click_back_again">Нажмите кнопку назад еще раз чтобы выйти</string>
-    <string name="ask_permission_to_rw_external_storage">Нужно дать разрешение для сохранение и чтение файла</string>
+    <string name="ask_permission_to_rw_external_storage">Нужно дать разрешение для сохранение файла</string>
 
 </resources>
