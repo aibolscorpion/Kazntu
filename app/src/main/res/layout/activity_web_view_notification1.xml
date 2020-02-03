@@ -9,7 +9,7 @@
         app:layout_constraintTop_toTopOf="parent"
         layout="@layout/empty_toolbar"
         android:id="@+id/toolbarOfNotification"/>
-    <WebView
+    <kz.almaty.satbayevuniversity.ui.umkd.filefragment.fileDataFragment.webViewFragment.LollipopFixedWebView
         app:layout_constraintTop_toBottomOf="@+id/toolbarOfNotification"
         android:layout_width="match_parent"
         android:layout_height="0dp"
