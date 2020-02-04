@@ -127,23 +127,31 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/etPassword"/>
+                        app:layout_constraintEnd_toStartOf="@+id/etLayout"/>
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etPassword"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etLayout"
                         android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:inputType="textPassword"
-                        android:background="@null"
-                        android:fontFamily="@font/open_sans_light"
-                        android:hint="@string/et_password_hint"
-                        android:paddingStart="12dp"
-                        android:textSize="15sp"
-                        android:text="@={viewModel.password}"
+                        android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imgPassword"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:hintEnabled="false"
+                        app:passwordToggleEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:background="@null"
+                            android:fontFamily="@font/open_sans_light"
+                            android:hint="@string/et_password_hint"
+                            android:inputType="textPassword"
+                            android:paddingStart="12dp"
+                            android:text="@={viewModel.password}"
+                            android:textSize="15sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvBeta"
