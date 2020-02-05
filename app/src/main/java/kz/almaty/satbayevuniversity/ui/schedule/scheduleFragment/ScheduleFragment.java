@@ -24,8 +24,6 @@ import com.kizitonwose.calendarview.model.CalendarDay;
 import com.kizitonwose.calendarview.ui.DayBinder;
 import com.kizitonwose.calendarview.ui.ViewContainer;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.YearMonth;
@@ -35,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import kz.almaty.satbayevuniversity.AuthViewModel;
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.AccountDao;
 import kz.almaty.satbayevuniversity.data.App;
@@ -49,6 +48,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
     CalendarView calendarView;
     ArrayList<Schedule> localScheduleList;
     private ScheduleViewModel mViewModel;
+    private AuthViewModel authViewModel;
     private ScheduleAdapter scheduleAdapter;
     LocalDate currentDay = LocalDate.now();
 
@@ -85,6 +85,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
         super.onActivityCreated(savedInstanceState);
 
         mViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
+        authViewModel = ViewModelProviders.of(this).get(AuthViewModel.class);
         scheduleFragmentBinding.setSchedule(mViewModel);
         scheduleFragmentBinding.scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         scheduleFragmentBinding.scheduleRecyclerView.setHasFixedSize(true);
@@ -131,6 +132,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
 
         mViewModel.getHandleError().observe(this, integer -> {
             if (integer == 401) {
+                authViewModel.clearDB();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();
