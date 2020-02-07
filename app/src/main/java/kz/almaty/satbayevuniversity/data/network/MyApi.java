@@ -1,5 +1,8 @@
 package kz.almaty.satbayevuniversity.data.network;
 
+import java.util.List;
+import java.util.Map;
+
 import kz.almaty.satbayevuniversity.data.entity.AccountEntity;
 import kz.almaty.satbayevuniversity.data.entity.academic.ResponseJournal;
 import kz.almaty.satbayevuniversity.data.entity.grade.attestation.Attestation;
@@ -7,12 +10,9 @@ import kz.almaty.satbayevuniversity.data.entity.grade.transcript.ResponseTranscr
 import kz.almaty.satbayevuniversity.data.entity.notification.Notification;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Exam;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Schedule;
+import kz.almaty.satbayevuniversity.data.entity.schedule.Student;
 import kz.almaty.satbayevuniversity.data.entity.umkd.File;
 import kz.almaty.satbayevuniversity.data.entity.umkd.Umkd;
-
-import java.util.List;
-import java.util.Map;
-
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -57,4 +57,7 @@ public interface MyApi {
 
     @POST("/api/Complaint/Save")
     Call<ResponseBody> sendComplaint(@Body Map<String, String> body);
+
+    @GET("api/schedule/students")
+    Call<List<Student>> getStudentList(@Query("classid") Integer clasid, @Query("language") String language);
 }

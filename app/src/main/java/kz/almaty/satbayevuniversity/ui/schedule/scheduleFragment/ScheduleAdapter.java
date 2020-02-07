@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,14 +19,14 @@ import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Schedule;
 import kz.almaty.satbayevuniversity.databinding.ScheduleItemBinding;
+import kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.studentsList.StudentsListFragment;
 
-public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
+public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> implements ScheduleListener{
 
     private List<Schedule> scheduleList = new ArrayList<>();
     private ScheduleItemBinding scheduleItemBinding;
-    private Context context;
     private int[] colors = App.getContext().getResources().getIntArray(R.array.colors);
-
+    Context context ;
     public ScheduleAdapter(Context context) {
         this.context = context;
     }
@@ -55,7 +56,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         }
         holder.scheduleItemBinding.setClassType(clasTypeString);
         holder.scheduleItemBinding.setSchedule(currentSchedule);
-
+        holder.scheduleItemBinding.setScheduleListener(this);
         if(currentSchedule.getDayOfWeekId() != 0){
             LayerDrawable layerDrawable1 = (LayerDrawable)ContextCompat.getDrawable(App.getContext(),R.drawable.underline);
             GradientDrawable gradientDrawable = (GradientDrawable) layerDrawable1.findDrawableByLayerId(R.id.underline_item);
@@ -76,6 +77,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         this.scheduleList.clear();
         this.scheduleList.addAll(scheduleList);
         notifyItemRangeChanged(0, scheduleList.size());
+    }
+
+    @Override
+    public void scheduleClicked(Schedule schedule) {
+        StudentsListFragment studentsListFragment = new StudentsListFragment(schedule.getClassId());
+        studentsListFragment.show(((AppCompatActivity)context).getSupportFragmentManager(),"studentListFragment");
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

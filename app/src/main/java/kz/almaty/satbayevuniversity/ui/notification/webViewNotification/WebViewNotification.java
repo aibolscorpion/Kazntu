@@ -1,8 +1,5 @@
 package kz.almaty.satbayevuniversity.ui.notification.webViewNotification;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +8,9 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.entity.notification.Notification;
@@ -56,8 +56,7 @@ public class WebViewNotification extends AppCompatActivity {
                 webView.setVisibility(View.VISIBLE); }
           }
         );
-
-        webView.loadData(notification.getContent(), "text/html", "UTF-8");
+            webView.loadDataWithBaseURL(null, notification.getContent(), "text/html", "UTF-8", null);
     }
 
     private void getFromIntent() {
@@ -70,6 +69,5 @@ public class WebViewNotification extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.close_file_icon);
         getSupportActionBar().setTitle(notification.getTitle());
     }
-
 
 }

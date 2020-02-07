@@ -6,20 +6,11 @@ import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.ObservableField;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
-import kz.almaty.satbayevuniversity.data.AccountDao;
-import kz.almaty.satbayevuniversity.data.App;
-import kz.almaty.satbayevuniversity.data.AppDatabase;
-import kz.almaty.satbayevuniversity.data.entity.AccountEntity;
-import kz.almaty.satbayevuniversity.data.entity.LoginFields;
-
-import kz.almaty.satbayevuniversity.data.network.KaznituRetrofit;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -29,6 +20,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import kz.almaty.satbayevuniversity.data.AccountDao;
+import kz.almaty.satbayevuniversity.data.App;
+import kz.almaty.satbayevuniversity.data.AppDatabase;
+import kz.almaty.satbayevuniversity.data.entity.AccountEntity;
+import kz.almaty.satbayevuniversity.data.entity.LoginFields;
+import kz.almaty.satbayevuniversity.data.network.KaznituRetrofit;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;

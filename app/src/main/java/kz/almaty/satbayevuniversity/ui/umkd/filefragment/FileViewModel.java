@@ -3,7 +3,6 @@ package kz.almaty.satbayevuniversity.ui.umkd.filefragment;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
@@ -54,7 +53,6 @@ public class FileViewModel extends ViewModel {
     }
 
     void getFilesFromServer(){
-        Log.i("aibol","getFilesFromServer()");
         loadRv.set(true);
         KaznituRetrofit.getApi().updateFileCourse(
                 Storage.getInstance().getCourseCode(),
