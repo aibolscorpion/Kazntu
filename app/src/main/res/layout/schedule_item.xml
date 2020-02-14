@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="schedule"
             type="kz.almaty.satbayevuniversity.data.entity.schedule.Schedule" />
@@ -14,6 +15,9 @@
         <variable
             name="scheduleListener"
             type="kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.ScheduleListener" />
+        <variable
+            name="viewModel"
+            type="kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.studentsList.StudentsListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
-        android:onClick="@{() -> scheduleListener.scheduleClicked(schedule)}">
+        android:onClick="@{() -> scheduleListener.scheduleClicked(schedule)}"
+        >
 
         <TextView
             android:id="@+id/scheduleTime"
@@ -75,6 +80,23 @@
             app:layout_constraintTop_toBottomOf="@+id/scheduleInstructorName"
             tools:text="ГУК 1134"
             android:layout_marginBottom="5dp"/>
+
+
+        <TextView
+            android:id="@+id/quantity_of_students"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="252dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/open_sans_regular"
+            android:textColor="@color/schedule_item_textview"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline10"
+            app:layout_constraintTop_toBottomOf="@+id/scheduleInstructorName"
+            app:layout_constraintVertical_bias="0.0"
+            android:text="@{String.valueOf(viewModel.quantity_of_students)}"
+            tools:text="34" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline10"

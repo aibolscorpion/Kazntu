@@ -1,7 +1,6 @@
 package kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.studentsList;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -33,7 +32,6 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
     @Override
     public void onBindViewHolder(@NonNull StudentListAdapter.ViewHolder holder, int position) {
         Student student = studentList.get(position);
-        Log.i("aibol",student.getFullName());
         holder.studentItemBinding.setStudent(student);
     }
 

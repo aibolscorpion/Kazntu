@@ -28,18 +28,13 @@ public class WebViewNotification extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbarOfNotification);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setAllowFileAccess(true);
-        webSettings.setBuiltInZoomControls(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setUseWideViewPort(true);
         webSettings.setDomStorageEnabled(true);
-
         getFromIntent();
 
         initToolbar();
 
         toolbar.setNavigationOnClickListener(v -> {
-        onBackPressed();
+            onBackPressed();
         });
 
         webView.setWebViewClient(new WebViewClient()

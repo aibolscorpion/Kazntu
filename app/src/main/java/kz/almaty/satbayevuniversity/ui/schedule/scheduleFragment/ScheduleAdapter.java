@@ -1,5 +1,6 @@
 package kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -10,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -20,9 +23,9 @@ import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Schedule;
 import kz.almaty.satbayevuniversity.databinding.ScheduleItemBinding;
 import kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.studentsList.StudentsListFragment;
+import kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.studentsList.StudentsListViewModel;
 
-public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> implements ScheduleListener{
-
+public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> implements ScheduleListener {
     private List<Schedule> scheduleList = new ArrayList<>();
     private ScheduleItemBinding scheduleItemBinding;
     private int[] colors = App.getContext().getResources().getIntArray(R.array.colors);
@@ -36,11 +39,15 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     public ScheduleAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         scheduleItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.schedule_item, parent, false);
-        return new ViewHolder(scheduleItemBinding);
+        ViewHolder viewHolder = new ViewHolder(scheduleItemBinding);
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ScheduleAdapter.ViewHolder holder, int position) {
+        StudentsListViewModel viewModel = ViewModelProviders.of((FragmentActivity)context).get(StudentsListViewModel.class);
+        viewModel.getStudentList(scheduleList.get(position).getClassId(),"ru");
+        scheduleItemBinding.setViewModel(viewModel);
         Schedule currentSchedule = scheduleList.get(position);
         String clasTypeString="";
         switch (currentSchedule.getClassType()){
@@ -54,6 +61,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 clasTypeString = "(Лекция)";
                 break;
         }
+
         holder.scheduleItemBinding.setClassType(clasTypeString);
         holder.scheduleItemBinding.setSchedule(currentSchedule);
         holder.scheduleItemBinding.setScheduleListener(this);
@@ -81,15 +89,19 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     @Override
     public void scheduleClicked(Schedule schedule) {
-        StudentsListFragment studentsListFragment = new StudentsListFragment(schedule.getClassId());
-        studentsListFragment.show(((AppCompatActivity)context).getSupportFragmentManager(),"studentListFragment");
+        if(schedule.getCourseTitle() != null){
+            StudentsListFragment studentsListFragment = new StudentsListFragment(schedule);
+            studentsListFragment.show(((AppCompatActivity)context).getSupportFragmentManager(),"studentListFragment");
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ScheduleItemBinding scheduleItemBinding;
+        @SuppressLint("ClickableViewAccessibility")
         ViewHolder(@NonNull ScheduleItemBinding scheduleItemBinding) {
             super(scheduleItemBinding.getRoot());
             this.scheduleItemBinding = scheduleItemBinding;
+
         }
     }
 }
