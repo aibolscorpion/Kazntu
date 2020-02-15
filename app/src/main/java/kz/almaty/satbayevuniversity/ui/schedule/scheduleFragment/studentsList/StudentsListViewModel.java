@@ -25,7 +25,6 @@ public class StudentsListViewModel extends ViewModel {
     private ConnectivityManager connManager = (ConnectivityManager) App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
     public ObservableBoolean loadRv = new ObservableBoolean();
-    public ObservableInt quantity_of_students = new ObservableInt();
     MutableLiveData<List<Student>> liveData = new MutableLiveData<>();
     public void getStudentList(int classid, String language){
         if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
@@ -40,13 +39,10 @@ public class StudentsListViewModel extends ViewModel {
             @Override
             public void onResponse(Call<List<Student>> call, Response<List<Student>> response) {
                 if(response.isSuccessful()){
-                    Log.i("aibol",response.body().size()+"");
                     loadRv.set(false);
                     liveData.setValue(response.body());
-                    quantity_of_students.set(response.body().size());
                 }
             }
-
             @Override
             public void onFailure(Call<List<Student>> call, Throwable t) {
                 loadRv.set(false);
@@ -57,4 +53,5 @@ public class StudentsListViewModel extends ViewModel {
     public MutableLiveData<List<Student>> getLiveData() {
         return liveData;
     }
+
 }

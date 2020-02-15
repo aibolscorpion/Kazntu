@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -11,7 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,9 +50,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ScheduleAdapter.ViewHolder holder, int position) {
-        StudentsListViewModel viewModel = ViewModelProviders.of((FragmentActivity)context).get(StudentsListViewModel.class);
-        viewModel.getStudentList(scheduleList.get(position).getClassId(),"ru");
-        scheduleItemBinding.setViewModel(viewModel);
         Schedule currentSchedule = scheduleList.get(position);
         String clasTypeString="";
         switch (currentSchedule.getClassType()){
@@ -97,7 +99,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ScheduleItemBinding scheduleItemBinding;
-        @SuppressLint("ClickableViewAccessibility")
         ViewHolder(@NonNull ScheduleItemBinding scheduleItemBinding) {
             super(scheduleItemBinding.getRoot());
             this.scheduleItemBinding = scheduleItemBinding;
