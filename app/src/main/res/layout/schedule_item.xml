@@ -81,16 +81,14 @@
             android:id="@+id/quantity_of_students"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="252dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/guideline10"
-            app:layout_constraintTop_toBottomOf="@+id/scheduleInstructorName"
-            app:layout_constraintVertical_bias="0.0"
+            android:onClick="@{() -> scheduleListener.scheduleClicked(schedule)}"
             android:src="@drawable/ic_list_black"
             android:visibility="@{schedule.courseTitle == null ? View.GONE : View.VISIBLE}"
-            android:onClick="@{() -> scheduleListener.scheduleClicked(schedule)}"/>
+            app:layout_constraintTop_toBottomOf="@+id/scheduleInstructorName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/roomTitle"
+            app:layout_constraintHorizontal_bias="0.9"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline10"
