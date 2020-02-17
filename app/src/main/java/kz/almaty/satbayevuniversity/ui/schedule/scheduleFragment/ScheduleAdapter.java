@@ -1,23 +1,18 @@
 package kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.text.TextUtils;
-import android.util.Log;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -28,13 +23,14 @@ import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Schedule;
 import kz.almaty.satbayevuniversity.databinding.ScheduleItemBinding;
 import kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.studentsList.StudentsListFragment;
-import kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.studentsList.StudentsListViewModel;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> implements ScheduleListener {
     private List<Schedule> scheduleList = new ArrayList<>();
     private ScheduleItemBinding scheduleItemBinding;
     private int[] colors = App.getContext().getResources().getIntArray(R.array.colors);
     Context context ;
+    private ConnectivityManager connManager = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
     public ScheduleAdapter(Context context) {
         this.context = context;
     }
@@ -91,10 +87,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     @Override
     public void scheduleClicked(Schedule schedule) {
-        if(schedule.getCourseTitle() != null){
-            StudentsListFragment studentsListFragment = new StudentsListFragment(schedule);
-            studentsListFragment.show(((AppCompatActivity)context).getSupportFragmentManager(),"studentListFragment");
-        }
+            if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected() ) {
+                StudentsListFragment studentsListFragment = new StudentsListFragment(schedule);
+                studentsListFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "studentListFragment");
+            }else{
+                Toast.makeText(App.getContext(), R.string.internetConnection, Toast.LENGTH_SHORT).show();
+            }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
