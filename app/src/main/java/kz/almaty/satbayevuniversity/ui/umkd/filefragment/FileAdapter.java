@@ -14,7 +14,7 @@ import java.util.List;
 
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.entity.umkd.File;
-import kz.almaty.satbayevuniversity.databinding.FileItemBinding;
+import kz.almaty.satbayevuniversity.databinding.ItemFileBinding;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 import kz.almaty.satbayevuniversity.ui.umkd.filefragment.fileDataFragment.FileDataFragment;
 
@@ -29,8 +29,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
     @NonNull
     @Override
     public FileAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        FileItemBinding fileItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.file_item, parent, false);
+        ItemFileBinding fileItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.item_file, parent, false);
         return new FileAdapter.ViewHolder(fileItemBinding);
     }
 
@@ -66,8 +66,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        FileItemBinding fileItemBinding;
-        ViewHolder(@NonNull FileItemBinding fileItemBinding) {
+        ItemFileBinding fileItemBinding;
+        ViewHolder(@NonNull ItemFileBinding fileItemBinding) {
             super(fileItemBinding.getRoot());
             this.fileItemBinding = fileItemBinding;
         }

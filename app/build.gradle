@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/'}
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.4, 0.99.99]'
+    }
+}
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+repositories {
+    maven { url 'https://maven.google.com' }
+}
 apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
 
@@ -19,6 +32,10 @@ android {
         versionCode 11
         versionName "2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                onesignal_app_id: 'bc1b547b-9758-4e43-8d2b-f6011cf458ba',
+                onesignal_google_project_number: 'REMOTE'
+                ]
     }
     buildTypes {
         release {
@@ -106,5 +123,8 @@ dependencies {
 
     //object storage
     implementation 'io.paperdb:paperdb:2.6'
+
+    //OneSignal push notification
+    implementation 'com.onesignal:OneSignal:[3.11.2, 3.99.99]'
 
 }

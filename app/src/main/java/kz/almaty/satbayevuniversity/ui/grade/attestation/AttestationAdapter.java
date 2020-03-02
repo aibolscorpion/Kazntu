@@ -7,12 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.data.entity.grade.attestation.Attestation;
-import kz.almaty.satbayevuniversity.databinding.AttestationItemBinding;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.entity.grade.attestation.Attestation;
+import kz.almaty.satbayevuniversity.databinding.ItemAttestationBinding;
+import kz.almaty.satbayevuniversity.databinding.ItemAttestationBindingImpl;
 
 public class AttestationAdapter extends RecyclerView.Adapter<AttestationAdapter.ViewHolder> {
 
@@ -24,8 +25,8 @@ public class AttestationAdapter extends RecyclerView.Adapter<AttestationAdapter.
     @NonNull
     @Override
     public AttestationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        AttestationItemBinding attestationItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.attestation_item, parent, false);
+        ItemAttestationBindingImpl attestationItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.item_attestation, parent, false);
         return new AttestationAdapter.ViewHolder(attestationItemBinding);
     }
 
@@ -46,8 +47,8 @@ public class AttestationAdapter extends RecyclerView.Adapter<AttestationAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private AttestationItemBinding attestationItemBinding;
-        public ViewHolder(@NonNull AttestationItemBinding attestationItemBinding) {
+        private ItemAttestationBinding attestationItemBinding;
+        public ViewHolder(@NonNull ItemAttestationBinding attestationItemBinding) {
             super(attestationItemBinding.getRoot());
             this.attestationItemBinding = attestationItemBinding;
         }

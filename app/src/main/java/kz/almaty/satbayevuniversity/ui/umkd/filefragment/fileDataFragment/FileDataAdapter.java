@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.entity.umkd.Course;
-import kz.almaty.satbayevuniversity.databinding.FileDataFragmentItemBinding;
+import kz.almaty.satbayevuniversity.databinding.FragmentFileDataItemBinding;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 import kz.almaty.satbayevuniversity.ui.umkd.filefragment.fileDataFragment.webViewFragment.WebViewFragment;
 import kz.almaty.satbayevuniversity.utils.Storage;
-
-import java.util.List;
 
 
 public class FileDataAdapter  extends RecyclerView.Adapter<FileDataAdapter.ViewHolder> implements FileDataClickListener{
@@ -30,8 +30,8 @@ public class FileDataAdapter  extends RecyclerView.Adapter<FileDataAdapter.ViewH
     @NonNull
     @Override
     public FileDataAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        FileDataFragmentItemBinding fileDataFragmentItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.file_data_fragment_item, parent, false);
+        FragmentFileDataItemBinding fileDataFragmentItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.fragment_file_data_item, parent, false);
         return new FileDataAdapter.ViewHolder(fileDataFragmentItemBinding);
     }
 
@@ -40,29 +40,31 @@ public class FileDataAdapter  extends RecyclerView.Adapter<FileDataAdapter.ViewH
         Course currentCourse = courseList.get(position);
         holder.fileDataFragmentItemBinding.setCourse(currentCourse);
         holder.fileDataFragmentItemBinding.setFiledataclickListener(this);
-
-        String newString = currentCourse.getFileName().substring(currentCourse.getFileName().length() -3);
-
-        switch (newString){
-            case "ocx":
-                holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.doc_icon);
-                break;
-            case "pdf":
-                holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.pdf_icon);
-                break;
-            case "doc":
-                holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.doc_icon);
-                break;
-            case "xls":
-                holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.xls_icon);
-                break;
-            case "PDF":
-                holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.pdf_icon);
-                break;
-            case "zip":
-                holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.zip_icon);
-                break;
+        int lastthreeLetters = currentCourse.getFileName().length()-3;
+        if(lastthreeLetters>=0){
+            String newString = currentCourse.getFileName().substring(lastthreeLetters);
+            switch (newString){
+                case "ocx":
+                    holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.doc_icon);
+                    break;
+                case "pdf":
+                    holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.pdf_icon);
+                    break;
+                case "doc":
+                    holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.doc_icon);
+                    break;
+                case "xls":
+                    holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.xls_icon);
+                    break;
+                case "PDF":
+                    holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.pdf_icon);
+                    break;
+                case "zip":
+                    holder.fileDataFragmentItemBinding.fileImage.setImageResource(R.drawable.zip_icon);
+                    break;
+            }
         }
+
     }
 
     @Override
@@ -91,8 +93,8 @@ public class FileDataAdapter  extends RecyclerView.Adapter<FileDataAdapter.ViewH
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        FileDataFragmentItemBinding fileDataFragmentItemBinding;
-        public ViewHolder(@NonNull FileDataFragmentItemBinding fileDataFragmentItemBinding) {
+        FragmentFileDataItemBinding fileDataFragmentItemBinding;
+        public ViewHolder(@NonNull FragmentFileDataItemBinding fileDataFragmentItemBinding) {
             super(fileDataFragmentItemBinding.getRoot());
             this.fileDataFragmentItemBinding = fileDataFragmentItemBinding;
         }

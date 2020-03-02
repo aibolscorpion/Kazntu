@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +35,7 @@ public class LanguageFragment extends Fragment implements LanguageAdapter.Langua
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.language_fragment, container, false);
+        View view =  inflater.inflate(R.layout.fragment_language, container, false);
         recyclerView = view.findViewById(R.id.languageRecycler);
         toolbar = view.findViewById(R.id.languageToolbar);
         return view;
@@ -66,6 +67,7 @@ public class LanguageFragment extends Fragment implements LanguageAdapter.Langua
         languages.add(new Language("Казахский", "kk", 1));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         languageAdapter = new LanguageAdapter(getActivity());
         recyclerView.setAdapter(languageAdapter);
         languageAdapter.setLanguageList(languages);

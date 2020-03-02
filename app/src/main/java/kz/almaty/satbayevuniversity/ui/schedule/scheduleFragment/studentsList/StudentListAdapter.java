@@ -13,7 +13,7 @@ import java.util.List;
 
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Student;
-import kz.almaty.satbayevuniversity.databinding.StudentItemBinding;
+import kz.almaty.satbayevuniversity.databinding.ItemStudentBinding;
 
 public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.ViewHolder> {
     Context context;
@@ -24,7 +24,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
     @NonNull
     @Override
     public StudentListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        StudentItemBinding studentItemBinding = DataBindingUtil.inflate(LayoutInflater.from(context),R.layout.student_item,parent,false);
+        ItemStudentBinding studentItemBinding = DataBindingUtil.inflate(LayoutInflater.from(context),R.layout.item_student,parent,false);
         return new ViewHolder(studentItemBinding);
 
     }
@@ -46,8 +46,8 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
         notifyDataSetChanged();
     }
     class ViewHolder extends RecyclerView.ViewHolder{
-        StudentItemBinding studentItemBinding;
-       public ViewHolder(StudentItemBinding studentItemBinding){
+        ItemStudentBinding studentItemBinding;
+       public ViewHolder(ItemStudentBinding studentItemBinding){
            super(studentItemBinding.getRoot());
            this.studentItemBinding = studentItemBinding;
        }

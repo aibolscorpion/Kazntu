@@ -14,17 +14,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.databinding.UmkdFragmentBinding;
+import kz.almaty.satbayevuniversity.databinding.FragmentUmkdBinding;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 
 
 public class UmkdFragment extends Fragment {
 
     private UmkdViewModel mViewModel;
-    private UmkdFragmentBinding umkdFragmentBinding;
+    private FragmentUmkdBinding umkdFragmentBinding;
     private UmkdAdapter umkdAdapter;
     private View view;
     public Toolbar toolbar;
@@ -39,7 +40,7 @@ public class UmkdFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "Fragment2 onCreateView");
 
-        umkdFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.umkd_fragment, container, false);
+        umkdFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_umkd, container, false);
         view = umkdFragmentBinding.getRoot();
 
         toolbar = view.findViewById(R.id.umkd_toolbar);
@@ -70,6 +71,7 @@ public class UmkdFragment extends Fragment {
 
         umkdFragmentBinding.umkdRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         umkdFragmentBinding.umkdRecyclerView.setHasFixedSize(true);
+        umkdFragmentBinding.umkdRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
         umkdAdapter = new UmkdAdapter(getActivity());
         umkdFragmentBinding.umkdRecyclerView.setAdapter(umkdAdapter);

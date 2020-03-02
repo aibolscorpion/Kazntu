@@ -27,7 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.entity.umkd.Course;
-import kz.almaty.satbayevuniversity.databinding.WebViewFragmentBinding;
+import kz.almaty.satbayevuniversity.databinding.FragmentWebViewBinding;
 
 public class WebViewFragment extends Fragment {
 
@@ -37,7 +37,7 @@ public class WebViewFragment extends Fragment {
     private ImageView imageView;
     private WebViewViewModel mViewModel;
     private static final int PERMISSION_REQUEST_CODE = 1;
-    private WebViewFragmentBinding webViewFragmentBinding;
+    private FragmentWebViewBinding webViewFragmentBinding;
     ProgressBar progressBar;
     public static WebViewFragment newInstance() {
         return new WebViewFragment();
@@ -47,7 +47,7 @@ public class WebViewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        webViewFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.web_view_fragment, container, false);
+        webViewFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_web_view, container, false);
         View v = webViewFragmentBinding.getRoot();
         progressBar =  v.findViewById(R.id.web_view_progress_bar);
         toolbar = v.findViewById(R.id.toolbarWebView);

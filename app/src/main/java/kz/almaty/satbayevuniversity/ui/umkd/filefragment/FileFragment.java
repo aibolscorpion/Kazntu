@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import kz.almaty.satbayevuniversity.R;
@@ -70,6 +71,8 @@ public class FileFragment extends Fragment {
         fileFragmentBinding.setFile(mViewModel);
         fileFragmentBinding.fileRecyclerView.setHasFixedSize(true);
         fileFragmentBinding.fileRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        fileFragmentBinding.fileRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+
         fileAdapter = new FileAdapter(getActivity());
         fileFragmentBinding.fileRecyclerView.setAdapter(fileAdapter);
         toolbar.setNavigationOnClickListener(v -> getFragmentManager().popBackStackImmediate());

@@ -8,17 +8,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-
 import androidx.recyclerview.widget.RecyclerView;
 
-import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.data.SharedPrefCache;
-import kz.almaty.satbayevuniversity.data.entity.Language;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.SharedPrefCache;
+import kz.almaty.satbayevuniversity.data.entity.Language;
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHolder> {
     private int POSITION_1 = 0;
@@ -46,7 +46,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
     @NonNull
     @Override
     public LanguageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.language_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_language, parent, false);
         return new ViewHolder(view);
     }
 

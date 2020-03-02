@@ -1,28 +1,27 @@
 package kz.almaty.satbayevuniversity.ui.grade.attestation;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.databinding.GradeFragmentBinding;
+import kz.almaty.satbayevuniversity.databinding.FragmentGradeBinding;
 
 public class GradeFragment extends Fragment {
 
     private GradeViewModel mViewModel;
 
-    private GradeFragmentBinding gradeFragmentBinding;
+    private FragmentGradeBinding gradeFragmentBinding;
     private AttestationAdapter attestationAdapter;
     public static GradeFragment newInstance() {
         return new GradeFragment();
@@ -31,7 +30,7 @@ public class GradeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        gradeFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.grade_fragment, container, false);
+        gradeFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_grade, container, false);
         View view = gradeFragmentBinding.getRoot();
         gradeFragmentBinding.emptyImage.setVisibility(View.INVISIBLE);
         gradeFragmentBinding.emptyTextView.setVisibility(View.INVISIBLE);
@@ -47,6 +46,7 @@ public class GradeFragment extends Fragment {
 
         gradeFragmentBinding.gradeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         gradeFragmentBinding.gradeRecyclerView.setHasFixedSize(true);
+        gradeFragmentBinding.gradeRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
         attestationAdapter = new AttestationAdapter();
         gradeFragmentBinding.gradeRecyclerView.setAdapter(attestationAdapter);

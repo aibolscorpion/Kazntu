@@ -8,16 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.utils.Storage;
-import kz.almaty.satbayevuniversity.data.entity.grade.transcript.CoursesItem;
-import kz.almaty.satbayevuniversity.data.entity.grade.transcript.SemestersItem;
-import kz.almaty.satbayevuniversity.databinding.TranscriptItemBinding;
-import kz.almaty.satbayevuniversity.databinding.TranscriptItemDetailBinding;
-import kz.almaty.satbayevuniversity.ui.HomeActivity;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.entity.grade.transcript.CoursesItem;
+import kz.almaty.satbayevuniversity.data.entity.grade.transcript.SemestersItem;
+import kz.almaty.satbayevuniversity.databinding.ItemTranscriptBinding;
+import kz.almaty.satbayevuniversity.databinding.ItemTranscriptDetailBinding;
+import kz.almaty.satbayevuniversity.ui.HomeActivity;
+import kz.almaty.satbayevuniversity.utils.Storage;
 
 public class TranscriptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements TranscriptEvenListener {
 
@@ -40,12 +40,12 @@ public class TranscriptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType){
             case 0:
-                TranscriptItemBinding transcriptItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                        R.layout.transcript_item, parent, false);
+                ItemTranscriptBinding transcriptItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                        R.layout.item_transcript, parent, false);
                 return new ViewHolder(transcriptItemBinding);
             case 1:
-                TranscriptItemDetailBinding transcript2 = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                        R.layout.transcript_item_detail, parent, false);
+                ItemTranscriptDetailBinding transcript2 = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                        R.layout.item_transcript_detail, parent, false);
 
                 return new ViewHolder2(transcript2);
         }
@@ -86,16 +86,16 @@ public class TranscriptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TranscriptItemBinding transcriptItemBinding;
-        ViewHolder(@NonNull TranscriptItemBinding transcriptItemBinding) {
+        ItemTranscriptBinding transcriptItemBinding;
+        ViewHolder(@NonNull ItemTranscriptBinding transcriptItemBinding) {
             super(transcriptItemBinding.getRoot());
             this.transcriptItemBinding = transcriptItemBinding;
         }
     }
 
     class ViewHolder2 extends RecyclerView.ViewHolder {
-        TranscriptItemDetailBinding transcriptItemDetailBinding;
-        ViewHolder2(@NonNull TranscriptItemDetailBinding transcriptItemDetailBinding) {
+        ItemTranscriptDetailBinding transcriptItemDetailBinding;
+        ViewHolder2(@NonNull ItemTranscriptDetailBinding transcriptItemDetailBinding) {
             super(transcriptItemDetailBinding.getRoot());
             this.transcriptItemDetailBinding = transcriptItemDetailBinding;
         }

@@ -8,11 +8,11 @@
     tools:context="kz.almaty.satbayevuniversity.ui.grade.ViewPagerFragment">
 
     <com.google.android.material.tabs.TabLayout
-        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/colorWhite"
-        android:id="@+id/tabLayoutGrade"
+        app:layout_constraintTop_toTopOf="parent"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextColor="@color/black"
         app:tabIndicatorColor="@color/colorPrimary"
@@ -21,11 +21,11 @@
         app:tabGravity="fill"/>
 
     <androidx.viewpager.widget.ViewPager
-        app:layout_constraintTop_toBottomOf="@+id/tabLayoutGrade"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/viewPager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/viewPager"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout">
     </androidx.viewpager.widget.ViewPager>
 

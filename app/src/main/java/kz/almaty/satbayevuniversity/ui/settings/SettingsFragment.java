@@ -26,7 +26,7 @@ import kz.almaty.satbayevuniversity.AuthViewModel;
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.SharedPrefCache;
 import kz.almaty.satbayevuniversity.data.entity.Language;
-import kz.almaty.satbayevuniversity.databinding.SettingsFragmentBinding;
+import kz.almaty.satbayevuniversity.databinding.FragmentSettingsBinding;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 import kz.almaty.satbayevuniversity.ui.LoginActivity;
 import kz.almaty.satbayevuniversity.ui.settings.complaintFragment.ComplaintFragment;
@@ -35,7 +35,7 @@ import kz.almaty.satbayevuniversity.utils.LocaleHelper;
 import kz.almaty.satbayevuniversity.utils.Storage;
 
 public class SettingsFragment extends Fragment {
-    private SettingsFragmentBinding settingsFragmentBinding;
+    private FragmentSettingsBinding settingsFragmentBinding;
     private ConstraintLayout constraintLayout, settingsLanguage;
     private Button settingsLoginBtn;
     public Toolbar toolbar;
@@ -49,7 +49,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        settingsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.settings_fragment, container, false);
+        settingsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
         View view = settingsFragmentBinding.getRoot();
         constraintLayout = view.findViewById(R.id.settingsComplaint);
         settingsLoginBtn = view.findViewById(R.id.settingsLoginBtn);

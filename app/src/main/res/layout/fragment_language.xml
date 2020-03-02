@@ -19,6 +19,6 @@
             android:id="@+id/languageRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/language_item"/>
+            tools:listitem="@layout/item_language"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

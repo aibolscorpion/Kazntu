@@ -1,31 +1,30 @@
 package kz.almaty.satbayevuniversity.ui.grade.transcriptFragment;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import java.util.ArrayList;
 
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.AccountDao;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
 import kz.almaty.satbayevuniversity.data.entity.grade.transcript.SemestersItem;
-import kz.almaty.satbayevuniversity.databinding.TranscriptFragmentBinding;
-
-import java.util.ArrayList;
+import kz.almaty.satbayevuniversity.databinding.FragmentTranscriptBinding;
 
 public class TranscriptFragment extends Fragment {
-    private TranscriptFragmentBinding transcriptFragmentBinding;
+    private FragmentTranscriptBinding transcriptFragmentBinding;
     private TranscriptAdapter transcriptAdapter;
     private AppDatabase db = App.getInstance().getDatabase();
     private AccountDao accountDao = db.accountDao();
@@ -37,7 +36,7 @@ public class TranscriptFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        transcriptFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.transcript_fragment, container, false);
+        transcriptFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_transcript, container, false);
         View view = transcriptFragmentBinding.getRoot();
         return view;
     }
@@ -52,7 +51,7 @@ public class TranscriptFragment extends Fragment {
 
         transcriptFragmentBinding.transcriptRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         transcriptFragmentBinding.transcriptRecyclerView.setHasFixedSize(true);
-
+        transcriptFragmentBinding.transcriptRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         transcriptAdapter = new TranscriptAdapter(getActivity());
         transcriptFragmentBinding.transcriptRecyclerView.setAdapter(transcriptAdapter);
 

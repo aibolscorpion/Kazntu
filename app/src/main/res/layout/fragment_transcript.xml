@@ -34,21 +34,10 @@
                 android:id="@+id/transcript_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                tools:listitem="@layout/transcript_item"
+                tools:listitem="@layout/item_transcript"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/guideline5"
                 android:visibility="@{transcript.loadRv ? View.GONE : View.VISIBLE}"/>
-
-
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/transcript_recyclerView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            tools:listitem="@layout/transcript_item"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/guideline5"-->
-<!--            android:visibility="@{transcript.loadRv ? View.GONE : View.VISIBLE}"/>-->
 
         <ImageView
             android:layout_width="0dp"
@@ -57,6 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.4"
             android:id="@+id/emptyImage"
             android:src="@drawable/empty"
             app:layout_constraintWidth_percent="0.6"

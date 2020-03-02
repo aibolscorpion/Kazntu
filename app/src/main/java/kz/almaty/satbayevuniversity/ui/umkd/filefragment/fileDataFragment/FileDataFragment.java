@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
@@ -20,12 +21,12 @@ import java.util.List;
 
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.entity.umkd.Course;
-import kz.almaty.satbayevuniversity.databinding.FileDataFragmentBinding;
+import kz.almaty.satbayevuniversity.databinding.FragmentFileDataBinding;
 
 public class FileDataFragment extends Fragment {
 
     private FileDataViewModel mViewModel;
-    private FileDataFragmentBinding fileDataFragmentBinding;
+    private FragmentFileDataBinding fileDataFragmentBinding;
     private FileDataAdapter fileAdapter;
     private List<Course> courseList = new ArrayList<>();
     private Toolbar toolbar;
@@ -37,7 +38,7 @@ public class FileDataFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        fileDataFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.file_data_fragment, container, false);
+        fileDataFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_file_data, container, false);
         View view = fileDataFragmentBinding.getRoot();
         toolbar = view.findViewById(R.id.toolbarFileData);
         getToolbar();
@@ -82,6 +83,7 @@ public class FileDataFragment extends Fragment {
 
         fileDataFragmentBinding.recyclerFileDataFragment.setHasFixedSize(true);
         fileDataFragmentBinding.recyclerFileDataFragment.setLayoutManager(new LinearLayoutManager(getActivity()));
+        fileDataFragmentBinding.recyclerFileDataFragment.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
         toolbar.setNavigationOnClickListener(v -> getFragmentManager().popBackStackImmediate());
 

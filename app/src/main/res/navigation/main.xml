@@ -10,7 +10,7 @@
         android:id="@+id/academicProgress11"
         android:name="kz.almaty.satbayevuniversity.ui.academicProgress.AcademicFragment"
         android:label="@string/academicProgress"
-        tools:layout="@layout/academic_fragment">
+        tools:layout="@layout/fragment_academic">
         <action
             android:id="@+id/action_academicProgress11_to_umkdFragment"
             app:destination="@id/umkdFragment" />
@@ -20,7 +20,7 @@
         android:id="@+id/umkdFragment"
         android:name="kz.almaty.satbayevuniversity.ui.umkd.UmkdFragment"
         android:label="@string/umkd"
-        tools:layout="@layout/umkd_fragment">
+        tools:layout="@layout/fragment_umkd">
         <action
             android:id="@+id/action_umkdFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
@@ -30,6 +30,6 @@
         android:id="@+id/settingsFragment"
         android:name="kz.almaty.satbayevuniversity.ui.settings.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/settings_fragment"/>
+        tools:layout="@layout/fragment_settings"/>
 
 </navigation>

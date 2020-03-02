@@ -20,7 +20,6 @@
         android:id="@+id/constraintOfScheduleItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
         >
 
         <TextView
@@ -70,28 +69,32 @@
             android:fontFamily="@font/open_sans_regular"
             android:text="@{schedule.roomTitle}"
             android:textColor="@color/schedule_item_textview"
+            app:layout_constraintTop_toBottomOf="@+id/scheduleInstructorName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/guideline10"
-            app:layout_constraintTop_toBottomOf="@+id/scheduleInstructorName"
             tools:text="ГУК 1134"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="10dp"/>
 
-
-        <ImageView
-            android:id="@+id/quantity_of_students"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> scheduleListener.scheduleClicked(schedule)}"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:src="@drawable/ic_list_black"
-            android:visibility="@{schedule.courseTitle == null ? View.GONE : View.VISIBLE}"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/list_of_students_layout"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.95"
-            app:layout_constraintStart_toStartOf="@+id/guideline10"
-            app:layout_constraintTop_toBottomOf="@+id/scheduleInstructorName" />
+            android:onClick="@{() -> scheduleListener.scheduleClicked(schedule)}"
+            android:visibility="gone"
+            >
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_list_black"
+                app:layout_constraintVertical_bias="0.8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline10"
             android:layout_width="wrap_content"

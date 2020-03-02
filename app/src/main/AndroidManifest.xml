@@ -30,7 +30,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
-        <activity android:name="kz.almaty.satbayevuniversity.ui.notification.webViewNotification.WebViewNotification"
+        <activity android:name=".ui.notification.portalNotification.webViewNotification.WebViewNotification"
             android:screenOrientation="portrait"/>
         <activity
             android:name="kz.almaty.satbayevuniversity.ui.HomeActivity"

@@ -2,21 +2,20 @@ package kz.almaty.satbayevuniversity.ui.schedule;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.google.android.material.tabs.TabLayout;
 
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.ui.schedule.exams.ExamsFragment;
 import kz.almaty.satbayevuniversity.ui.schedule.scheduleFragment.ScheduleFragment;
 import kz.almaty.satbayevuniversity.ui.viewPager.ViewPagerAdapter;
-import com.google.android.material.tabs.TabLayout;
 
 public class ViewPagerSchedule extends Fragment {
 
@@ -28,15 +27,13 @@ public class ViewPagerSchedule extends Fragment {
     public static ViewPagerSchedule newInstance() {
         return new ViewPagerSchedule();
     }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.view_pager_schedule_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_view_pager_schedule, container, false);
 
         tabLayout = view.findViewById(R.id.tabLayoutSchedule);
         viewPager = view.findViewById(R.id.viewPagerSchedule);
-
         return view;
     }
 
@@ -45,39 +42,12 @@ public class ViewPagerSchedule extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewPager.setPagingEnabled(false);
-
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        // TODO: Use the ViewModel
-    }
-
-
-    private void setupViewPager(ViewPager viewPager){
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-
         viewPagerAdapter.addFragment(new ScheduleFragment(), getString(R.string.schedule));
         viewPagerAdapter.addFragment(new ExamsFragment(), getString(R.string.exam));
 
         viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
     }
-
-
 }

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import kz.almaty.satbayevuniversity.AuthViewModel;
 import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.databinding.AcademicFragmentBinding;
+import kz.almaty.satbayevuniversity.databinding.FragmentAcademicBinding;
 import kz.almaty.satbayevuniversity.ui.LoginActivity;
 
 public class AcademicFragment extends Fragment {
@@ -28,7 +28,7 @@ public class AcademicFragment extends Fragment {
     private AuthViewModel authViewModel;
 
     private AcademicAdapterResponse academicAdapterResponse;
-    private AcademicFragmentBinding academicFragmentBinding;
+    private FragmentAcademicBinding academicFragmentBinding;
 
     public static AcademicFragment newInstance() {
         return new AcademicFragment();
@@ -48,7 +48,7 @@ public class AcademicFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        academicFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.academic_fragment, container, false);
+        academicFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_academic, container, false);
         academicFragmentBinding.emptyImage.setVisibility(View.INVISIBLE);
         academicFragmentBinding.emptyTextView.setVisibility(View.INVISIBLE);
         View view = academicFragmentBinding.getRoot();

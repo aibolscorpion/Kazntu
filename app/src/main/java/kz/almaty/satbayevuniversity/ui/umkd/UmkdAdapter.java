@@ -8,14 +8,14 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.utils.Storage;
 import kz.almaty.satbayevuniversity.data.entity.umkd.Umkd;
-import kz.almaty.satbayevuniversity.databinding.UmkdItemBinding;
+import kz.almaty.satbayevuniversity.databinding.ItemUmkdBinding;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 import kz.almaty.satbayevuniversity.ui.umkd.filefragment.FileFragment;
-
-import java.util.List;
+import kz.almaty.satbayevuniversity.utils.Storage;
 
 public class UmkdAdapter extends RecyclerView.Adapter<UmkdAdapter.ViewHolder> implements UmkdClickListener{
     private List<Umkd> umkdList;
@@ -28,8 +28,8 @@ public class UmkdAdapter extends RecyclerView.Adapter<UmkdAdapter.ViewHolder> im
     @NonNull
     @Override
     public UmkdAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        UmkdItemBinding umkdItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.umkd_item, parent, false);
+        ItemUmkdBinding umkdItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.item_umkd, parent, false);
         return new UmkdAdapter.ViewHolder(umkdItemBinding);
     }
 
@@ -64,8 +64,8 @@ public class UmkdAdapter extends RecyclerView.Adapter<UmkdAdapter.ViewHolder> im
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        UmkdItemBinding umkdItemBinding;
-        public ViewHolder(@NonNull UmkdItemBinding umkdItemBinding) {
+        ItemUmkdBinding umkdItemBinding;
+        public ViewHolder(@NonNull ItemUmkdBinding umkdItemBinding) {
             super(umkdItemBinding.getRoot());
             this.umkdItemBinding = umkdItemBinding;
 

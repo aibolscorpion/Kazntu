@@ -7,13 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Exam;
-import kz.almaty.satbayevuniversity.databinding.ExamItemBinding;
-
-import java.util.ArrayList;
-import java.util.List;
+import kz.almaty.satbayevuniversity.databinding.ItemExamBinding;
 
 public class ExamAdapter  extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     private List<Exam> examList = new ArrayList<>();
@@ -27,8 +27,8 @@ public class ExamAdapter  extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ExamItemBinding examItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.exam_item, parent, false);
+        ItemExamBinding examItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.item_exam, parent, false);
         return new ExamAdapter.ViewHolder(examItemBinding);
     }
 
@@ -55,9 +55,9 @@ public class ExamAdapter  extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private ExamItemBinding examItemBinding;
+        private ItemExamBinding examItemBinding;
 
-        public ViewHolder(@NonNull ExamItemBinding examItemBinding) {
+        public ViewHolder(@NonNull ItemExamBinding examItemBinding) {
             super(examItemBinding.getRoot());
             this.examItemBinding = examItemBinding;
 

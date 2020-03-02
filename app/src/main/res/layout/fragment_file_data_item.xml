@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout>
+
     <data>
         <variable
-            name="file"
-            type="kz.almaty.satbayevuniversity.data.entity.umkd.File" />
+            name="course"
+            type="kz.almaty.satbayevuniversity.data.entity.umkd.Course" />
         <variable
-            name="fileItemClickListener"
-            type="kz.almaty.satbayevuniversity.ui.umkd.filefragment.FileClickListener" />
+            name="filedataclickListener"
+            type="kz.almaty.satbayevuniversity.ui.umkd.filefragment.fileDataFragment.FileDataClickListener" />
 
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:padding="10dp"
-        android:onClick="@{() -> fileItemClickListener.FileClick(file)}"
-        android:background="@drawable/underline">
+        android:onClick="@{() -> filedataclickListener.FileDataClick(course)}">
 
         <ImageView
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="УМКД"
-            android:text="@{file.fileName}"/>
+            android:text="@{course.fileName}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,21 +1,13 @@
-package kz.almaty.satbayevuniversity.ui.notification;
+package kz.almaty.satbayevuniversity.ui.notification.portalNotification;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.data.AccountDao;
-import kz.almaty.satbayevuniversity.data.App;
-import kz.almaty.satbayevuniversity.data.AppDatabase;
-import kz.almaty.satbayevuniversity.data.entity.notification.Notification;
-import kz.almaty.satbayevuniversity.data.network.KaznituRetrofit;
 
 import java.io.IOException;
 import java.net.SocketException;
@@ -27,11 +19,17 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.AccountDao;
+import kz.almaty.satbayevuniversity.data.App;
+import kz.almaty.satbayevuniversity.data.AppDatabase;
+import kz.almaty.satbayevuniversity.data.entity.notification.Notification;
+import kz.almaty.satbayevuniversity.data.network.KaznituRetrofit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NotificationViewModel extends ViewModel {
+public class PortalNotificationViewModel extends ViewModel {
     SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE);
     public ObservableBoolean isEmpty = new ObservableBoolean();
 

@@ -1,4 +1,4 @@
-package kz.almaty.satbayevuniversity.ui.notification;
+package kz.almaty.satbayevuniversity.ui.notification.portalNotification;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,32 +9,32 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.entity.notification.Notification;
 import kz.almaty.satbayevuniversity.databinding.NotificationShortNewsBinding;
-import kz.almaty.satbayevuniversity.ui.notification.webViewNotification.WebViewNotification;
+import kz.almaty.satbayevuniversity.ui.notification.portalNotification.webViewNotification.WebViewNotification;
 
-import java.util.List;
-
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> implements NotificationListener {
+public class PortalNotificationAdapter extends RecyclerView.Adapter<PortalNotificationAdapter.ViewHolder> implements PortalNotificationListener {
     private List<Notification> notifications;
     private Context context;
 
-    public NotificationAdapter(Context context) {
+    public PortalNotificationAdapter(Context context) {
         this.context = context;
     }
 
     @NonNull
     @Override
-    public NotificationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PortalNotificationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         NotificationShortNewsBinding notificationShortNewsBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.notification_short_news, parent, false);
-        return new NotificationAdapter.ViewHolder(notificationShortNewsBinding);
+        return new PortalNotificationAdapter.ViewHolder(notificationShortNewsBinding);
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotificationAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PortalNotificationAdapter.ViewHolder holder, int position) {
         Notification currentNotification = notifications.get(position);
         holder.notificationShortNewsBinding.setNotification(currentNotification);
         holder.notificationShortNewsBinding.getWebClickListener();

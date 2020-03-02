@@ -1,26 +1,24 @@
 package kz.almaty.satbayevuniversity.ui.settings.complaintFragment;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.app.Dialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.databinding.ComlaintFragmentBinding;
+import kz.almaty.satbayevuniversity.databinding.FragmentComplaintBinding;
 
 public class ComplaintFragment extends DialogFragment {
-    private ComlaintFragmentBinding comlaintFragmentBinding;
+    private FragmentComplaintBinding comlaintFragmentBinding;
     private ComplaintViewModel mViewModel;
     private TextView dialogComplaintExit;
 
@@ -31,7 +29,7 @@ public class ComplaintFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        comlaintFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.comlaint_fragment, container, false);
+        comlaintFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_complaint, container, false);
         View view = comlaintFragmentBinding.getRoot();
         dialogComplaintExit = view.findViewById(R.id.dialogComplaintExit);
         return view;

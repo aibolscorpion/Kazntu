@@ -6,6 +6,7 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
+import com.onesignal.OneSignal;
 
 import kz.almaty.satbayevuniversity.utils.LocaleHelper;
 
@@ -25,6 +26,7 @@ public class App extends Application {
                 .fallbackToDestructiveMigration()
                 .build();
         mContext = getApplicationContext();
+        OneSignal.startInit(this).inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification).unsubscribeWhenNotificationsAreDisabled(true).init();
     }
 
     public static App getInstance() {

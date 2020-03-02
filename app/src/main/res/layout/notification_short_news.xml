@@ -7,7 +7,7 @@
 
         <variable
             name="webClickListener"
-            type="kz.almaty.satbayevuniversity.ui.notification.NotificationListener" />
+            type="kz.almaty.satbayevuniversity.ui.notification.portalNotification.PortalNotificationListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

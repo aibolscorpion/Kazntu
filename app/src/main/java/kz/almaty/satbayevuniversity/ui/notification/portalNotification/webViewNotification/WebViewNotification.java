@@ -1,4 +1,4 @@
-package kz.almaty.satbayevuniversity.ui.notification.webViewNotification;
+package kz.almaty.satbayevuniversity.ui.notification.portalNotification.webViewNotification;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

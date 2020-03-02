@@ -26,7 +26,7 @@ import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 import kz.almaty.satbayevuniversity.ui.grade.ViewPagerFragment;
-import kz.almaty.satbayevuniversity.ui.notification.NotificationFragment;
+import kz.almaty.satbayevuniversity.ui.notification.NotificationViewPagerFragment;
 import kz.almaty.satbayevuniversity.ui.schedule.ViewPagerSchedule;
 
 public class MainAcademicFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener  {
@@ -45,7 +45,7 @@ public class MainAcademicFragment extends Fragment implements BottomNavigationVi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         firstTime = true;
-        View view = inflater.inflate(R.layout.main_academic_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_main_academic, container, false);
         toolbar = view.findViewById(R.id.mainToolbar);
         navigation = view.findViewById(R.id.bottomNavigation);
         imageView = view.findViewById(R.id.updateData);
@@ -96,7 +96,6 @@ public class MainAcademicFragment extends Fragment implements BottomNavigationVi
         NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
 
         imageView.setOnClickListener(v -> {
-
             if( connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
                 editor.putBoolean(getString(R.string.only_server),true);
                 editor.apply();
@@ -107,7 +106,7 @@ public class MainAcademicFragment extends Fragment implements BottomNavigationVi
                 }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.grade))){
                     replaceFragment(ViewPagerFragment.newInstance());
                 }else if(toolbar.getTitle().toString().equalsIgnoreCase(getString(R.string.notifications))){
-                    replaceFragment(NotificationFragment.newInstance());
+                    replaceFragment(NotificationViewPagerFragment.newInstance());
                 }
 
             } else Toast.makeText(getActivity(), R.string.internetConnection, Toast.LENGTH_SHORT).show();
@@ -134,7 +133,7 @@ public class MainAcademicFragment extends Fragment implements BottomNavigationVi
                 return true;
             case R.id.notifications:
                 firstTime = false;
-                replaceFragment(NotificationFragment.newInstance());
+                replaceFragment(NotificationViewPagerFragment.newInstance());
                 return true;
 
         }

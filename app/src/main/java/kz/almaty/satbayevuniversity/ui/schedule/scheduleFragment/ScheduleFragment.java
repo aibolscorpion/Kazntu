@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,7 +40,7 @@ import kz.almaty.satbayevuniversity.data.AccountDao;
 import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Schedule;
-import kz.almaty.satbayevuniversity.databinding.ScheduleFragmentBinding;
+import kz.almaty.satbayevuniversity.databinding.FragmentScheduleBinding;
 import kz.almaty.satbayevuniversity.ui.LoginActivity;
 import kz.almaty.satbayevuniversity.utils.OnSwipeTouchListener;
 
@@ -56,7 +57,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
     private AccountDao accountDao = db.accountDao();
     private RecyclerView recyclerView;
     private ConstraintLayout emptyConstraint;
-    ScheduleFragmentBinding scheduleFragmentBinding;
+    FragmentScheduleBinding scheduleFragmentBinding;
     private int i=0;
 
     private DateTimeFormatter dayOfMonthFormatter = DateTimeFormatter.ofPattern("d");
@@ -71,7 +72,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        scheduleFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.schedule_fragment, container, false);
+        scheduleFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false);
         View view = scheduleFragmentBinding.getRoot();
         emptyConstraint = view.findViewById(R.id.emptyConstraint);
         calendarView =  view.findViewById(R.id.weekCalendar);
@@ -89,6 +90,7 @@ public class ScheduleFragment extends Fragment implements Cloneable{
         scheduleFragmentBinding.setSchedule(mViewModel);
         scheduleFragmentBinding.scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         scheduleFragmentBinding.scheduleRecyclerView.setHasFixedSize(true);
+        scheduleFragmentBinding.scheduleRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
         scheduleAdapter = new ScheduleAdapter(getActivity());
         scheduleFragmentBinding.scheduleRecyclerView.setAdapter(scheduleAdapter);

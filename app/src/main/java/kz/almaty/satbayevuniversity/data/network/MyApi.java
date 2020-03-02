@@ -8,6 +8,7 @@ import kz.almaty.satbayevuniversity.data.entity.academic.ResponseJournal;
 import kz.almaty.satbayevuniversity.data.entity.grade.attestation.Attestation;
 import kz.almaty.satbayevuniversity.data.entity.grade.transcript.ResponseTranscript;
 import kz.almaty.satbayevuniversity.data.entity.notification.Notification;
+import kz.almaty.satbayevuniversity.data.entity.notification.PushNotification;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Exam;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Schedule;
 import kz.almaty.satbayevuniversity.data.entity.schedule.Student;
@@ -60,4 +61,10 @@ public interface MyApi {
 
     @GET("api/schedule/students")
     Call<List<Student>> getStudentList(@Query("classid") Integer clasid, @Query("language") String language);
+
+    @GET("api/notification/all")
+    Call<List<PushNotification>> getPushNotificationList();
+
+    @POST("api/Notification/Read")
+    Call<ResponseBody> removePushNotification(@Query("pushId") int pushId);
 }

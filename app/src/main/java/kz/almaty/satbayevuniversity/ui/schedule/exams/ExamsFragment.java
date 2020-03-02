@@ -1,28 +1,25 @@
 package kz.almaty.satbayevuniversity.ui.schedule.exams;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import kz.almaty.satbayevuniversity.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
-import kz.almaty.satbayevuniversity.databinding.ExamsFragmentBinding;
+import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.databinding.FragmentExamsBinding;
 
 
 public class ExamsFragment extends Fragment {
 
     private ExamsViewModel mViewModel;
-    private ExamsFragmentBinding examsFragmentBinding;
+    private FragmentExamsBinding examsFragmentBinding;
     private ExamAdapter examAdapter;
 
     public static ExamsFragment newInstance() {
@@ -32,7 +29,7 @@ public class ExamsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        examsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.exams_fragment, container, false);
+        examsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_exams, container, false);
         View view = examsFragmentBinding.getRoot();
         return view;
     }
