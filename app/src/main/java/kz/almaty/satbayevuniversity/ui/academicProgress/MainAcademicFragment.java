@@ -31,6 +31,7 @@ import kz.almaty.satbayevuniversity.ui.schedule.ViewPagerSchedule;
 
 public class MainAcademicFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener  {
     SharedPreferences.Editor editor = App.getContext().getSharedPreferences("shared_preferences",Context.MODE_PRIVATE).edit();
+    SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("one_signal_notification_handler",Context.MODE_PRIVATE);
     private BottomNavigationView navigation;
     private static final String TAG = "MainAcademicFragment";
     public Toolbar toolbar;
@@ -50,8 +51,14 @@ public class MainAcademicFragment extends Fragment implements BottomNavigationVi
         navigation = view.findViewById(R.id.bottomNavigation);
         imageView = view.findViewById(R.id.updateData);
         navigation.setOnNavigationItemSelectedListener(this);
-        navigation.setSelectedItemId(R.id.academicProgressFragment);
 
+        int notification_type_id = sharedPreferences.getInt("typeId",1);
+        if(notification_type_id == 1){
+            navigation.setSelectedItemId(R.id.academicProgressFragment);
+        }else if(notification_type_id == 3){
+            navigation.setSelectedItemId(R.id.grade);
+        }
+        sharedPreferences.edit().putInt("typeId",1).commit();
 
         return view;
     }

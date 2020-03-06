@@ -67,4 +67,7 @@ public interface MyApi {
 
     @POST("api/Notification/Read")
     Call<ResponseBody> removePushNotification(@Query("pushId") int pushId);
+
+    @POST("api/Notification/Register")
+    Call<ResponseBody> registerPlayerId(@Query("playerId") String playerId, @Query("device") String device, @Query("appversion") String appversion);
 }

@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         ActivityLoginBinding activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         authViewModel = ViewModelProviders.of(this).get(AuthViewModel.class);
         activityLoginBinding.setLifecycleOwner(this);
@@ -133,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         Storage.getInstance().setAccountFullName(accountEntity.getFullName());
         Storage.getInstance().setUsername(accountEntity.getUsername());
         Intent intent_name = new Intent(getApplicationContext(), HomeActivity.class);
+        intent_name.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent_name);
         finish();
     }

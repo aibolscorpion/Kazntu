@@ -5,19 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.data.AccountDao;
-import kz.almaty.satbayevuniversity.data.App;
-import kz.almaty.satbayevuniversity.data.AppDatabase;
-import kz.almaty.satbayevuniversity.data.entity.academic.ResponseJournal;
-import kz.almaty.satbayevuniversity.data.network.KaznituRetrofit;
+import com.onesignal.OneSignal;
 
 import java.io.IOException;
 import java.net.SocketException;
@@ -29,6 +22,13 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import kz.almaty.satbayevuniversity.R;
+import kz.almaty.satbayevuniversity.data.AccountDao;
+import kz.almaty.satbayevuniversity.data.App;
+import kz.almaty.satbayevuniversity.data.AppDatabase;
+import kz.almaty.satbayevuniversity.data.entity.academic.ResponseJournal;
+import kz.almaty.satbayevuniversity.data.network.KaznituRetrofit;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -162,5 +162,19 @@ public class AcademicViewModel extends ViewModel {
     private void exception(){
         loadRv.set(false);
         handleTimeout.setValue(1);
+    }
+    public void registerPlayerId(){
+        String playerId = OneSignal.getPermissionSubscriptionState().getSubscriptionStatus().getUserId();
+        KaznituRetrofit.getApi().registerPlayerId(playerId,"android","3.0").enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            }
+        });
     }
 }
