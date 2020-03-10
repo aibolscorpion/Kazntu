@@ -1,5 +1,9 @@
 package kz.almaty.satbayevuniversity.ui.notification.pushNotification;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.entity.notification.PushNotification;
 import kz.almaty.satbayevuniversity.data.network.KaznituRetrofit;
 import okhttp3.ResponseBody;
@@ -20,9 +25,20 @@ public class PushNotificationViewModel extends ViewModel {
     public ObservableBoolean isEmpty = new ObservableBoolean();
     MutableLiveData<List<PushNotification>> pushNotificationList = new MutableLiveData<>();
     List<PushNotification> listOfPushNotification = new ArrayList<>();
-    public void getPushNotificationList(){
+
+    private ConnectivityManager connManager = (ConnectivityManager) App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    private NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
+    public void getPushNotification(){
         loadRv.set(true);
         isEmpty.set(false);
+        if(connManager.getActiveNetworkInfo() != null && connManager.getActiveNetworkInfo().isAvailable() && activeNetwork.isConnected()) {
+            getPushNotificationFromServer();
+        }else{
+            loadRv.set(false);
+            isEmpty.set(true);
+        }
+    }
+    private void getPushNotificationFromServer(){
         KaznituRetrofit.getApi().getPushNotificationList().enqueue(new Callback<List<PushNotification>>() {
             @Override
             public void onResponse(Call<List<PushNotification>> call, Response<List<PushNotification>> response) {

@@ -59,5 +59,8 @@
     <string name="sunday">вс</string>
     <string name="click_back_again">Нажмите кнопку назад еще раз чтобы выйти</string>
     <string name="ask_permission_to_rw_external_storage">Нужно дать разрешение для сохранение файла</string>
+    <string name="set_push_notification">Мы настроили пуш-уведомления ! Если вам будут приходить \"левые\" уведомления, то сообщите нам об этом.</string>
+    <string name="ok">ok</string>
+    <string name="hello">Привет !</string>
 
 </resources>

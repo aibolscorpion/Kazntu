@@ -60,6 +60,9 @@
     <string name="friday">жұ</string>
     <string name="click_back_again">Шығу үшін артқа батырмасын қайта басыңыз</string>
     <string name="ask_permission_to_rw_external_storage">Файлды сақтау үшін рұқсат беру қажет</string>
+    <string name="set_push_notification">Біз мобильдік қосымшаға пуш-хабарламаны енгіздік. Егер сізге жалған хабарламалар келетін болса бізге хабарлаңыз</string>
+    <string name="ok">ok</string>
+    <string name="hello">Сәлем !</string>
 
 
 </resources>

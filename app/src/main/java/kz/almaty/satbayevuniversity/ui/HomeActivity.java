@@ -1,6 +1,8 @@
 package kz.almaty.satbayevuniversity.ui;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -12,6 +14,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -70,7 +73,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setupBindings(savedInstanceState);
 
         SharedPrefCache sharedPrefCache = new SharedPrefCache();
@@ -81,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setLocale(language1.getLanguageCode());
         } catch (IllegalStateException | JsonSyntaxException ignored){}
 
-
+        showWeSettedPushNoficationDialog();
     }
 
     public void getMenuText(){
@@ -207,6 +209,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void OpenToggleNavMenu() {
         drawer.openDrawer(GravityCompat.START);
     }
+    private void showWeSettedPushNoficationDialog(){
+        SharedPreferences sharedPreferences = getSharedPreferences("FIRST_RUN",MODE_PRIVATE);
+        boolean first_run = sharedPreferences.getBoolean("FIRST_RUN",false);
+        if(!first_run){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("FIRST_RUN",true);
+            editor.commit();
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            AlertDialog alertDialog = builder.create();
+            View view = getLayoutInflater().inflate(R.layout.dialog_push_noficiation,null);
+            Button ok_button = view.findViewById(R.id.dialog_push_notification_button);
+            ok_button.setOnClickListener(v -> {
+                alertDialog.dismiss();
+            });
+            alertDialog.setView(view);
+            alertDialog.show();
+        }
+    }
 }
 
