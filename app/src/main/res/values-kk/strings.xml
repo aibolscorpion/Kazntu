@@ -63,6 +63,7 @@
     <string name="set_push_notification">Біз мобильдік қосымшаға пуш-хабарламаны енгіздік. Егер сізге жалған хабарламалар келетін болса бізге хабарлаңыз</string>
     <string name="ok">ok</string>
     <string name="hello">Сәлем !</string>
+    <string name="enrollee"><u>Мен талапкермін</u></string>
 
 
 </resources>

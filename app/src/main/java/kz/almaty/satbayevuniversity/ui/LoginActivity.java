@@ -28,6 +28,7 @@ import kz.almaty.satbayevuniversity.data.App;
 import kz.almaty.satbayevuniversity.data.AppDatabase;
 import kz.almaty.satbayevuniversity.data.entity.AccountEntity;
 import kz.almaty.satbayevuniversity.databinding.ActivityLoginBinding;
+import kz.almaty.satbayevuniversity.ui.enrollee.EnrolleeActivity;
 import kz.almaty.satbayevuniversity.utils.Storage;
 
 
@@ -150,5 +151,9 @@ public class LoginActivity extends AppCompatActivity {
         if (view !=null){
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+    public void startEnrolleeActivity(View view){
+        Intent intent = new Intent(this, EnrolleeActivity.class);
+        startActivity(intent);
     }
 }

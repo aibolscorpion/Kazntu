@@ -62,5 +62,12 @@
     <string name="set_push_notification">Мы настроили пуш-уведомления ! Если вам будут приходить \"левые\" уведомления, то сообщите нам об этом.</string>
     <string name="ok">ok</string>
     <string name="hello">Привет !</string>
-
+    <string name="enrollee"><u>Я абитуриент</u></string>
+    <string-array name="citizenship_array">
+        <item>Гражданин РК</item>
+        <item>Иностранный гражданин</item>
+        <item>Иностранный гражданин с удостоверением лица без гражданства</item>
+        <item>Оралманы без удостоверением лица без гражданства</item>
+        <item>Оралманы с удостоверением лица без гражданства</item>
+    </string-array>
 </resources>

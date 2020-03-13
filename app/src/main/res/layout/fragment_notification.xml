@@ -15,7 +15,8 @@
         android:layout_height="match_parent"
         tools:context="kz.almaty.satbayevuniversity.ui.notification.portalNotification.PortalNotificationFragment"
         android:id="@+id/notification_constraintLayout"
-        android:background="@color/colorWhite">
+        android:background="@color/colorWhite"
+        android:paddingBottom="45dp">
 
         <ProgressBar
             android:layout_width="40dp"

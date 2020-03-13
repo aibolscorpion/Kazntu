@@ -62,5 +62,6 @@
     <string name="set_push_notification">Мы настроили пуш-уведомления ! Если вам будут приходить \"левые\" уведомления, то сообщите нам об этом.</string>
     <string name="ok">ok</string>
     <string name="hello">Привет !</string>
+    <string name="enrollee"><u>Я абитуриент</u></string>
 
 </resources>
