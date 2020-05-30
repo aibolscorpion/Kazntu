@@ -23,6 +23,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface MyApi {
+
     @POST("token")
     Call<AccountEntity> onLogin(@Body RequestBody requestBody);
 

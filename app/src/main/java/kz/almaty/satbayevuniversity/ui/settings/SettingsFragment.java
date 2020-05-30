@@ -24,14 +24,12 @@ import com.google.gson.JsonSyntaxException;
 
 import kz.almaty.satbayevuniversity.AuthViewModel;
 import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.data.SharedPrefCache;
 import kz.almaty.satbayevuniversity.data.entity.Language;
 import kz.almaty.satbayevuniversity.databinding.FragmentSettingsBinding;
 import kz.almaty.satbayevuniversity.ui.HomeActivity;
 import kz.almaty.satbayevuniversity.ui.LoginActivity;
 import kz.almaty.satbayevuniversity.ui.settings.complaintFragment.ComplaintFragment;
 import kz.almaty.satbayevuniversity.ui.settings.languageFragment.LanguageFragment;
-import kz.almaty.satbayevuniversity.utils.LocaleHelper;
 import kz.almaty.satbayevuniversity.utils.Storage;
 
 public class SettingsFragment extends Fragment {
@@ -39,7 +37,6 @@ public class SettingsFragment extends Fragment {
     private ConstraintLayout constraintLayout, settingsLanguage;
     private Button settingsLoginBtn;
     public Toolbar toolbar;
-    private SharedPrefCache sharedPrefCache = new SharedPrefCache();
     private Context context;
 
     public SettingsFragment(Context context) {
@@ -112,17 +109,6 @@ public class SettingsFragment extends Fragment {
         });
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // TODO: Use the ViewModel
-        if(!sharedPrefCache.getStr("language", context).isEmpty()){
-            String sharedString = sharedPrefCache.getStr("language", context);
-            Gson gson = new Gson();
-            try {
-                Language language = gson.fromJson(sharedString, Language.class);
-                LocaleHelper.setLocale(getActivity(),language.getLanguageCode());
-            } catch (IllegalStateException | JsonSyntaxException ignored){}
-        } else{
-            LocaleHelper.setLocale(getActivity(), "ru");
-        }
     }
 }
 

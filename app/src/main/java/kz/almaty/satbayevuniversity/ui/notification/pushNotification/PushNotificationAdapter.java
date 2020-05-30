@@ -18,12 +18,10 @@ import java.util.List;
 import java.util.Locale;
 
 import kz.almaty.satbayevuniversity.R;
-import kz.almaty.satbayevuniversity.data.SharedPrefCache;
 import kz.almaty.satbayevuniversity.data.entity.notification.PushNotification;
 import kz.almaty.satbayevuniversity.databinding.ItemPushNotificationBinding;
 
 public class PushNotificationAdapter  extends RecyclerView.Adapter<PushNotificationAdapter.ViewHolder> {
-    private SharedPrefCache sharedPrefCache = new SharedPrefCache();
     HashMap<PushNotification, Runnable> pendingRunnables = new HashMap<>();
     private static final int PENDING_REMOVAL_TIMEOUT = 3000;
     private Handler handler = new Handler();

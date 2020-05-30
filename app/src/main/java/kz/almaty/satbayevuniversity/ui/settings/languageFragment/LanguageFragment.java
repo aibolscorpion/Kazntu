@@ -26,7 +26,6 @@ import kz.almaty.satbayevuniversity.ui.HomeActivity;
 
 public class LanguageFragment extends Fragment implements LanguageAdapter.LanguageChangeListener{
     private static final String LOG_TAG = "LanguageFragment";
-    private LanguageViewModel mViewModel;
     private ArrayList<Language> languages = new ArrayList<>();
     private LanguageAdapter languageAdapter;
     private RecyclerView recyclerView;
@@ -62,7 +61,6 @@ public class LanguageFragment extends Fragment implements LanguageAdapter.Langua
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(LanguageViewModel.class);
         languages.add(new Language("Русский","ru", 0));
         languages.add(new Language("Казахский", "kk", 1));
 

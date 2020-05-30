@@ -13,7 +13,6 @@ import java.util.List;
 import kz.almaty.satbayevuniversity.R;
 import kz.almaty.satbayevuniversity.data.entity.grade.attestation.Attestation;
 import kz.almaty.satbayevuniversity.databinding.ItemAttestationBinding;
-import kz.almaty.satbayevuniversity.databinding.ItemAttestationBindingImpl;
 
 public class AttestationAdapter extends RecyclerView.Adapter<AttestationAdapter.ViewHolder> {
 
@@ -25,7 +24,7 @@ public class AttestationAdapter extends RecyclerView.Adapter<AttestationAdapter.
     @NonNull
     @Override
     public AttestationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemAttestationBindingImpl attestationItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+        ItemAttestationBinding attestationItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.item_attestation, parent, false);
         return new AttestationAdapter.ViewHolder(attestationItemBinding);
     }

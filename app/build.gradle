@@ -7,7 +7,6 @@ buildscript {
     }
 }
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
-
 repositories {
     maven { url 'https://maven.google.com' }
 }
@@ -126,5 +125,6 @@ dependencies {
 
     //OneSignal push notification
     implementation 'com.onesignal:OneSignal:[3.11.2, 3.99.99]'
-
+    //MaskedEditText
+    implementation 'ru.egslava:MaskedEditText:1.0.5'
 }

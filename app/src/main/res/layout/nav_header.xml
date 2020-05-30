@@ -22,13 +22,13 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
         <ImageView
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/userFullName"
             android:id="@+id/userProfilePhoto"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:imageUrl="@{imageUrl}" />
+            app:imageUrl="@{imageUrl}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/userFullName" />
 
         <TextView
             app:layout_constraintStart_toStartOf="parent"

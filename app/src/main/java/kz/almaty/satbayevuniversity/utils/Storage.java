@@ -1,5 +1,7 @@
 package kz.almaty.satbayevuniversity.utils;
 
+import java.util.List;
+
 import kz.almaty.satbayevuniversity.data.entity.academic.ResponseJournal;
 import kz.almaty.satbayevuniversity.data.entity.grade.transcript.SemestersItem;
 
@@ -27,6 +29,16 @@ public class Storage {
     private String fileName;
     private String username;
     private int singleCheck;
+    private String cookies="";
+
+    public String getCookies() {
+        return cookies;
+    }
+
+    public void setCookies(String cookies) {
+        this.cookies = cookies;
+    }
+
 
     public String getUsername() {
         return username;

@@ -79,9 +79,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         String sharedString = sharedPrefCache.getStr("language",this);
         Gson gson = new Gson();
         try{
-        Language language1 = gson.fromJson(sharedString, Language.class);
-        setLocale(language1.getLanguageCode());
+            Language language1 = gson.fromJson(sharedString, Language.class);
+            setLocale(language1.getLanguageCode());
+            getMenuText();
         } catch (IllegalStateException | JsonSyntaxException ignored){}
+
 
         showWeSettedPushNoficationDialog();
     }
@@ -161,7 +163,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id) {
             case R.id.academicProgress:
-                    replaceFragment(MainAcademicFragment.newInstance(),R.id.fragment_container);
+                replaceFragment(MainAcademicFragment.newInstance(),R.id.fragment_container);
                 break;
             case R.id.umkd:
                 replaceFragment(UmkdFragment.newInstance(),R.id.fragment_container);
@@ -191,7 +193,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     boolean doubleBackToExitPressedOnce = false;
     @Override
     public void onBackPressed() {
-
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {

@@ -64,7 +64,7 @@ public class AcademicFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.journal);
 
-        mViewModel.registerPlayerId();
+//        mViewModel.registerPlayerId();
 
         academicFragmentBinding.journalRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         academicFragmentBinding.journalRecyclerView.setHasFixedSize(true);

@@ -2,6 +2,7 @@ package kz.almaty.satbayevuniversity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
@@ -50,6 +51,7 @@ public class AuthViewModel extends ViewModel {
     private BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(3);
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 1,
             TimeUnit.SECONDS, queue);
+
 
 
 

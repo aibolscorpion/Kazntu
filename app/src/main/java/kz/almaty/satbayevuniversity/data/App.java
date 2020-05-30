@@ -16,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import kz.almaty.satbayevuniversity.ui.LoginActivity;
-import kz.almaty.satbayevuniversity.utils.LocaleHelper;
 
 public class App extends Application {
 
@@ -57,10 +56,10 @@ public class App extends Application {
         return database;
     }
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LocaleHelper.onAttach(base, "ru"));
-    }
+//    @Override
+//    protected void attachBaseContext(Context base) {
+//        super.attachBaseContext(LocaleHelper.onAttach(base, "ru"));
+//    }
     class NotificationHandler implements OneSignal.NotificationOpenedHandler{
 
         @Override
